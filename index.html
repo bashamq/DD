@@ -1,213 +1,67 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>DD Dashboard & Order Management</title>
+    <title>Live Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { background-color: #f4f7f6; }
-        .nav-tabs .nav-link { font-weight: bold; color: #495057; }
-        .nav-tabs .nav-link.active { color: #0d6efd; border-bottom: 3px solid #0d6efd; }
-    </style>
 </head>
-<body>
-
-<div class="container mt-4">
-    <h2 class="text-center mb-4 text-primary">Chenab Engineering - DD Dashboard</h2>
-    
-    <!-- 3-Step Navigation Tabs -->
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item">
-            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#dashboard">1. Live Dashboard</button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#register">2. Register Order</button>
-        </li>
-        <li class="nav-item">
-            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#update">3. Daily Update</button>
-        </li>
-    </ul>
-
-    <!-- Tabs Content -->
-    <div class="tab-content bg-white p-4 border border-top-0 shadow-sm rounded-bottom">
+<body class="bg-light p-4" onload="loadData()">
+    <div class="container-fluid bg-white p-4 rounded shadow-sm">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h3 class="text-success">📊 Live DD Dashboard</h3>
+            <button class="btn btn-outline-success" onclick="loadData()">Refresh Data</button>
+        </div>
         
-        <!-- Tab 1: Dashboard -->
-        <div class="tab-pane fade show active" id="dashboard">
-            <div class="d-flex justify-content-between align-items-center mb-3">
-                <h4>Live Orders & Progress</h4>
-                <button class="btn btn-outline-primary btn-sm" onclick="loadDashboard()">Refresh Data</button>
-            </div>
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered" id="dashboardTable">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>Order ID</th>
-                            <th>Customer</th>
-                            <th>Part Name</th>
-                            <th>Status (Checklist Stage)</th>
-                            <th>Progress</th>
-                            <th>Due Date</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <!-- Live Data Google Sheet se yahan ayega -->
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- Tab 2: Register Order -->
-        <div class="tab-pane fade" id="register">
-            <h4 class="mb-3">Register New Order</h4>
-            <form id="registerForm">
-                <div class="row">
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Order ID (e.g., DD-001)</label>
-                        <input type="text" class="form-control" id="regOrderId" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Customer Name</label>
-                        <input type="text" class="form-control" id="regCustomer" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">PO/RFQ No</label>
-                        <input type="text" class="form-control" id="regPo">
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Part Name</label>
-                        <input type="text" class="form-control" id="regPartName" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Part No.</label>
-                        <input type="text" class="form-control" id="regPartNo">
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Quantity</label>
-                        <input type="number" class="form-control" id="regQty" required>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <label class="form-label">Due Date</label>
-                        <input type="date" class="form-control" id="regDueDate" required>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-primary" onclick="submitRegister()">Register Order</button>
-            </form>
-        </div>
-
-        <!-- Tab 3: Daily Update -->
-        <div class="tab-pane fade" id="update">
-            <h4 class="mb-3">Daily Progress & Status Update</h4>
-            <form id="updateForm">
-                <div class="row">
-                    <div class="col-md-12 mb-3">
-                        <label class="form-label">Order ID (to update)</label>
-                        <input type="text" class="form-control" id="updOrderId" placeholder="e.g., DD-001" required>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Current Stage (Master Checklist)</label>
-                        <select class="form-select" id="updStatus">
-                            <option>Design & Development / DFM</option>
-                            <option>Tooling / Pattern & Core</option>
-                            <option>Foundry / Mould & Core Making</option>
-                            <option>Melting & Pouring</option>
-                            <option>Heat Treatment</option>
-                            <option>Casting Inspection / NDT</option>
-                            <option>Machining Setup & In-Process</option>
-                            <option>Final Inspection & Testing</option>
-                            <option>Packing & Dispatch</option>
-                            <option>Completed</option>
-                        </select>
-                    </div>
-                    <div class="col-md-6 mb-3">
-                        <label class="form-label">Overall Progress (%)</label>
-                        <input type="text" class="form-control" id="updProgress" placeholder="e.g., 50%">
-                    </div>
-                    <div class="col-md-12 mb-3">
-                        <label class="form-label">Remarks / Checkpoint Notes</label>
-                        <textarea class="form-control" id="updRemarks" rows="2"></textarea>
-                    </div>
-                </div>
-                <button type="button" class="btn btn-warning text-dark fw-bold" onclick="submitUpdate()">Submit Update</button>
-            </form>
+        <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Customer</th>
+                        <th>Part Name</th>
+                        <th>Status / Stage</th>
+                        <th>Progress</th>
+                        <th>Due Date</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr><td colspan="6" class="text-center">Loading live data from Google Sheets...</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-    // YAHAN APNA APPS SCRIPT KA WEB APP URL PASTE KAREIN!
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyCRPTg8kr7kpEr6DMFLlrl4wryvJcDCTiqFh_Ka1XF8p7TQC9GlS8PTW7nH1RlaYPL/exec";
+    <script>
+        // Naya Web App URL yahan update kar diya gaya hai
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwjFMoFS1shxxlVRHCkkz0N6UNxgwYLw-l7uwIAqPFpGLdPJLlB2TQkX-S7eQtSNu1A/exec";
 
-    function loadDashboard() {
-        const tbody = document.querySelector("#dashboardTable tbody");
-        tbody.innerHTML = "<tr><td colspan='6' class='text-center'>Fetching Data...</td></tr>";
-        
-        fetch(SCRIPT_URL + "?action=getOrders")
-            .then(res => res.json())
-            .then(data => {
-                let rows = "";
-                data.forEach(order => {
-                    if(order["Order ID"]) {
-                        rows += `<tr>
-                            <td class="fw-bold">${order["Order ID"]}</td>
-                            <td>${order["Customer"]}</td>
-                            <td>${order["Part Name"]}</td>
-                            <td><span class="badge bg-secondary">${order["Status"]}</span></td>
-                            <td>
-                                <div class="progress" style="height: 20px;">
-                                    <div class="progress-bar bg-success" role="progressbar" style="width: ${parseInt(order["Overall Progress"])}%;" aria-valuenow="${parseInt(order["Overall Progress"])}" aria-valuemin="0" aria-valuemax="100">${order["Overall Progress"]}</div>
-                                </div>
-                            </td>
-                            <td>${new Date(order["Due Date"]).toLocaleDateString()}</td>
-                        </tr>`;
-                    }
+        function loadData() {
+            document.getElementById("tableBody").innerHTML = "<tr><td colspan='6' class='text-center'>Loading...</td></tr>";
+            
+            fetch(SCRIPT_URL + "?action=getOrders")
+                .then(res => res.json())
+                .then(data => {
+                    let rows = "";
+                    data.forEach(row => {
+                        if(row["Order ID"]) {
+                            rows += `<tr>
+                                <td><strong>${row["Order ID"]}</strong></td>
+                                <td>${row["Customer"]}</td>
+                                <td>${row["Part Name"]}</td>
+                                <td><span class="badge bg-secondary">${row["Status"]}</span></td>
+                                <td>
+                                    <div class="progress" style="height: 20px;">
+                                        <div class="progress-bar bg-success" style="width:${parseInt(row["Overall Progress"])||0}%">${row["Overall Progress"] || '0%'}</div>
+                                    </div>
+                                </td>
+                                <td>${row["Due Date"]}</td>
+                            </tr>`;
+                        }
+                    });
+                    document.getElementById("tableBody").innerHTML = rows;
+                }).catch(err => {
+                    document.getElementById("tableBody").innerHTML = "<tr><td colspan='6' class='text-center text-danger'>Failed to load data.</td></tr>";
                 });
-                tbody.innerHTML = rows;
-            }).catch(err => {
-                tbody.innerHTML = "<tr><td colspan='6' class='text-center text-danger'>Error loading data. Make sure URL is correct.</td></tr>";
-            });
-    }
-
-    function submitRegister() {
-        const formData = new URLSearchParams();
-        formData.append("action", "registerOrder");
-        formData.append("orderId", document.getElementById("regOrderId").value);
-        formData.append("customer", document.getElementById("regCustomer").value);
-        formData.append("po", document.getElementById("regPo").value);
-        formData.append("partName", document.getElementById("regPartName").value);
-        formData.append("partNo", document.getElementById("regPartNo").value);
-        formData.append("qty", document.getElementById("regQty").value);
-        formData.append("dueDate", document.getElementById("regDueDate").value);
-
-        fetch(SCRIPT_URL, { method: "POST", body: formData })
-            .then(res => res.text())
-            .then(data => {
-                alert("Order Registered Successfully!");
-                document.getElementById("registerForm").reset();
-                loadDashboard();
-            });
-    }
-
-    function submitUpdate() {
-        const formData = new URLSearchParams();
-        formData.append("action", "updateOrder");
-        formData.append("orderId", document.getElementById("updOrderId").value);
-        formData.append("status", document.getElementById("updStatus").value);
-        formData.append("progress", document.getElementById("updProgress").value);
-        formData.append("remarks", document.getElementById("updRemarks").value);
-
-        fetch(SCRIPT_URL, { method: "POST", body: formData })
-            .then(res => res.text())
-            .then(data => {
-                alert("Order Updated Successfully!");
-                document.getElementById("updateForm").reset();
-                loadDashboard();
-            });
-    }
-
-    // Auto-load Dashboard on start
-    window.onload = loadDashboard;
-</script>
+        }
+    </script>
 </body>
 </html>
