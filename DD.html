@@ -149,69 +149,7 @@ footer{background:#081a2c;color:#b8c9d5;padding:30px 24px;text-align:center;font
 /* Background slideshow rules are defined above. */
 </style>
 
-<style id="professional-overrides">
-/* Professional Overview background: slow cinematic zoom + smooth cross-fade */
-.hero {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-.hero::before {
-  content: "";
-  position: absolute;
-  inset: -6%;
-  z-index: -3;
-  background: url('overview-bg-1.jpg') center center / cover no-repeat;
-  animation: heroCinematicZoom 4.5s ease-in-out infinite alternate;
-  transform-origin: center center;
-}
-.hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -2;
-  background:
-    linear-gradient(90deg, rgba(3,12,28,.88) 0%, rgba(3,12,28,.68) 46%, rgba(3,12,28,.42) 100%),
-    linear-gradient(180deg, rgba(2,10,24,.52), rgba(2,10,24,.30) 48%, rgba(2,10,24,.72));
-  pointer-events: none;
-}
-@keyframes heroCinematicZoom {
-  from { transform: scale(1.00); }
-  to   { transform: scale(1.08); }
-}
 
-/* Cleaner executive process-flow presentation */
-.process-flow {
-  position: relative;
-  max-width: 1180px;
-  margin: 0 auto;
-}
-.process-flow .flow-card,
-.process-flow .process-card {
-  border-radius: 18px !important;
-  border: 1px solid rgba(105,205,255,.20) !important;
-  box-shadow: 0 14px 34px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.06) !important;
-  transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
-}
-.process-flow .flow-card:hover,
-.process-flow .process-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(105,205,255,.55) !important;
-  box-shadow: 0 20px 42px rgba(0,0,0,.30), 0 0 0 1px rgba(105,205,255,.08) !important;
-}
-.process-flow .flow-number,
-.process-flow .stage-number {
-  box-shadow: 0 0 0 5px rgba(54,190,255,.08), 0 6px 18px rgba(0,0,0,.25);
-  font-weight: 800;
-}
-.process-flow .flow-line,
-.process-flow .connector {
-  opacity: .72;
-}
-@media (max-width: 800px) {
-  .process-flow { padding: 0 10px; }
-}
-</style>
 
 <style id="cew-process-cards">
 .cew-flow-board{position:relative;max-width:1180px;margin:28px auto 0;padding:8px 0}.cew-flow-spine{position:absolute;left:50%;top:10px;bottom:10px;width:3px;transform:translateX(-50%);background:linear-gradient(#4fd5ff,#236b9b,#4fd5ff);box-shadow:0 0 18px #4fd5ff44}
@@ -221,7 +159,74 @@ footer{background:#081a2c;color:#b8c9d5;padding:30px 24px;text-align:center;font
 .cew-card-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:9px}.cew-card-no{color:#67dcff;font-weight:900;letter-spacing:.14em}.cew-card-owner{text-transform:uppercase;font-size:9px;color:#9bb1c4;text-align:right}.cew-process-card h3{margin:0 0 5px;color:#fff;font-size:18px}.cew-card-sub{color:#75dfff;font-size:11px;font-weight:800;margin-bottom:9px}.cew-process-card p{margin:0;color:#d0dbe5;font-size:12px;line-height:1.55}.cew-card-record{border-top:1px solid #ffffff12;margin-top:12px;padding-top:9px;color:#e9f6ff;font-size:11px;font-weight:800}.cew-card-record span{display:block;color:#6f899e;font-size:8px;letter-spacing:.13em;margin-bottom:3px}
 .cew-flow-footer{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:1180px;margin:22px auto}.cew-flow-footer>div{padding:14px 17px;border-radius:14px;background:#0b2036cc;border:1px solid #66d7ff20}.cew-flow-footer strong{display:block;color:#68dbff;font-size:9px;letter-spacing:.14em;margin-bottom:5px}.cew-flow-footer span{font-size:12px;color:#d2e0eb}
 @media(max-width:850px){.cew-flow-spine{left:15px;transform:none}.cew-flow-grid{grid-template-columns:1fr;padding-left:38px}.cew-process-card:after{left:-38px!important;right:auto!important;width:38px}.cew-process-card:before{left:-44px!important;right:auto!important}.cew-flow-footer{grid-template-columns:1fr}}
-</style></head>
+</style>
+<style id="professional-background-final">
+/* Cinematic Overview background */
+.hero{
+  position:relative;
+  overflow:hidden;
+  isolation:isolate;
+  background:#061323 !important;
+}
+.hero-bg{
+  position:absolute;
+  inset:-5%;
+  z-index:-4;
+  background:center/cover no-repeat;
+  transform:scale(1.02);
+  opacity:0;
+  transition:opacity 1.35s ease-in-out;
+  will-change:transform,opacity;
+  filter:saturate(.88) contrast(1.05);
+}
+.hero-bg.is-active{opacity:1}
+.hero-bg.is-zooming{animation:overviewSlowZoom 4s cubic-bezier(.2,.65,.25,1) forwards}
+@keyframes overviewSlowZoom{
+  from{transform:scale(1.02)}
+  to{transform:scale(1.10)}
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-3;
+  background:
+    linear-gradient(90deg,rgba(2,10,23,.94) 0%,rgba(3,15,31,.78) 38%,rgba(3,16,32,.48) 72%,rgba(2,10,23,.66) 100%),
+    linear-gradient(180deg,rgba(2,8,19,.50),rgba(2,9,20,.16) 45%,rgba(2,8,19,.78));
+  pointer-events:none;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  z-index:-2;
+  background:
+    radial-gradient(circle at 78% 28%,rgba(72,205,255,.10),transparent 28%),
+    radial-gradient(circle at 18% 72%,rgba(72,205,255,.06),transparent 30%);
+  pointer-events:none;
+}
+.overview-progress{
+  position:absolute;left:0;right:0;bottom:0;height:3px;z-index:5;
+  background:rgba(255,255,255,.08);overflow:hidden
+}
+.overview-progress span{
+  display:block;height:100%;width:0;
+  background:linear-gradient(90deg,#42d8ff,#8beaff);
+  box-shadow:0 0 14px rgba(66,216,255,.65);
+}
+.overview-dots{
+  position:absolute;right:34px;bottom:22px;z-index:5;display:flex;gap:7px
+}
+.overview-dots i{
+  width:7px;height:7px;border-radius:50%;display:block;
+  background:rgba(255,255,255,.35);transition:.35s
+}
+.overview-dots i.active{
+  width:22px;border-radius:8px;background:#6fe0ff;box-shadow:0 0 12px rgba(111,224,255,.55)
+}
+</style>
+
+</head>
 <body>
 
 <header class="topbar">
@@ -235,6 +240,11 @@ footer{background:#081a2c;color:#b8c9d5;padding:30px 24px;text-align:center;font
 </header>
 
 <section class="hero" id="overview">
+<div class="hero-bg" id="heroBgA"></div>
+<div class="hero-bg" id="heroBgB"></div>
+<div class="overview-dots" id="overviewDots"></div>
+<div class="overview-progress"><span id="overviewProgress"></span></div>
+
   <div id="heroBgA" class="hero-bg active"></div><div id="heroBgB" class="hero-bg"></div>
   <div class="hero-photo-note">CEW · ENGINEERING & MANUFACTURING</div>
   <div class="hero-slide-progress"><span id="heroProgress"></span></div>
@@ -544,6 +554,53 @@ document.querySelectorAll('.reveal').forEach(e=>obs.observe(e));
       start();
     }).catch(()=>{ images=fallback.map(x=>base+x); start(); });
 })();
+</script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+  const files = [
+    'overview-bg-1.jpg','overview-bg-2.jpg','overview-bg-3.jpg',
+    'overview-bg-4.jpg','overview-bg-5.jpg','overview-bg-6.jpg','overview-bg-7.jpg'
+  ];
+  const a=document.getElementById('heroBgA'), b=document.getElementById('heroBgB');
+  const dots=document.getElementById('overviewDots'), bar=document.getElementById('overviewProgress');
+  if(!a||!b) return;
+
+  let index=0, active=a, idle=b;
+  const HOLD=2000, FADE=1350, TOTAL=HOLD+FADE;
+  files.forEach((f,i)=>{
+    const d=document.createElement('i'); d.title='Overview image '+(i+1);
+    if(i===0)d.className='active'; dots.appendChild(d);
+    const img=new Image(); img.src=f;
+  });
+
+  function show(src){
+    idle.style.backgroundImage="url('"+src+"')";
+    idle.classList.remove('is-zooming');
+    void idle.offsetWidth;
+    idle.classList.add('is-active','is-zooming');
+    active.classList.remove('is-active');
+    const old=active; active=idle; idle=old;
+
+    [...dots.children].forEach((d,i)=>d.classList.toggle('active',i===index));
+    bar.style.transition='none'; bar.style.width='0%';
+    requestAnimationFrame(()=>{
+      bar.style.transition='width '+TOTAL+'ms linear';
+      bar.style.width='100%';
+    });
+  }
+
+  a.style.backgroundImage="url('"+files[0]+"')";
+  a.classList.add('is-active','is-zooming');
+  bar.style.transition='width '+TOTAL+'ms linear';
+  bar.style.width='100%';
+
+  setInterval(()=>{
+    index=(index+1)%files.length;
+    show(files[index]);
+  }, TOTAL);
+});
 </script>
 
 </body>
