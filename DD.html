@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CEW | Master Process & Quality Framework</title>
+<style>
+:root{
+  --navy:#0b1f33; --blue:#1264a3; --cyan:#1ea7c9; --steel:#516577;
+  --bg:#f4f7fa; --card:#ffffff; --line:#dbe3ea; --text:#182735;
+  --muted:#667786; --green:#198754; --amber:#d88a00; --red:#c73c3c;
+  --shadow:0 14px 40px rgba(11,31,51,.09); --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,Segoe UI,Arial,sans-serif;color:var(--text);background:var(--bg);line-height:1.5}
+button{font:inherit}
+a{color:inherit;text-decoration:none}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(11,31,51,.96);color:#fff;border-bottom:1px solid rgba(255,255,255,.12);backdrop-filter:blur(12px)}
+.topbar-inner{max-width:1400px;margin:auto;padding:12px 24px;display:flex;align-items:center;gap:18px}
+.brand{font-weight:800;letter-spacing:.4px;white-space:nowrap}.brand small{display:block;font-weight:500;opacity:.65;font-size:10px;letter-spacing:1.2px}
+.nav{display:flex;gap:7px;overflow:auto;margin-left:auto}.nav a{padding:8px 11px;border-radius:9px;color:#dce8f1;font-size:13px}.nav a:hover{background:#173652;color:#fff}
+.hero{background:linear-gradient(135deg,#081a2c 0%,#0f3555 55%,#126b89 100%);color:#fff;min-height:590px;position:relative;overflow:hidden}
+.hero:before,.hero:after{content:"";position:absolute;border:1px solid rgba(255,255,255,.12);border-radius:50%;width:560px;height:560px;right:-160px;top:-190px}.hero:after{width:360px;height:360px;right:120px;top:130px;border-color:rgba(255,255,255,.08)}
+.hero-inner{max-width:1400px;margin:auto;padding:74px 24px 65px;display:grid;grid-template-columns:1.15fr .85fr;gap:45px;position:relative;z-index:2}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);padding:7px 12px;border-radius:999px;font-size:12px;font-weight:700;letter-spacing:.7px}
+.hero h1{font-size:clamp(38px,5vw,66px);line-height:1.02;margin:22px 0 16px;letter-spacing:-2px}.hero h1 span{color:#73d9ed}
+.hero p{font-size:18px;color:#d5e6f0;max-width:760px}.meta{display:flex;gap:10px;flex-wrap:wrap;margin:24px 0}.pill{border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.07);padding:9px 12px;border-radius:10px;font-size:12px}
+.cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}.btn{border:0;border-radius:11px;padding:12px 16px;font-weight:800;cursor:pointer}.btn-primary{background:#fff;color:var(--navy)}.btn-ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.2)}
+.hero-graphic{display:flex;align-items:center;justify-content:center;min-height:360px}.orb{width:310px;height:310px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#6fe2ee 0,#278db0 25%,#123f61 64%,#091b2d 100%);box-shadow:0 0 0 28px rgba(103,221,236,.06),0 0 0 70px rgba(103,221,236,.035);position:relative;display:flex;align-items:center;justify-content:center;text-align:center}.orb:before{content:"";position:absolute;inset:28px;border:1px dashed rgba(255,255,255,.32);border-radius:50%}.orb .core{font-size:42px;font-weight:900;line-height:1}.orb small{display:block;font-size:11px;letter-spacing:2px;opacity:.78;margin-top:8px}
+.container{max-width:1400px;margin:auto;padding:54px 24px}.section-head{display:flex;justify-content:space-between;align-items:end;gap:20px;margin-bottom:24px}.section-head h2{font-size:31px;margin:0;letter-spacing:-.7px}.section-head p{margin:5px 0 0;color:var(--muted);max-width:800px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow)}
+.flow-card{padding:22px;overflow:auto}.flow{display:flex;min-width:1180px;align-items:center;gap:8px}.stage{min-width:135px;padding:15px 11px;border-radius:14px;background:#eef6fa;border:1px solid #cfe2ec;text-align:center}.stage b{display:block;font-size:13px}.stage span{display:block;font-size:10px;color:var(--muted);margin-top:4px}.arrow{font-size:22px;color:var(--cyan);font-weight:900}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-top:20px}.kpi{padding:20px}.kpi .num{font-size:31px;font-weight:900;color:var(--navy)}.kpi .lbl{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.6px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}.process-card{padding:20px;position:relative;overflow:hidden}.process-card .num{position:absolute;right:16px;top:10px;font-size:54px;font-weight:900;color:#eef3f7}.process-card h3{position:relative;margin:0 0 6px;font-size:18px}.process-card p{position:relative;color:var(--muted);font-size:13px;margin:0 0 14px}.tag{display:inline-block;padding:5px 8px;border-radius:7px;background:#edf6f9;color:#14627a;font-size:10px;font-weight:800;margin:3px 3px 0 0}
+.process-card button{margin-top:15px;border:1px solid var(--line);background:#fff;padding:9px 12px;border-radius:9px;font-size:12px;font-weight:800;cursor:pointer}.process-card button:hover{background:#f2f7fa}
+.timeline{display:grid;gap:12px}.timeline-row{display:grid;grid-template-columns:60px 1fr;gap:15px;align-items:stretch}.timeline-no{border-radius:14px;background:var(--navy);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900}.timeline-body{padding:18px;border:1px solid var(--line);border-radius:14px;background:#fff}.timeline-body b{font-size:15px}.timeline-body span{display:block;color:var(--muted);font-size:12px;margin-top:4px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:20px}.table-wrap{overflow:auto}.table{width:100%;border-collapse:collapse;min-width:720px}.table th{background:#eaf0f4;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.5px}.table th,.table td{padding:12px;border:1px solid var(--line);vertical-align:top;font-size:12px}.table tr:hover td{background:#fafcfd}
+.logic{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.logic .box{padding:17px;border-radius:14px;border:1px solid var(--line);background:#fff}.logic .fail{font-weight:900;color:var(--red)}.logic .invest{font-weight:800;color:var(--blue);margin-top:6px}.logic .cause{font-size:11px;color:var(--muted);margin-top:7px}.logic .disp{font-size:12px;font-weight:800;margin-top:10px}
+.signoff{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.sign{padding:18px;border:1px dashed #aebdca;border-radius:14px;background:#fff}.sign b{display:block}.line{height:1px;background:#bcc9d2;margin:25px 0 8px}.sign small{color:var(--muted)}
+.note{padding:18px;border-left:4px solid var(--cyan);background:#eef8fb;border-radius:10px;font-size:13px;color:#365160}
+footer{background:#081a2c;color:#b8c9d5;padding:30px 24px;text-align:center;font-size:12px}
+.modal{position:fixed;inset:0;background:rgba(2,15,25,.68);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}.modal.show{display:flex}.modal-card{background:#fff;width:min(900px,100%);max-height:88vh;overflow:auto;border-radius:20px;box-shadow:0 25px 80px rgba(0,0,0,.3)}.modal-head{padding:22px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:15px}.modal-head h3{margin:0}.close{border:0;background:#eef2f5;border-radius:9px;width:36px;height:36px;cursor:pointer;font-size:20px}.modal-body{padding:22px 24px}.check{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid #edf1f4;font-size:13px}.check i{font-style:normal;color:var(--green);font-weight:900}
+.reveal{opacity:0;transform:translateY(18px);transition:.55s ease}.reveal.visible{opacity:1;transform:none}
+@media(max-width:1050px){.hero-inner{grid-template-columns:1fr}.hero-graphic{min-height:280px}.grid{grid-template-columns:repeat(2,1fr)}.logic{grid-template-columns:repeat(2,1fr)}.signoff{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:720px){.nav{display:none}.container{padding:38px 16px}.hero-inner{padding:55px 16px}.hero h1{font-size:42px}.kpis,.grid,.two,.logic,.signoff{grid-template-columns:1fr}.orb{width:240px;height:240px}.flow{min-width:1000px}}
+@media print{.topbar,.cta,button{display:none!important}.hero{min-height:auto}.container{padding:25px}.card{box-shadow:none}.modal{display:none!important}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">CEW <small>DEVELOPMENT DEPARTMENT</small></div>
+    <nav class="nav">
+      <a href="#overview">Overview</a><a href="#flow">Process Flow</a><a href="#stages">Process Gates</a>
+      <a href="#matrix">Responsibility</a><a href="#logic">Decision Logic</a><a href="#release">Release</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero" id="overview">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">CONTROLLED MASTER PROCESS FRAMEWORK</span>
+      <h1>Design → Casting → Metallurgy → <span>Machining → Inspection → Dispatch</span></h1>
+      <p>A board-level visual presentation of the Master Design-to-Dispatch Checklist for Chenab Engineering Works & Foundries PVT LTD.</p>
+      <div class="meta">
+        <span class="pill">Document: CEW-QA-MASTER-001</span>
+        <span class="pill">Revision: 00</span>
+        <span class="pill">Effective: 05-Sep-2026</span>
+        <span class="pill">ISO 9001 / IATF 16949 aligned framework</span>
+      </div>
+      <div class="cta">
+        <a class="btn btn-primary" href="#flow">Explore Process</a>
+        <button class="btn btn-ghost" onclick="window.print()">Print / Save PDF</button>
+      </div>
+    </div>
+    <div class="hero-graphic">
+      <div class="orb"><div><div class="core">13</div><small>CONTROLLED<br>PROCESS GATES</small></div></div>
+    </div>
+  </div>
+</section>
+
+<main>
+<section class="container reveal" id="flow">
+  <div class="section-head">
+    <div><h2>End-to-End Process Flow</h2><p>The controlled sequence defined in the master checklist, from customer requirement through QA release and dispatch.</p></div>
+  </div>
+  <div class="card flow-card">
+    <div class="flow">
+      <div class="stage"><b>Customer RFQ</b><span>Requirement intake</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Design & DFM</b><span>Engineering review</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Tooling</b><span>Pattern / core box</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Simulation</b><span>Filling / solidification</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Pattern / Core</b><span>Tool preparation</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Mould</b><span>Mould & core making</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Melting & Metallurgy</b><span>Chemistry / treatment</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Pouring</b><span>Heat / ladle traceability</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Shakeout / Fettling</b><span>Cleaning / segregation</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Heat Treatment</b><span>Cycle control</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Casting Inspection / NDT</b><span>Defect & NDT checks</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Machining</b><span>CNC & in-process</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Final Inspection</b><span>Measurement / report</span></div><div class="arrow">→</div>
+      <div class="stage"><b>QA Release</b><span>Documentation review</span></div><div class="arrow">→</div>
+      <div class="stage"><b>Packing & Dispatch</b><span>Authorized release</span></div>
+    </div>
+  </div>
+  <div class="kpis">
+    <div class="card kpi"><div class="num">13</div><div class="lbl">Controlled Checklist Sections</div></div>
+    <div class="card kpi"><div class="num">16</div><div class="lbl">Major Process Flow Points</div></div>
+    <div class="card kpi"><div class="num">4</div><div class="lbl">Final Release Sign-offs</div></div>
+    <div class="card kpi"><div class="num">100%</div><div class="lbl">Traceability Focus</div></div>
+  </div>
+</section>
+
+<section class="container reveal" id="stages">
+  <div class="section-head">
+    <div><h2>13 Process Gates</h2><p>Each gate is presented as a controlled checkpoint. Select any card to open the complete checklist extracted from the master document.</p></div>
+  </div>
+  <div class="grid" id="stageGrid"></div>
+</section>
+
+<section class="container reveal" id="matrix">
+  <div class="section-head"><div><h2>Responsibility Matrix</h2><p>Primary department, approval responsibility and key record for each major process.</p></div></div>
+  <div class="card table-wrap">
+    <table class="table"><thead><tr><th>Process</th><th>Primary Department</th><th>Check / Approval</th><th>Key Record</th></tr></thead><tbody id="matrixBody"></tbody></table>
+  </div>
+</section>
+
+<section class="container reveal" id="logic">
+  <div class="section-head"><div><h2>UM / M Decision Logic</h2><p>Failure routing defined by the checklist: identify the first investigation point, consider typical causes, then apply the stated disposition.</p></div></div>
+  <div class="logic" id="logicGrid"></div>
+</section>
+
+<section class="container reveal">
+  <div class="section-head"><div><h2>Control & Traceability Architecture</h2><p>The checklist connects process evidence to heat, batch and part identity and retains the required records through release.</p></div></div>
+  <div class="two">
+    <div class="card process-card">
+      <div class="num">01</div><h3>Document Control</h3>
+      <p>Customer RFQ/PO, approved drawing/revision, DFM review and tooling records are retained as controlled evidence.</p>
+      <span class="tag">RFQ / PO</span><span class="tag">Drawing Rev.</span><span class="tag">DFM</span><span class="tag">Tooling</span>
+    </div>
+    <div class="card process-card">
+      <div class="num">02</div><h3>Production Evidence</h3>
+      <p>Charge, chemistry, pouring, heat-treatment, casting inspection, NDT and machining records remain linked to production identity.</p>
+      <span class="tag">Heat No.</span><span class="tag">Batch</span><span class="tag">Part ID</span><span class="tag">NDT</span>
+    </div>
+    <div class="card process-card">
+      <div class="num">03</div><h3>Quality Evidence</h3>
+      <p>Final inspection records capture nominal, tolerance, actual observation, deviation and PASS/FAIL status using calibrated instruments.</p>
+      <span class="tag">Nominal</span><span class="tag">Tolerance</span><span class="tag">Observation</span><span class="tag">Deviation</span>
+    </div>
+    <div class="card process-card">
+      <div class="num">04</div><h3>Release Evidence</h3>
+      <p>QA reviews test and inspection results, NCR status and customer documentation before authorized packing and dispatch.</p>
+      <span class="tag">COC</span><span class="tag">MTC</span><span class="tag">Inspection Report</span><span class="tag">Dispatch Record</span>
+    </div>
+  </div>
+  <div class="note" style="margin-top:18px"><b>Controlled-document note:</b> Exact acceptance criteria, tolerances, test frequencies, material standards, customer-specific requirements and retention periods must be taken from the applicable controlled drawing, specification or procedure.</div>
+</section>
+
+<section class="container reveal" id="release">
+  <div class="section-head"><div><h2>Final QA Release & Sign-off</h2><p>The final approval chain shown in the master checklist.</p></div></div>
+  <div class="signoff">
+    <div class="sign"><b>Prepared By</b><div class="line"></div><small>Name / Date</small></div>
+    <div class="sign"><b>Checked By (QC)</b><div class="line"></div><small>Name / Date</small></div>
+    <div class="sign"><b>Reviewed By (QA)</b><div class="line"></div><small>Name / Date</small></div>
+    <div class="sign"><b>Approved for Dispatch</b><div class="line"></div><small>Name / Date</small></div>
+  </div>
+</section>
+</main>
+
+<footer>CHENAB ENGINEERING WORKS & FOUNDRIES PVT LTD · Development Department · Controlled Master Process Presentation</footer>
+
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <div class="modal-head"><div><h3 id="modalTitle"></h3><div id="modalSub" style="color:var(--muted);font-size:12px;margin-top:4px"></div></div><button class="close" onclick="closeModal()">×</button></div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const stages = [
+["1","Design & Development / DFM","Customer requirements, drawing control, DFM, allowances, simulation, tooling design and design risk.","Engineering","Customer RFQ, drawing, 3D CAD, material specification, quantity/application; DFM; allowances; gating/riser/venting; core prints; tolerance stack-up; UM/M; simulation; design risks; controlled design changes; released design output."],
+["2","Tooling / Pattern & Core","Verification of pattern/core-box design, dimensions, identification and trial.","Pattern Shop / Foundry","Approved product drawing match; pattern material/construction; shrinkage and machining allowances; pattern/core-box dimensions; parting line/draft/core prints; revision marking; tooling trial; tooling inspection approval."],
+["3","Foundry / Mould & Core Making","Control of sand, core, mould, pattern, gating and traceability conditions.","Foundry","Raw material/scrap identity; sand recipe, moisture, AFS, permeability, compactability; core properties/strength/venting/baking; mould hardness; pattern/mould dimensions; core setting; gating/riser/feeder; batch traceability."],
+["4","Melting & Metallurgy","Controlled charge preparation, furnace readiness, temperature and chemistry/treatment evidence.","Metallurgy / Foundry","Charge calculation; charge identity; furnace readiness; melting temperature; calibrated spectrometer chemistry; acceptance range; carbon equivalent where applicable; inoculation/nodularization/grain refinement; degassing; treatment quantity/time; heat-number sample; retained records."],
+["5","Pouring / Shakeout / Fettling","Controlled pouring and post-casting cleaning, removal and segregation.","Foundry","Pouring temperature/time/sequence; heat-ladle-mould traceability; visual pouring monitoring; controlled shakeout; complete sand removal; gates/risers and flash removal; grinding/fettling without functional-surface damage; heat/batch segregation."],
+["6","Heat Treatment","Verification and recording of the required furnace cycle and post-treatment checks.","Heat Treatment / QC","Requirement against drawing/specification; correct cycle/program; loading; temperature; soak time; heating/cooling; quench medium where applicable; furnace chart; batch traceability; hardness; microstructure/mechanical verification where required."],
+["7","Casting Inspection / NDT","Casting condition, critical UM dimensions and required NDT acceptance.","QC / QA","Visual defects: cracks, cold shuts, misruns, blowholes, inclusions, shrinkage and surface defects; critical UM dimensions; datum/functional features; hardness where specified; MPI/UT/RT/dye penetrant where required; acceptance criteria; segregation of nonconforming castings."],
+["8","Machining","Controlled CNC setup, first-piece approval, dimensional control and in-process checks.","Production / CNC","Part/heat/batch ID; pre-machining visual inspection; latest drawing/revision; CNC program; fixture/tooling; datum; setup; first-piece machining and approval; M dimensions; tool wear/breakage; defined inspection frequency; deburring; washing/drying; rust prevention where required."],
+["9","Final Inspection / Sample Inspection Report","Controlled dimensional inspection with calibrated instruments and explicit PASS/FAIL routing.","QA / QC","Controlled drawing; DCO transcription in inch/mm; UM/M classification; nominal; tolerance; calibrated instrument and calibration status; actual observation; deviation = Observation − Nominal; PASS/FAIL; remarks; UM failure to casting/root cause; M failure to machining/root cause; inspector signature."],
+["10","Final Testing","Final visual, dimensional and specified mechanical/NDT/customer testing.","QA / QC","Visual final inspection; critical dimensions; tensile, impact, hardness and microstructure tests where required; NDT reports; surface finish; coating/paint thickness where applicable; customer-specific tests."],
+["11","NCR / Root Cause / CAPA","Formal containment, root-cause, corrective action, verification and closure.","Cross-functional","Identify/segregate nonconforming product; NCR number; problem/quantity; containment; 5 Why/Fishbone/process review; responsibility; correction; corrective action; re-inspection/retest; effectiveness verification; formal closure."],
+["12","Documentation / Traceability","Retention of technical, production, inspection and customer documentation.","QA","RFQ/PO; drawing/revision; DFM; pattern/core-box; charge; spectrometer; pouring; heat treatment; casting inspection; NDT; machining; final inspection; mechanical certificates; MTC; COC; traceability to heat/batch/part."],
+["13","Final QA Release / Packing / Dispatch","Final review, documentation completion, packing verification and authorized dispatch.","Stores + QA","Inspection/test review; NCR status; customer documentation; COC; MTC; inspection report; packing method; quantity; part labels; protection of casting/machined surfaces; rust prevention where required; QA/authorized dispatch approval; dispatch record and traceability."]
+];
+
+const matrix = [
+["RFQ / Drawing / DFM","Design / Engineering","Engineering approval","DFM Review"],
+["Pattern / Core Box","Pattern Shop / Foundry","Tooling approval","Tooling Inspection"],
+["Mould / Core","Foundry","Production/QC check","Mould/Core Record"],
+["Melting / Chemistry","Metallurgy / Foundry","Metallurgist/QC","Charge + Spectrometer"],
+["Pouring","Foundry","Foundry/QC","Pouring Log"],
+["Heat Treatment","Heat Treatment / QC","QC approval","HT Cycle Record"],
+["Casting Inspection","QC / QA","Inspector approval","Casting Inspection"],
+["Machining","Production / CNC","Production/QC","Setup Sheet"],
+["In-process Inspection","QC","QC approval","In-process Record"],
+["Final Inspection","QA/QC","QA release","Inspection Report"],
+["NDT / Testing","QC / Approved Lab","Authorized approval","NDT/Test Report"],
+["Documentation","QA","QA review","COC/MTC/IR"],
+["Packing / Dispatch","Stores + QA","QA release","Dispatch Record"]
+];
+
+const logic = [
+["UM dimension","Casting / Pattern / Metallurgy","Pattern, mould, shrinkage, pouring, distortion","Adjust in Casting → Reinspect"],
+["M dimension","Machining","CNC setup, fixture, datum, tool wear, program","Adjust in Machining → Reinspect"],
+["Chemistry","Metallurgy","Charge mix, furnace/treatment","Hold heat → investigate → retest/disposition"],
+["NDT defect","Foundry / Metallurgy / QA","Porosity, crack, inclusion, shrinkage","Segregate → NCR → disposition"]
+];
+
+const grid = document.getElementById('stageGrid');
+stages.forEach((s,i)=>{
+  const div=document.createElement('div'); div.className='card process-card reveal';
+  div.innerHTML=`<div class="num">${s[0]}</div><h3>${s[1]}</h3><p>${s[2]}</p><span class="tag">${s[3]}</span><br><button onclick="openModal(${i})">View complete checkpoints →</button>`;
+  grid.appendChild(div);
+});
+const mb=document.getElementById('matrixBody');
+matrix.forEach(r=>{mb.innerHTML+=`<tr>${r.map(x=>`<td>${x}</td>`).join('')}</tr>`});
+const lg=document.getElementById('logicGrid');
+logic.forEach(r=>{lg.innerHTML+=`<div class="box"><div class="fail">${r[0]}</div><div class="invest">First investigation: ${r[1]}</div><div class="cause"><b>Typical causes:</b> ${r[2]}</div><div class="disp">${r[3]}</div></div>`});
+
+function openModal(i){
+  const s=stages[i]; document.getElementById('modalTitle').textContent=`${s[0]}. ${s[1]}`;
+  document.getElementById('modalSub').textContent=`Primary department: ${s[3]}`;
+  const items=s[4].split(';').map(x=>x.trim()).filter(Boolean);
+  document.getElementById('modalBody').innerHTML=`<p style="color:var(--muted)">${s[2]}</p>`+
+    items.map(x=>`<div class="check"><i>✓</i><span>${x}</span></div>`).join('');
+  document.getElementById('modal').classList.add('show');
+}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.08});
+document.querySelectorAll('.reveal').forEach(e=>obs.observe(e));
+</script>
+</body>
+</html>
