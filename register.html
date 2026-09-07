@@ -5,8 +5,7 @@
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>CEW - Register Order</title>
 
@@ -60,10 +59,6 @@ h2 {
 .field {
     display: flex;
     flex-direction: column;
-}
-
-.field.full {
-    grid-column: 1 / -1;
 }
 
 label {
@@ -133,10 +128,6 @@ button:disabled {
         grid-template-columns: 1fr;
     }
 
-    .field.full {
-        grid-column: auto;
-    }
-
 }
 
 </style>
@@ -166,7 +157,6 @@ the system will automatically create the production process tasks.
 
 
 <form id="orderForm">
-
 
 <div class="grid">
 
@@ -359,15 +349,18 @@ class="message"
 
 <script>
 
-/*
-==================================================
-PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
-==================================================
-*/
+
+/* ==================================================
+   GOOGLE APPS SCRIPT WEB APP URL
+   ================================================== */
 
 const API_URL =
-"PASTE_YOUR_GOOGLE_APPS_SCRIPT_URL_HERE";
+"https://script.google.com/macros/s/AKfycbxRQjBnHoZwqs-iSoO-dpLdznKBc6nQMgQT9tjzSc_XU0_d9x4gU4qbs56JluXkAzYJ5A/exec";
 
+
+/* ==================================================
+   ELEMENTS
+   ================================================== */
 
 const form =
 document.getElementById("orderForm");
@@ -379,11 +372,32 @@ const submitBtn =
 document.getElementById("submitBtn");
 
 
+/* ==================================================
+   SHOW MESSAGE
+   ================================================== */
+
+function showMessage(text, type) {
+
+    message.style.display = "block";
+
+    message.className =
+        "message " + type;
+
+    message.innerHTML = text;
+
+}
+
+
+/* ==================================================
+   REGISTER ORDER
+   ================================================== */
+
 form.addEventListener(
 "submit",
 async function(e) {
 
     e.preventDefault();
+
 
     submitBtn.disabled = true;
 
@@ -396,81 +410,121 @@ async function(e) {
         action: "registerOrder",
 
         customer:
-            document.getElementById("customer").value.trim(),
+            document.getElementById("customer")
+            .value.trim(),
 
         product:
-            document.getElementById("product").value.trim(),
+            document.getElementById("product")
+            .value.trim(),
 
         poRfQ:
-            document.getElementById("poRfQ").value.trim(),
+            document.getElementById("poRfQ")
+            .value.trim(),
 
         drawingNo:
-            document.getElementById("drawingNo").value.trim(),
+            document.getElementById("drawingNo")
+            .value.trim(),
 
         drawingRev:
-            document.getElementById("drawingRev").value.trim(),
+            document.getElementById("drawingRev")
+            .value.trim(),
 
         batchHeatNo:
-            document.getElementById("batchHeatNo").value.trim(),
+            document.getElementById("batchHeatNo")
+            .value.trim(),
 
         quantity:
-            document.getElementById("quantity").value,
+            document.getElementById("quantity")
+            .value,
 
         material:
-            document.getElementById("material").value.trim(),
+            document.getElementById("material")
+            .value.trim(),
 
         requiredDate:
-            document.getElementById("requiredDate").value,
+            document.getElementById("requiredDate")
+            .value,
 
         createdBy:
-            document.getElementById("createdBy").value.trim()
+            document.getElementById("createdBy")
+            .value.trim()
 
     };
 
 
     try {
 
-        await fetch(
-            API_URL,
-            {
-                method: "POST",
-                mode: "no-cors",
-                headers: {
-                    "Content-Type":
-                        "text/plain"
-                },
-                body: JSON.stringify(data)
-            }
-        );
+
+        const response =
+            await fetch(
+                API_URL,
+                {
+                    method: "POST",
+                    body: JSON.stringify(data)
+                }
+            );
 
 
-        message.style.display =
-            "block";
-
-        message.className =
-            "message success";
-
-        message.innerHTML =
-            "✅ Order submitted successfully.<br>" +
-            "Order ID will be generated automatically.";
+        const result =
+            await response.json();
 
 
-        form.reset();
+        if (result.success) {
+
+
+            showMessage(
+
+                "✅ <strong>Order Registered Successfully</strong><br><br>" +
+
+                "Order ID: <strong>" +
+                result.orderId +
+                "</strong><br><br>" +
+
+                "13 process tasks have been created automatically.",
+
+                "success"
+
+            );
+
+
+            form.reset();
+
+
+        }
+
+        else {
+
+
+            showMessage(
+
+                "❌ " +
+                (result.message ||
+                "Unable to register order."),
+
+                "error"
+
+            );
+
+        }
 
 
     }
 
     catch(error) {
 
-        message.style.display =
-            "block";
 
-        message.className =
-            "message error";
+        showMessage(
 
-        message.innerHTML =
-            "❌ Error: " +
-            error.message;
+            "❌ Connection Error.<br><br>" +
+
+            "Please check the Google Apps Script Web App URL.",
+
+            "error"
+
+        );
+
+
+        console.error(error);
 
     }
 
@@ -479,6 +533,7 @@ async function(e) {
 
     submitBtn.innerText =
         "Register Order";
+
 
 });
 
