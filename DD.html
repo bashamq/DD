@@ -141,14 +141,87 @@ footer{background:#081a2c;color:#b8c9d5;padding:30px 24px;text-align:center;font
 
 /* Premium Overview Background Image — 7-image cinematic slideshow */
 .hero{position:relative;background:#071b2b;isolation:isolate}
-.hero-bg{position:absolute;inset:-3%;z-index:0;background-position:center;background-size:cover;background-repeat:no-repeat;transform:scale(1.02);filter:saturate(.92) contrast(1.04);opacity:0;transition:opacity .65s ease;animation:heroZoom 2s cubic-bezier(.2,.7,.2,1) forwards}
+.hero-bg{position:absolute;inset:-3%;z-index:0;background-position:center;background-size:cover;background-repeat:no-repeat;transform:scale(1.02);filter:saturate(.92) contrast(1.04);opacity:0;transition:opacity .65s ease;animation:heroZoom 4.5s cubic-bezier(.2,.7,.2,1) forwards}
 .hero-bg.active{opacity:1}
 .hero-bg:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,18,31,.96) 0%,rgba(7,30,49,.86) 42%,rgba(8,52,72,.58) 72%,rgba(8,24,38,.76) 100%)}
 @keyframes heroZoom{0%{transform:scale(1.02)}100%{transform:scale(1.12)}}
 .hero-inner{position:relative;z-index:2}.hero-photo-note{position:absolute;right:28px;bottom:22px;z-index:4;padding:7px 10px;border-radius:8px;background:rgba(0,0,0,.25);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.62);font-size:9px;letter-spacing:.5px}.hero-slide-progress{position:absolute;left:24px;right:24px;bottom:18px;z-index:4;height:3px;border-radius:99px;background:rgba(255,255,255,.16);overflow:hidden}.hero-slide-progress span{display:block;height:100%;width:0;background:#73d9ed;box-shadow:0 0 12px rgba(115,217,237,.7)}
 /* Background slideshow rules are defined above. */
 </style>
-</head>
+
+<style id="professional-overrides">
+/* Professional Overview background: slow cinematic zoom + smooth cross-fade */
+.hero {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: -6%;
+  z-index: -3;
+  background: url('overview-bg-1.jpg') center center / cover no-repeat;
+  animation: heroCinematicZoom 4.5s ease-in-out infinite alternate;
+  transform-origin: center center;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(3,12,28,.88) 0%, rgba(3,12,28,.68) 46%, rgba(3,12,28,.42) 100%),
+    linear-gradient(180deg, rgba(2,10,24,.52), rgba(2,10,24,.30) 48%, rgba(2,10,24,.72));
+  pointer-events: none;
+}
+@keyframes heroCinematicZoom {
+  from { transform: scale(1.00); }
+  to   { transform: scale(1.08); }
+}
+
+/* Cleaner executive process-flow presentation */
+.process-flow {
+  position: relative;
+  max-width: 1180px;
+  margin: 0 auto;
+}
+.process-flow .flow-card,
+.process-flow .process-card {
+  border-radius: 18px !important;
+  border: 1px solid rgba(105,205,255,.20) !important;
+  box-shadow: 0 14px 34px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.06) !important;
+  transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+}
+.process-flow .flow-card:hover,
+.process-flow .process-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(105,205,255,.55) !important;
+  box-shadow: 0 20px 42px rgba(0,0,0,.30), 0 0 0 1px rgba(105,205,255,.08) !important;
+}
+.process-flow .flow-number,
+.process-flow .stage-number {
+  box-shadow: 0 0 0 5px rgba(54,190,255,.08), 0 6px 18px rgba(0,0,0,.25);
+  font-weight: 800;
+}
+.process-flow .flow-line,
+.process-flow .connector {
+  opacity: .72;
+}
+@media (max-width: 800px) {
+  .process-flow { padding: 0 10px; }
+}
+</style>
+
+<style id="cew-process-cards">
+.cew-flow-board{position:relative;max-width:1180px;margin:28px auto 0;padding:8px 0}.cew-flow-spine{position:absolute;left:50%;top:10px;bottom:10px;width:3px;transform:translateX(-50%);background:linear-gradient(#4fd5ff,#236b9b,#4fd5ff);box-shadow:0 0 18px #4fd5ff44}
+.cew-flow-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px 90px;position:relative}.cew-process-card{position:relative;min-height:185px;padding:18px 20px;border:1px solid #66d7ff30;border-radius:18px;background:linear-gradient(145deg,#102b48ee,#07182beF);box-shadow:0 12px 30px #0005;transition:.25s}.cew-process-card:hover{transform:translateY(-5px);border-color:#66d7ff88;box-shadow:0 20px 40px #0007}
+.cew-process-card:after{content:"";position:absolute;top:50%;width:90px;height:2px;background:#54d6ff66}.cew-process-card:nth-child(odd):after{right:-90px}.cew-process-card:nth-child(even):after{left:-90px}
+.cew-process-card:before{content:"";position:absolute;top:calc(50% - 6px);width:12px;height:12px;border:2px solid #61d9ff;border-radius:50%;background:#071426;box-shadow:0 0 0 5px #61d9ff18}.cew-process-card:nth-child(odd):before{right:-97px}.cew-process-card:nth-child(even):before{left:-97px}
+.cew-card-top{display:flex;justify-content:space-between;gap:10px;margin-bottom:9px}.cew-card-no{color:#67dcff;font-weight:900;letter-spacing:.14em}.cew-card-owner{text-transform:uppercase;font-size:9px;color:#9bb1c4;text-align:right}.cew-process-card h3{margin:0 0 5px;color:#fff;font-size:18px}.cew-card-sub{color:#75dfff;font-size:11px;font-weight:800;margin-bottom:9px}.cew-process-card p{margin:0;color:#d0dbe5;font-size:12px;line-height:1.55}.cew-card-record{border-top:1px solid #ffffff12;margin-top:12px;padding-top:9px;color:#e9f6ff;font-size:11px;font-weight:800}.cew-card-record span{display:block;color:#6f899e;font-size:8px;letter-spacing:.13em;margin-bottom:3px}
+.cew-flow-footer{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:1180px;margin:22px auto}.cew-flow-footer>div{padding:14px 17px;border-radius:14px;background:#0b2036cc;border:1px solid #66d7ff20}.cew-flow-footer strong{display:block;color:#68dbff;font-size:9px;letter-spacing:.14em;margin-bottom:5px}.cew-flow-footer span{font-size:12px;color:#d2e0eb}
+@media(max-width:850px){.cew-flow-spine{left:15px;transform:none}.cew-flow-grid{grid-template-columns:1fr;padding-left:38px}.cew-process-card:after{left:-38px!important;right:auto!important;width:38px}.cew-process-card:before{left:-44px!important;right:auto!important}.cew-flow-footer{grid-template-columns:1fr}}
+</style></head>
 <body>
 
 <header class="topbar">
@@ -189,17 +262,75 @@ footer{background:#081a2c;color:#b8c9d5;padding:30px 24px;text-align:center;font
 
 <main>
 <section class="container reveal" id="flow">
-  <div class="section-head">
-    <div><h2>End-to-End Process Flow</h2><p>The controlled sequence defined in the master checklist, from customer requirement through QA release and dispatch.</p></div>
-  </div>
-  <div class="process-map"><div class="flow-intro"><div><span class="flow-label">● Controlled Production Journey</span><div style="font-size:18px;font-weight:900;color:#102a40;margin-top:8px">One continuous chain of control</div></div><div class="flow-note">Each stage creates the evidence required<br>to move safely to the next stage.</div></div><div class="flow-grid"><div class="flow-item left"><span class="flow-num">01</span><span class="flow-title">Customer RFQ</span><span class="flow-desc">Requirement intake</span></div><div class="flow-mid"><div class="node">01</div></div><div class="flow-item right"><span class="flow-num">02</span><span class="flow-title">Design & Development</span><span class="flow-desc">DFM & engineering release</span></div><div class="flow-item left"><span class="flow-num">03</span><span class="flow-title">Tooling</span><span class="flow-desc">Pattern / core box</span></div><div class="flow-mid"><div class="node">03</div></div><div class="flow-item right"><span class="flow-num">04</span><span class="flow-title">Simulation</span><span class="flow-desc">Filling / solidification</span></div><div class="flow-item left"><span class="flow-num">05</span><span class="flow-title">Pattern / Core</span><span class="flow-desc">Tool preparation</span></div><div class="flow-mid"><div class="node">05</div></div><div class="flow-item right"><span class="flow-num">06</span><span class="flow-title">Mould</span><span class="flow-desc">Mould & core making</span></div><div class="flow-item left"><span class="flow-num">07</span><span class="flow-title">Metallurgy</span><span class="flow-desc">Melting & chemistry control</span></div><div class="flow-mid"><div class="node">07</div></div><div class="flow-item right"><span class="flow-num">08</span><span class="flow-title">Casting / Pouring</span><span class="flow-desc">Heat, ladle & mould traceability</span></div><div class="flow-item left"><span class="flow-num">09</span><span class="flow-title">Shakeout / Fettling</span><span class="flow-desc">Cleaning & segregation</span></div><div class="flow-mid"><div class="node">09</div></div><div class="flow-item right"><span class="flow-num">10</span><span class="flow-title">Heat Treatment</span><span class="flow-desc">Controlled furnace cycle</span></div><div class="flow-item left"><span class="flow-num">11</span><span class="flow-title">Casting Inspection / NDT</span><span class="flow-desc">Defect, dimension & NDT verification</span></div><div class="flow-mid"><div class="node">11</div></div><div class="flow-item right"><span class="flow-num">12</span><span class="flow-title">Machining</span><span class="flow-desc">CNC setup & in-process control</span></div><div class="flow-item left"><span class="flow-num">13</span><span class="flow-title">Final Inspection</span><span class="flow-desc">Measurement & PASS / FAIL</span></div><div class="flow-mid"><div class="node">13</div></div><div class="flow-item right"><span class="flow-num">14</span><span class="flow-title">Documentation</span><span class="flow-desc">Records, COC / MTC / reports</span></div><div class="flow-item left"><span class="flow-num">15</span><span class="flow-title">QA Release</span><span class="flow-desc">Final review & authorization</span></div><div class="flow-mid"><div class="node">15</div></div><div class="flow-item right"><span class="flow-num">16</span><span class="flow-title">Packing & Dispatch</span><span class="flow-desc">Verified quantity, protection & authorized dispatch</span></div></div><div class="flow-summary"><div><strong>CONTROL PRINCIPLE</strong> &nbsp; Requirement → Process Control → Verification → Evidence → Release</div><div class="mini">TRACEABILITY THROUGH EVERY STAGE</div></div></div>
-  </div>
-  <div class="kpis">
-    <div class="card kpi"><div class="num">13</div><div class="lbl">Controlled Checklist Sections</div></div>
-    <div class="card kpi"><div class="num">16</div><div class="lbl">Major Process Flow Points</div></div>
-    <div class="card kpi"><div class="num">4</div><div class="lbl">Final Release Sign-offs</div></div>
-    <div class="card kpi"><div class="num">100%</div><div class="lbl">Traceability Focus</div></div>
-  </div>
+<div class="section-head"><div><h2>End-to-End Process Flow</h2>
+<p>Each stage is a controlled process card with its purpose, key controls, ownership and evidence—connected in one continuous production journey.</p></div></div>
+<div class="cew-flow-board"><div class="cew-flow-spine"></div><div class="cew-flow-grid"><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">01</span><span class="cew-card-owner">Design / Engineering</span></div>
+      <h3>Customer RFQ</h3><div class="cew-card-sub">Requirement Intake</div><p>RFQ, drawing, 3D CAD, material specification, quantity and application received.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Requirement verified</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">02</span><span class="cew-card-owner">Design / Engineering</span></div>
+      <h3>Design & Development</h3><div class="cew-card-sub">DFM & Engineering Release</div><p>Latest drawing revision, material grade, DFM, machining allowance, shrinkage, gating/riser concept, core requirements and critical dimensions reviewed.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>DFM Review</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">03</span><span class="cew-card-owner">Pattern Shop / Foundry</span></div>
+      <h3>Tooling</h3><div class="cew-card-sub">Pattern / Core Box</div><p>Pattern/core-box drawing, material, construction, allowances, dimensions, parting line, draft, core prints and revision marking verified.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Tooling Inspection</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">04</span><span class="cew-card-owner">Design / Engineering</span></div>
+      <h3>Simulation</h3><div class="cew-card-sub">Filling / Solidification</div><p>Casting simulation, filling, solidification and hot-spot review completed where required.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Simulation Review</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">05</span><span class="cew-card-owner">Pattern Shop / Foundry</span></div>
+      <h3>Pattern / Core</h3><div class="cew-card-sub">Tool Preparation</div><p>Pattern/core identification, revision control and dimensional readiness confirmed before mould preparation.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Pattern / Core Check</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">06</span><span class="cew-card-owner">Foundry</span></div>
+      <h3>Mould</h3><div class="cew-card-sub">Mould & Core Making</div><p>Mould/core preparation, assembly, condition and identification controlled before metal is introduced.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Mould / Core Record</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">07</span><span class="cew-card-owner">Metallurgy / Foundry</span></div>
+      <h3>Metallurgy</h3><div class="cew-card-sub">Melting & Chemistry Control</div><p>Charge mix, furnace/treatment condition and chemistry controlled; heat/batch traceability maintained.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Charge + Spectrometer</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">08</span><span class="cew-card-owner">Foundry</span></div>
+      <h3>Casting / Pouring</h3><div class="cew-card-sub">Heat, Ladle & Mould Traceability</div><p>Pouring temperature, time and sequence controlled; heat/ladle/mould traceability maintained.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Pouring Log</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">09</span><span class="cew-card-owner">Foundry</span></div>
+      <h3>Shakeout / Fettling</h3><div class="cew-card-sub">Cleaning & Segregation</div><p>Shakeout timing controlled; sand, gates, risers and fins/flash removed; fettling completed without damaging functional surfaces.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Fettling / Batch Record</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">10</span><span class="cew-card-owner">Heat Treatment / QC</span></div>
+      <h3>Heat Treatment</h3><div class="cew-card-sub">Controlled Furnace Cycle</div><p>Cycle/program, loading, temperature, soak time, heating/cooling, quench condition and furnace record verified.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>HT Cycle Record</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">11</span><span class="cew-card-owner">QC / QA</span></div>
+      <h3>Casting Inspection / NDT</h3><div class="cew-card-sub">Defect, Dimension & NDT Verification</div><p>Visual defects, critical UM dimensions, functional features and hardness checked; MPI/UT/RT/DPT applied as required.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Casting Inspection / NDT Report</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">12</span><span class="cew-card-owner">Production / CNC + QC</span></div>
+      <h3>Machining</h3><div class="cew-card-sub">CNC Setup & In-Process Control</div><p>Drawing/revision, CNC program, fixture, tooling and datum verified; first-piece approval, M dimensions and tool wear controlled.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Setup / In-process Record</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">13</span><span class="cew-card-owner">QA / QC</span></div>
+      <h3>Final Inspection</h3><div class="cew-card-sub">Measurement & PASS / FAIL</div><p>Nominal, tolerance, calibrated instrument, actual observation, deviation and PASS/FAIL status recorded; UM/M failures routed correctly.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Inspection Report</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">14</span><span class="cew-card-owner">QA</span></div>
+      <h3>Documentation</h3><div class="cew-card-sub">Records & Traceability</div><p>RFQ/PO, drawing, DFM, tooling, charge, chemistry, pouring, HT, inspection, NDT, machining and test records retained.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>COC / MTC / IR</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">15</span><span class="cew-card-owner">QA</span></div>
+      <h3>QA Release</h3><div class="cew-card-sub">Final Review & Authorization</div><p>Inspection/test results reviewed, NCRs closed or dispositioned, customer documentation complete and release authorized.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>QA Release</div>
+    </article><article class="cew-process-card">
+      <div class="cew-card-top"><span class="cew-card-no">16</span><span class="cew-card-owner">Stores + QA</span></div>
+      <h3>Packing & Dispatch</h3><div class="cew-card-sub">Verified Quantity & Authorized Dispatch</div><p>Packing method and quantity verified; labels, protection and rust prevention checked; authorized dispatch approval retained.</p>
+      <div class="cew-card-record"><span>CONTROL / EVIDENCE</span>Dispatch Record</div>
+    </article></div></div>
+<div class="cew-flow-footer"><div><strong>CONTROL PRINCIPLE</strong><span>Requirement → Process Control → Verification → Evidence → Release</span></div>
+<div><strong>TRACEABILITY</strong><span>Heat / Batch / Part identification maintained through every stage</span></div></div>
 </section>
 
 <section class="container reveal" id="stages">
