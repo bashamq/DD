@@ -45,6 +45,96 @@ footer{background:#081a2c;color:#b8c9d5;padding:30px 24px;text-align:center;font
 @media(max-width:1050px){.hero-inner{grid-template-columns:1fr}.hero-graphic{min-height:280px}.grid{grid-template-columns:repeat(2,1fr)}.logic{grid-template-columns:repeat(2,1fr)}.signoff{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:720px){.nav{display:none}.container{padding:38px 16px}.hero-inner{padding:55px 16px}.hero h1{font-size:42px}.kpis,.grid,.two,.logic,.signoff{grid-template-columns:1fr}.orb{width:240px;height:240px}.flow{min-width:1000px}}
 @media print{.topbar,.cta,button{display:none!important}.hero{min-height:auto}.container{padding:25px}.card{box-shadow:none}.modal{display:none!important}}
+
+/* Board-level Responsibility Matrix */
+.matrix-shell{
+  position:relative;
+  overflow:hidden;
+  border-radius:22px;
+  background:linear-gradient(180deg,#ffffff 0%,#f8fbfd 100%);
+  border:1px solid #d7e2ea;
+  box-shadow:0 18px 55px rgba(11,31,51,.10);
+}
+.matrix-top{
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+  align-items:center;
+  padding:22px 24px;
+  background:linear-gradient(135deg,#0b1f33,#12466b);
+  color:#fff;
+}
+.matrix-top h3{margin:0;font-size:20px;letter-spacing:-.3px}
+.matrix-top p{margin:5px 0 0;color:#c9dbe7;font-size:12px}
+.matrix-key{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.matrix-key span{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:7px 10px;border:1px solid rgba(255,255,255,.16);
+  background:rgba(255,255,255,.07);border-radius:999px;font-size:10px;font-weight:800;
+}
+.matrix-key i{width:7px;height:7px;border-radius:50%;background:#71d9ea;display:inline-block}
+.matrix-grid{padding:16px}
+.matrix-row{
+  display:grid;
+  grid-template-columns:1.05fr 1.2fr 1.05fr .95fr;
+  gap:10px;
+  align-items:stretch;
+  margin-bottom:9px;
+}
+.matrix-row:last-child{margin-bottom:0}
+.matrix-cell{
+  min-height:62px;
+  padding:12px 14px;
+  border:1px solid #dce6ed;
+  background:#fff;
+  border-radius:12px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  font-size:12px;
+}
+.matrix-cell.label{font-weight:900;color:#102a40;background:#f2f7fa}
+.matrix-cell .cap{
+  font-size:9px;text-transform:uppercase;letter-spacing:.65px;
+  color:#81909d;font-weight:900;margin-bottom:4px;
+}
+.dept-badge{
+  display:inline-flex;align-items:center;width:max-content;
+  max-width:100%;padding:5px 8px;border-radius:7px;
+  background:#e9f5f8;color:#12647c;font-weight:900;font-size:10px;
+}
+.approval{font-weight:800;color:#26485e}
+.record{
+  font-weight:800;color:#0d5e78;
+  position:relative;padding-left:18px;
+}
+.record:before{
+  content:"";position:absolute;left:0;top:50%;width:7px;height:7px;
+  transform:translateY(-50%);border-radius:50%;background:#22a6bf;
+}
+.matrix-row:hover .matrix-cell{border-color:#bfd5e2;transform:translateY(-1px)}
+.matrix-row .matrix-cell{transition:.18s ease}
+.matrix-head{
+  display:grid;
+  grid-template-columns:1.05fr 1.2fr 1.05fr .95fr;
+  gap:10px;padding:0 16px 7px;
+}
+.matrix-head div{
+  padding:0 14px;color:#6e7f8d;font-size:9px;font-weight:900;
+  letter-spacing:.8px;text-transform:uppercase;
+}
+.matrix-foot{
+  margin:0 16px 16px;padding:12px 14px;border-radius:11px;
+  background:#eef7fa;color:#41606f;font-size:11px;
+  border-left:3px solid #1ea7c9;
+}
+@media(max-width:900px){
+  .matrix-top{grid-template-columns:1fr}
+  .matrix-key{justify-content:flex-start}
+  .matrix-grid{overflow:auto}
+  .matrix-row,.matrix-head{grid-template-columns:220px 230px 210px 180px;min-width:860px}
+}
+
 </style>
 </head>
 <body>
@@ -122,9 +212,35 @@ footer{background:#081a2c;color:#b8c9d5;padding:30px 24px;text-align:center;font
 </section>
 
 <section class="container reveal" id="matrix">
-  <div class="section-head"><div><h2>Responsibility Matrix</h2><p>Primary department, approval responsibility and key record for each major process.</p></div></div>
-  <div class="card table-wrap">
-    <table class="table"><thead><tr><th>Process</th><th>Primary Department</th><th>Check / Approval</th><th>Key Record</th></tr></thead><tbody id="matrixBody"></tbody></table>
+  <div class="section-head">
+    <div>
+      <h2>Responsibility Matrix</h2>
+      <p>A clear ownership model showing <b>who owns the process, who approves it, and what evidence must exist</b> before the next stage.</p>
+    </div>
+  </div>
+
+  <div class="matrix-shell">
+    <div class="matrix-top">
+      <div>
+        <h3>Process Ownership & Control</h3>
+        <p>Cross-functional accountability across Engineering, Foundry, Metallurgy, CNC, QC, QA, approved laboratories and Stores.</p>
+      </div>
+      <div class="matrix-key">
+        <span><i></i> Primary Department</span>
+        <span><i></i> Approval Gate</span>
+        <span><i></i> Key Record</span>
+      </div>
+    </div>
+
+    <div class="matrix-head">
+      <div>Process</div><div>Primary Department</div><div>Check / Approval</div><div>Key Record</div>
+    </div>
+    <div class="matrix-grid" id="matrixBody"></div>
+
+    <div class="matrix-foot">
+      <b>Management view:</b> No major process is treated as complete on production activity alone;
+      the relevant approval and supporting record provide the evidence of control and traceability.
+    </div>
   </div>
 </section>
 
@@ -227,7 +343,23 @@ stages.forEach((s,i)=>{
   grid.appendChild(div);
 });
 const mb=document.getElementById('matrixBody');
-matrix.forEach(r=>{mb.innerHTML+=`<tr>${r.map(x=>`<td>${x}</td>`).join('')}</tr>`});
+matrix.forEach((r,i)=>{
+  mb.innerHTML += `
+    <div class="matrix-row">
+      <div class="matrix-cell label">
+        <span class="cap">Process ${String(i+1).padStart(2,'0')}</span>${r[0]}
+      </div>
+      <div class="matrix-cell">
+        <span class="cap">Owner</span><span class="dept-badge">${r[1]}</span>
+      </div>
+      <div class="matrix-cell">
+        <span class="cap">Gate</span><span class="approval">${r[2]}</span>
+      </div>
+      <div class="matrix-cell">
+        <span class="cap">Evidence</span><span class="record">${r[3]}</span>
+      </div>
+    </div>`;
+});
 const lg=document.getElementById('logicGrid');
 logic.forEach(r=>{lg.innerHTML+=`<div class="box"><div class="fail">${r[0]}</div><div class="invest">First investigation: ${r[1]}</div><div class="cause"><b>Typical causes:</b> ${r[2]}</div><div class="disp">${r[3]}</div></div>`});
 
