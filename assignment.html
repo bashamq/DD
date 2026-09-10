@@ -136,10 +136,9 @@ f.onsubmit=async e=>{
    const fd=new FormData(f), tasks=fd.getAll("Tasks");
    if(!tasks.length) throw new Error("Please select at least one task.");
    const common={PartID:fd.get("PartID"),ProcessSection:fd.get("ProcessSection"),Department:fd.get("Department"),AssignedTo:fd.get("AssignedTo"),StartDate:fd.get("StartDate"),DueDate:fd.get("DueDate")};
-   const ids=[];
-   for(const t of tasks){ const r=await api("assignWork",{...common,Task:t}); ids.push(r.assignmentId); }
+   const r=await api("assignWorkMultiple",{...common,Tasks:tasks.join("||")});
    msg.className="msg ok";
-   msg.textContent=tasks.length+" task(s) assigned successfully. Assignment IDs: "+ids.join(", ");
+   msg.textContent=r.count+" task(s) assigned successfully. Assignment IDs: "+r.assignmentIds.join(", ");
    f.reset(); renderTasks();
  }catch(x){msg.className="msg err";msg.textContent=x.message;}
 };
