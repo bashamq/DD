@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chenab Engineering – Part Register</title>
+<script src="config.js"></script>
+<style>
+body{font-family:Arial,sans-serif;background:#f3f5f8;margin:0;color:#172033}.wrap{max-width:1050px;margin:30px auto;padding:20px}.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 8px 30px #00000012}.top{display:flex;justify-content:space-between;align-items:center;gap:20px}h1{margin:0;font-size:25px}.sub{color:#667085;margin:7px 0 25px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}label{font-weight:700;font-size:13px}input,select{width:100%;box-sizing:border-box;padding:11px;border:1px solid #d0d5dd;border-radius:9px;margin-top:6px}button{background:#155eef;color:#fff;border:0;padding:12px 20px;border-radius:9px;font-weight:700;cursor:pointer}.full{grid-column:1/-1}.msg{margin-top:15px;padding:12px;border-radius:9px;display:none}.ok{background:#ecfdf3;color:#027a48}.err{background:#fef3f2;color:#b42318}@media(max-width:700px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+<div class="top"><div><h1>Part / Order Registration</h1><div class="sub">Chenab Engineering – Design & Development Workflow</div></div><a href="index.html">Home</a></div>
+<form id="f"><div class="grid">
+<div><label>Order No *</label><input name="OrderNo" required></div>
+<div><label>Customer</label><input name="Customer"></div>
+<div><label>PO / RFQ</label><input name="PO_RFQ"></div>
+<div><label>Part No *</label><input name="PartNo" required></div>
+<div><label>Part Name *</label><input name="PartName" required></div>
+<div><label>Drawing No *</label><input name="DrawingNo" required></div>
+<div><label>Drawing Revision *</label><input name="DrawingRev" required></div>
+<div><label>Material Grade / Specification *</label><input name="MaterialGrade" required></div>
+<div><label>Quantity *</label><input name="Quantity" type="number" min="1" required></div>
+<div><label>Application</label><input name="Application"></div>
+<div><label>Batch / Heat No.</label><input name="BatchHeatNo"></div>
+<div><label>Priority</label><select name="Priority"><option>Normal</option><option>High</option><option>Urgent</option></select></div>
+<div><label>Target Date</label><input name="TargetDate" type="date"></div>
+<div><label>Created By</label><input name="CreatedBy"></div>
+<div class="full"><button>Register Part</button></div>
+</div></form>
+<div id="msg" class="msg"></div>
+</div></div>
+<script>
+f.onsubmit=async e=>{e.preventDefault();msg.className="msg";msg.style.display="none";
+try{const p=Object.fromEntries(new FormData(f));const r=await api("registerPart",p);msg.className="msg ok";msg.textContent="Registered successfully. Part ID: "+r.partId;msg.style.display="block";f.reset();}
+catch(x){msg.className="msg err";msg.textContent=x.message;msg.style.display="block";}}
+</script>
+</body></html>

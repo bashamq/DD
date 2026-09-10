@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chenab Engineering – Daily Update</title><script src="config.js"></script>
+<style>
+body{font-family:Arial;background:#f3f5f8;margin:0;color:#172033}.wrap{max-width:1050px;margin:30px auto;padding:20px}.card{background:#fff;padding:24px;border-radius:16px;box-shadow:0 8px 30px #0001}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}label{font-weight:700;font-size:13px}input,select,textarea{width:100%;box-sizing:border-box;padding:11px;border:1px solid #d0d5dd;border-radius:9px;margin-top:6px}textarea{min-height:100px}.full{grid-column:1/-1}button{background:#155eef;color:#fff;border:0;padding:12px 20px;border-radius:9px;font-weight:700}.msg{padding:12px;border-radius:9px;margin-top:15px}.ok{background:#ecfdf3;color:#027a48}.err{background:#fef3f2;color:#b42318}.item{padding:13px;border:1px solid #eaecf0;border-radius:10px;margin:8px 0;cursor:pointer}.item:hover{background:#f9fafb}.muted{color:#667085;font-size:13px}
+</style></head>
+<body><div class="wrap"><div class="card">
+<div style="display:flex;justify-content:space-between"><div><h1>Department Daily Update</h1><p class="muted">Select an assigned task and update today's actual progress.</p></div><a href="index.html">Home</a></div>
+<div id="list"></div>
+<form id="f" style="display:none"><input type="hidden" name="AssignmentID" id="aid">
+<div class="grid">
+<div><label>Status *</label><select name="Status"><option>Pending</option><option>In Progress</option><option>Completed</option><option>On Hold</option><option>Blocked</option></select></div>
+<div><label>Progress % *</label><input name="Progress" type="number" min="0" max="100" required></div>
+<div><label>Update Date *</label><input name="UpdateDate" type="date" required></div>
+<div><label>Updated By</label><input name="UpdatedBy"></div>
+<div><label>Evidence / File Link</label><input name="EvidenceLink" placeholder="Google Drive / report link (optional)"></div>
+<div class="full"><label>Remarks</label><textarea name="Remarks"></textarea></div>
+<div class="full"><button>Save Daily Update</button></div>
+</div></form><div id="msg"></div>
+</div></div>
+<script>
+const list=document.getElementById("list"), form=document.getElementById("f"), aid=document.getElementById("aid"), msg=document.getElementById("msg");
+function today(){return new Date().toISOString().slice(0,10)}
+(async()=>{
+try{
+ const r=await api("listAssignments");
+ if(!r.assignments.length){list.innerHTML="<p class='muted'>No assignments found.</p>";return;}
+ list.innerHTML="<h3>Assigned Work</h3>"+r.assignments.slice().reverse().map(x=>`
+ <div class="item" onclick='selectTask(${JSON.stringify(x)})'>
+ <b>${esc(x.AssignmentID)} — ${esc(x.ProcessSection)}</b><br>
+ <span>${esc(x.Task)}</span><br>
+ <span class="muted">${esc(x.Department)} | Due: ${esc(x.DueDate)} | ${esc(x.Status)} | ${esc(x.Progress)}%</span>
+ </div>`).join("");
+}catch(e){list.innerHTML="<p class='muted'>"+esc(e.message)+"</p>";}
+})();
+function selectTask(x){form.style.display="block";aid.value=x.AssignmentID;form.Status.value=x.Status||"Pending";form.Progress.value=x.Progress||0;form.UpdateDate.value=today();form.scrollIntoView({behavior:"smooth"});}
+form.onsubmit=async e=>{e.preventDefault();msg.className="msg";msg.textContent="Saving...";try{await api("updateWork",Object.fromEntries(new FormData(form)));msg.className="msg ok";msg.textContent="Daily update saved successfully.";setTimeout(()=>location.reload(),800);}catch(x){msg.className="msg err";msg.textContent=x.message;}};
+</script></body></html>

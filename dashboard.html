@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chenab Engineering – Dashboard</title><script src="config.js"></script>
+<style>
+body{font-family:Arial;background:#f3f5f8;margin:0;color:#172033}.wrap{max-width:1250px;margin:25px auto;padding:20px}.head{display:flex;justify-content:space-between;align-items:center}.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin:20px 0}.card,.panel{background:#fff;border-radius:14px;padding:18px;box-shadow:0 5px 20px #0000000d}.num{font-size:28px;font-weight:800;margin-top:7px}.muted{color:#667085;font-size:13px}.bar{height:10px;background:#eaecf0;border-radius:20px;overflow:hidden}.fill{height:100%;background:#155eef}.grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.row{margin:13px 0}.table{width:100%;border-collapse:collapse;font-size:13px}.table th,.table td{padding:10px;border-bottom:1px solid #eaecf0;text-align:left}.pill{padding:4px 8px;border-radius:20px;background:#eef4ff;color:#155eef}@media(max-width:850px){.cards{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}}
+</style></head>
+<body><div class="wrap">
+<div class="head"><div><h1>Engineering Work Dashboard</h1><div class="muted">Design → Tooling → Foundry → Metallurgy → Machining → Inspection → QA → Dispatch</div></div><a href="index.html">Home</a></div>
+<div id="cards" class="cards"></div>
+<div class="grid"><div class="panel"><h2>Department Progress</h2><div id="dept"></div></div><div class="panel"><h2>Part / Order Progress</h2><div id="parts"></div></div></div>
+<div class="panel" style="margin-top:18px"><h2>Recent Daily Updates</h2><div style="overflow:auto"><table class="table"><thead><tr><th>Date</th><th>Order</th><th>Department</th><th>Status</th><th>Progress</th><th>Remarks</th></tr></thead><tbody id="updates"></tbody></table></div></div>
+</div>
+<script>
+(async()=>{
+try{
+ const r=await api("dashboard"),s=r.summary;
+ cards.innerHTML=[
+ ["Registered Parts",s.totalParts],["Total Tasks",s.totalAssignments],
+ ["Completed",s.completed],["In Progress",s.inProgress],["Overall Progress",s.avgProgress+"%"]
+ ].map(x=>`<div class="card"><div class="muted">${x[0]}</div><div class="num">${x[1]}</div></div>`).join("");
+
+ dept.innerHTML=r.departments.length?r.departments.map(d=>`
+ <div class="row"><b>${esc(d.department)}</b><span style="float:right">${d.progress}%</span>
+ <div class="bar"><div class="fill" style="width:${d.progress}%"></div></div>
+ <div class="muted">${d.completed}/${d.total} tasks completed</div></div>`).join(""):"<p class='muted'>No assignments yet.</p>";
+
+ parts.innerHTML=r.parts.length?r.parts.slice().reverse().map(p=>`
+ <div class="row"><b>${esc(p.OrderNo)} | ${esc(p.PartNo)}</b> — ${esc(p.PartName)}
+ <span style="float:right">${p.Progress}%</span>
+ <div class="bar"><div class="fill" style="width:${p.Progress}%"></div></div>
+ <div class="muted">${esc(p.Customer)} | ${p.Tasks} tasks</div></div>`).join(""):"<p class='muted'>No parts registered.</p>";
+
+ updates.innerHTML=r.recentUpdates.length?r.recentUpdates.map(u=>`<tr><td>${esc(u.UpdateDate)}</td><td>${esc(u.OrderNo)}</td><td>${esc(u.Department)}</td><td><span class="pill">${esc(u.Status)}</span></td><td>${esc(u.Progress)}%</td><td>${esc(u.Remarks)}</td></tr>`).join(""):"<tr><td colspan='6'>No updates yet.</td></tr>";
+}catch(e){document.body.innerHTML+="<div style='padding:20px;color:#b42318'>"+esc(e.message)+"</div>";}
+})();
+</script></body></html>
