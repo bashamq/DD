@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Chenab Engineering – Part Register</title>
-<script src="config.js"></script>
+
 <style>
 body{font-family:Arial,sans-serif;background:#f3f5f8;margin:0;color:#172033}.wrap{max-width:1050px;margin:30px auto;padding:20px}.card{background:#fff;border-radius:16px;padding:24px;box-shadow:0 8px 30px #00000012}.top{display:flex;justify-content:space-between;align-items:center;gap:20px}h1{margin:0;font-size:25px}.sub{color:#667085;margin:7px 0 25px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:15px}label{font-weight:700;font-size:13px}input,select{width:100%;box-sizing:border-box;padding:11px;border:1px solid #d0d5dd;border-radius:9px;margin-top:6px}button{background:#155eef;color:#fff;border:0;padding:12px 20px;border-radius:9px;font-weight:700;cursor:pointer}.full{grid-column:1/-1}.msg{margin-top:15px;padding:12px;border-radius:9px;display:none}.ok{background:#ecfdf3;color:#027a48}.err{background:#fef3f2;color:#b42318}@media(max-width:700px){.grid{grid-template-columns:1fr}}
 </style>
@@ -30,6 +30,35 @@ body{font-family:Arial,sans-serif;background:#f3f5f8;margin:0;color:#172033}.wra
 </div></form>
 <div id="msg" class="msg"></div>
 </div></div>
+<script>
+
+const API_URL = "https://script.google.com/macros/s/AKfycbwHMX9vrCtwnfM-Ino3s64YS1ywNDIfadPZG3M5ElPs66P9PF5RarF53b8sW-LIa2PV/exec";
+function api(action, params = {}) {
+  return new Promise((resolve, reject) => {
+    const callback = "cb_" + Date.now() + "_" + Math.floor(Math.random()*10000);
+    const script = document.createElement("script");
+    const query = new URLSearchParams({action, callback, ...params});
+    script.src = API_URL + "?" + query.toString();
+    window[callback] = data => {
+      cleanup();
+      if (data && data.ok === false) reject(new Error(data.error || "Server error"));
+      else resolve(data);
+    };
+    script.onerror = () => {
+      cleanup();
+      reject(new Error("Google Sheet API connection failed. Check the API URL and Apps Script deployment."));
+    };
+    document.body.appendChild(script);
+    function cleanup(){ delete window[callback]; script.remove(); }
+  });
+}
+function esc(v) {
+  return String(v ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+}
+
+</script>
 <script>
 f.onsubmit=async e=>{e.preventDefault();msg.className="msg";msg.style.display="none";
 try{const p=Object.fromEntries(new FormData(f));const r=await api("registerPart",p);msg.className="msg ok";msg.textContent="Registered successfully. Part ID: "+r.partId;msg.style.display="block";f.reset();}
