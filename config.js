@@ -1,5 +1,5 @@
 // Replace only the URL below with your deployed Google Apps Script Web App URL.
-const API_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+const API_URL = "https://script.google.com/macros/s/AKfycbwHMX9vrCtwnfM-Ino3s64YS1ywNDIfadPZG3M5ElPs66P9PF5RarF53b8sW-LIa2PV/exec";
 
 function api(action, params = {}) {
   return new Promise((resolve, reject) => {
