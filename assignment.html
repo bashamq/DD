@@ -1,12 +1,63 @@
 <!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Chenab Engineering – Work Assignment</title>
+<title>Chenab Engineering – Work Assignment</title><script>
 
+const API_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+function api(action, params = {}) {
+  return new Promise((resolve, reject) => {
+    const callback = "cb_" + Date.now() + "_" + Math.floor(Math.random()*10000);
+    const script = document.createElement("script");
+    const query = new URLSearchParams({action, callback, ...params});
+    script.src = API_URL + "?" + query.toString();
+    window[callback] = data => {
+      cleanup();
+      if (data && data.ok === false) reject(new Error(data.error || "Server error"));
+      else resolve(data);
+    };
+    script.onerror = () => {
+      cleanup();
+      reject(new Error("Google Sheet API connection failed. Check the API URL and Apps Script deployment."));
+    };
+    document.body.appendChild(script);
+    function cleanup(){ delete window[callback]; script.remove(); }
+  });
+}
+function esc(v) {
+  return String(v ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
+  }[c]));
+}
+
+</script>
+<script>
+/* ================= GOOGLE SHEET CONNECTION =================
+   1) Deploy Code.gs as Google Apps Script Web App.
+   2) Paste your Web App URL below.
+   ========================================================== */
+const API_URL = "PASTE_YOUR_GOOGLE_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+function api(action, params = {}) {
+  return new Promise((resolve, reject) => {
+    if (!API_URL || API_URL.includes("PASTE_YOUR")) {
+      reject(new Error("Please paste your Google Apps Script Web App URL in API_URL at the top of this file."));
+      return;
+    }
+    const callback = "cb_" + Date.now() + "_" + Math.floor(Math.random()*10000);
+    const script = document.createElement("script");
+    const query = new URLSearchParams({action, callback, ...params});
+    script.src = API_URL + "?" + query.toString();
+    window[callback] = data => { cleanup(); data && data.ok === false ? reject(new Error(data.error || "Server error")) : resolve(data); };
+    script.onerror = () => { cleanup(); reject(new Error("Google Sheet API connection failed. Check API_URL and Apps Script deployment.")); };
+    document.body.appendChild(script);
+    function cleanup(){ delete window[callback]; script.remove(); }
+  });
+}
+function esc(v){return String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));}
+</script>
 <style>
 body{font-family:Arial;background:#f3f5f8;margin:0;color:#172033}.wrap{max-width:1100px;margin:30px auto;padding:20px}.card{background:#fff;padding:24px;border-radius:16px;box-shadow:0 8px 30px #0001}.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}label{font-weight:700;font-size:13px}input,select{width:100%;box-sizing:border-box;padding:11px;border:1px solid #d0d5dd;border-radius:9px;margin-top:6px}button{background:#155eef;color:#fff;border:0;padding:12px 20px;border-radius:9px;font-weight:700}.full{grid-column:1/-1}.msg{padding:12px;border-radius:9px;margin-top:15px}.ok{background:#ecfdf3;color:#027a48}.err{background:#fef3f2;color:#b42318}.hint{color:#667085;font-size:13px}.tasks{margin-top:20px;border-top:1px solid #eee;padding-top:20px}
 .hint{color:#667085;font-size:13px}.taskbar{display:flex;align-items:center;gap:8px;margin:8px 0}.secondary{background:#eef4ff;color:#155eef;padding:8px 12px;font-size:12px}.task-list{border:1px solid #d0d5dd;border-radius:9px;max-height:320px;overflow:auto;padding:8px;background:#fafafa}.task-item{display:flex;gap:9px;align-items:flex-start;padding:9px;border-bottom:1px solid #eaecf0;font-weight:400}.task-item:last-child{border-bottom:0}.task-item input{width:auto;margin:2px 0}.task-item span{font-size:13px;line-height:1.35}
-</style><script src="config.js?v=20260911"></script>
-</head>
+</style></head>
 <body><div class="wrap"><div class="card">
 <div style="display:flex;justify-content:space-between"><div><h1>Work Assignment</h1><p class="hint">Assign process steps to departments with dates and responsibility.</p></div><a href="index.html">Home</a></div>
 <form id="f"><div class="grid">
@@ -85,9 +136,10 @@ f.onsubmit=async e=>{
    const fd=new FormData(f), tasks=fd.getAll("Tasks");
    if(!tasks.length) throw new Error("Please select at least one task.");
    const common={PartID:fd.get("PartID"),ProcessSection:fd.get("ProcessSection"),Department:fd.get("Department"),AssignedTo:fd.get("AssignedTo"),StartDate:fd.get("StartDate"),DueDate:fd.get("DueDate")};
-   const r=await api("assignWorkMultiple",{...common,Tasks:tasks.join("||")});
+   const ids=[];
+   for(const t of tasks){ const r=await api("assignWork",{...common,Task:t}); ids.push(r.assignmentId); }
    msg.className="msg ok";
-   msg.textContent=r.count+" task(s) assigned successfully. Assignment IDs: "+r.assignmentIds.join(", ");
+   msg.textContent=tasks.length+" task(s) assigned successfully. Assignment IDs: "+ids.join(", ");
    f.reset(); renderTasks();
  }catch(x){msg.className="msg err";msg.textContent=x.message;}
 };
