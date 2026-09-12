@@ -1,352 +1,2368 @@
 <!doctype html>
 <html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>Engineering Work Dashboard — Chenab Engineering</title>
+<head>
+
+<meta charset="utf-8">
+
+<meta
+  name="viewport"
+  content="width=device-width,initial-scale=1">
+
+<title>
+  Engineering Work Dashboard — Chenab Engineering
+</title>
 
 <script src="config.js?v=20260912"></script>
 <script src="auth.js?v=20260912"></script>
 
 <style>
+
 :root{
---navy:#0b1f33;--navy2:#123a5a;--blue:#1d7eaf;
---bg:#f3f6f9;--white:#fff;--text:#172536;
---muted:#6c7b88;--line:#dce5eb;
+  --navy:#0b1f33;
+  --navy2:#123a5a;
+  --blue:#1d7eaf;
+  --bg:#f1f5f8;
+  --white:#ffffff;
+  --text:#172536;
+  --muted:#6b7b88;
+  --line:#dce5eb;
+  --green:#35c878;
 }
-*{box-sizing:border-box}
-body{margin:0;font-family:Segoe UI,Arial,sans-serif;background:var(--bg);color:var(--text)}
-header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 18px 24px}
-.wrap{max-width:1180px;margin:auto}
-.brand{display:flex;justify-content:space-between;align-items:center}
-.left{display:flex;gap:14px;align-items:center}
-.logo{width:53px;height:53px;border:2px solid #ffffffb8;border-radius:13px;display:grid;place-items:center;font-weight:800}
-h1{font-size:26px;margin:0 0 4px}.sub{font-size:13px;color:#d6e4ed;margin:0}
-.home{color:#fff;text-decoration:none;border:1px solid #ffffff35;background:#ffffff10;padding:9px 13px;border-radius:9px;font-size:12px;font-weight:700}
-.status{display:inline-flex;gap:7px;align-items:center;margin-top:16px;padding:7px 11px;border:1px solid #ffffff2e;border-radius:20px;font-size:11px}
-.dot{width:8px;height:8px;border-radius:50%;background:#43d17b}
-main{padding:28px 18px 45px}
-.intro h2{margin:0 0 5px}.intro p{font-size:13px;color:var(--muted);margin:0 0 18px}
-.kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-.kpi,.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 8px 24px #142b3f0b}
-.label{font-size:10px;color:var(--muted);font-weight:800;text-transform:uppercase}
-.value{font-size:27px;font-weight:800;color:var(--navy);margin-top:5px}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-top:15px}
-.panel h3{margin:0 0 4px;font-size:15px}.note{font-size:11px;color:var(--muted)}
-.refresh{float:right;background:#eef5f9;color:var(--navy2);border:1px solid #d7e3ea}
-.row{padding:12px 0;border-bottom:1px solid #edf1f4}
-.row:last-child{border:0}
-.rowtop{display:flex;justify-content:space-between;font-size:12px;font-weight:750}
-.bar{height:7px;background:#e8eef2;border-radius:8px;overflow:hidden;margin-top:7px}
-.fill{height:100%;background:linear-gradient(90deg,var(--navy2),var(--blue))}
-table{width:100%;border-collapse:collapse;font-size:11px;margin-top:12px}
-th,td{text-align:left;padding:9px;border-bottom:1px solid #edf1f4}
-th{background:#f5f8fa;color:#526473;font-size:10px}
-.empty{text-align:center;padding:28px;color:var(--muted)}
-.footer{text-align:center;color:#8a98a3;font-size:10px;margin-top:18px}
-@media(max-width:1000px){.kpis{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}}
-@media(max-width:600px){.kpis{grid-template-columns:repeat(2,1fr)}.brand{align-items:flex-start}}
+
+*{
+  box-sizing:border-box;
+}
+
+html,
+body{
+  margin:0;
+  padding:0;
+  width:100%;
+  overflow-x:hidden;
+}
+
+body{
+  font-family:
+    "Segoe UI",
+    Arial,
+    sans-serif;
+  background:var(--bg);
+  color:var(--text);
+}
+
+button,
+a{
+  font-family:inherit;
+}
+
+
+/* =====================================================
+   HEADER
+   ===================================================== */
+
+header{
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--navy),
+      var(--navy2)
+    );
+
+  color:white;
+
+  padding:
+    22px
+    18px
+    20px;
+
+}
+
+.wrap{
+
+  width:100%;
+  max-width:1200px;
+  margin:0 auto;
+
+}
+
+.brand{
+
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:20px;
+
+}
+
+.brand-left{
+
+  display:flex;
+  align-items:center;
+  gap:12px;
+
+  min-width:0;
+
+}
+
+.logo{
+
+  width:48px;
+  height:48px;
+
+  min-width:48px;
+
+  border:
+    2px solid
+    rgba(255,255,255,.7);
+
+  border-radius:12px;
+
+  display:grid;
+  place-items:center;
+
+  font-weight:800;
+  font-size:13px;
+
+}
+
+.title-area{
+
+  min-width:0;
+
+}
+
+h1{
+
+  margin:0 0 3px;
+
+  font-size:22px;
+  line-height:1.2;
+
+}
+
+.subtitle{
+
+  margin:0;
+
+  font-size:11px;
+
+  color:#d8e5ed;
+
+  line-height:1.4;
+
+}
+
+.header-actions{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:flex-end;
+
+  flex-wrap:wrap;
+
+  gap:7px;
+
+}
+
+.top-btn{
+
+  border:
+    1px solid
+    rgba(255,255,255,.25);
+
+  background:
+    rgba(255,255,255,.08);
+
+  color:white;
+
+  text-decoration:none;
+
+  border-radius:8px;
+
+  padding:
+    8px
+    11px;
+
+  font-size:10px;
+
+  font-weight:700;
+
+  white-space:nowrap;
+
+}
+
+.top-btn:hover{
+
+  background:
+    rgba(255,255,255,.16);
+
+}
+
+.user-badge{
+
+  color:#fff;
+
+}
+
+.online{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:7px;
+
+  margin-top:13px;
+
+  width:max-content;
+
+  max-width:100%;
+
+  border:
+    1px solid
+    rgba(255,255,255,.20);
+
+  border-radius:18px;
+
+  padding:
+    7px
+    11px;
+
+  font-size:9px;
+
+}
+
+.dot{
+
+  width:7px;
+  height:7px;
+
+  min-width:7px;
+
+  border-radius:50%;
+
+  background:var(--green);
+
+}
+
+
+/* =====================================================
+   MAIN
+   ===================================================== */
+
+main{
+
+  padding:
+    22px
+    18px
+    45px;
+
+}
+
+.page-title{
+
+  margin-bottom:16px;
+
+}
+
+.page-title h2{
+
+  margin:0 0 4px;
+
+  font-size:19px;
+
+}
+
+.page-title p{
+
+  margin:0;
+
+  color:var(--muted);
+
+  font-size:10px;
+
+}
+
+
+/* =====================================================
+   TOOLBAR
+   ===================================================== */
+
+.toolbar{
+
+  display:flex;
+
+  justify-content:flex-end;
+
+  margin-bottom:12px;
+
+}
+
+.refresh{
+
+  border:0;
+
+  background:white;
+
+  color:var(--navy2);
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:8px;
+
+  padding:
+    8px
+    12px;
+
+  font-size:10px;
+
+  font-weight:700;
+
+  cursor:pointer;
+
+}
+
+.refresh:hover{
+
+  background:#edf4f8;
+
+}
+
+
+/* =====================================================
+   KPI
+   ===================================================== */
+
+.kpis{
+
+  display:grid;
+
+  grid-template-columns:
+    repeat(5,1fr);
+
+  gap:10px;
+
+  margin-bottom:12px;
+
+}
+
+.kpi{
+
+  background:white;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:12px;
+
+  padding:
+    13px;
+
+  min-height:72px;
+
+  box-shadow:
+    0 5px 16px
+    rgba(20,43,63,.05);
+
+}
+
+.kpi-label{
+
+  font-size:8px;
+
+  text-transform:uppercase;
+
+  color:#7a8892;
+
+  font-weight:700;
+
+  margin-bottom:6px;
+
+}
+
+.kpi-value{
+
+  font-size:21px;
+
+  font-weight:800;
+
+  color:var(--text);
+
+}
+
+
+/* =====================================================
+   TWO COLUMN
+   ===================================================== */
+
+.two-col{
+
+  display:grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:12px;
+
+  margin-bottom:12px;
+
+}
+
+
+/* =====================================================
+   PANEL
+   ===================================================== */
+
+.panel{
+
+  background:white;
+
+  border:
+    1px solid
+    var(--line);
+
+  border-radius:13px;
+
+  padding:14px;
+
+  box-shadow:
+    0 5px 16px
+    rgba(20,43,63,.05);
+
+}
+
+.panel-title{
+
+  margin-bottom:10px;
+
+}
+
+.panel-title h3{
+
+  margin:0 0 2px;
+
+  font-size:13px;
+
+}
+
+.panel-title p{
+
+  margin:0;
+
+  font-size:9px;
+
+  color:var(--muted);
+
+}
+
+
+/* =====================================================
+   DEPARTMENT PROGRESS
+   ===================================================== */
+
+.department-row{
+
+  margin-bottom:12px;
+
+}
+
+.department-head{
+
+  display:flex;
+
+  justify-content:space-between;
+
+  gap:8px;
+
+  font-size:10px;
+
+  font-weight:700;
+
+}
+
+.department-head span:last-child{
+
+  color:#176b94;
+
+}
+
+.progress-track{
+
+  height:6px;
+
+  margin-top:5px;
+
+  border-radius:6px;
+
+  background:#e7edf1;
+
+  overflow:hidden;
+
+}
+
+.progress-fill{
+
+  height:100%;
+
+  border-radius:6px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--navy2),
+      var(--blue)
+    );
+
+}
+
+.department-meta{
+
+  margin-top:3px;
+
+  font-size:8px;
+
+  color:#83909a;
+
+}
+
+
+/* =====================================================
+   GRAPH
+   ===================================================== */
+
+.graph-panel{
+
+  margin-bottom:12px;
+
+}
+
+.graph-wrap{
+
+  width:100%;
+
+  height:260px;
+
+  position:relative;
+
+  margin-top:8px;
+
+  border-radius:10px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #fbfdfe,
+      #f7fafc
+    );
+
+  border:
+    1px solid
+    #edf2f5;
+
+  overflow:hidden;
+
+}
+
+#progressGraph{
+
+  width:100%;
+
+  height:100%;
+
+  display:block;
+
+}
+
+.graph-legend{
+
+  display:flex;
+
+  align-items:center;
+
+  justify-content:center;
+
+  gap:20px;
+
+  margin-top:9px;
+
+  font-size:9px;
+
+  color:#63727d;
+
+}
+
+.legend-item{
+
+  display:flex;
+
+  align-items:center;
+
+  gap:5px;
+
+}
+
+.legend-line{
+
+  width:22px;
+  height:3px;
+
+  border-radius:3px;
+
+  background:#1d7eaf;
+
+}
+
+.legend-line.second{
+
+  background:#0b1f33;
+
+}
+
+
+/* =====================================================
+   PART TABLE
+   ===================================================== */
+
+.table-wrap{
+
+  width:100%;
+
+  overflow-x:auto;
+
+}
+
+table{
+
+  width:100%;
+
+  border-collapse:collapse;
+
+  font-size:9px;
+
+}
+
+th{
+
+  background:#f3f7f9;
+
+  color:#647582;
+
+  text-align:left;
+
+  padding:
+    8px 7px;
+
+  font-size:8px;
+
+  white-space:nowrap;
+
+}
+
+td{
+
+  padding:
+    8px 7px;
+
+  border-top:
+    1px solid
+    #edf1f3;
+
+  white-space:nowrap;
+
+}
+
+td strong{
+
+  color:var(--text);
+
+}
+
+.mini-progress{
+
+  width:100px;
+
+  height:5px;
+
+  background:#e6edf1;
+
+  border-radius:5px;
+
+  overflow:hidden;
+
+}
+
+.mini-progress i{
+
+  display:block;
+
+  height:100%;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--navy2),
+      var(--blue)
+    );
+
+}
+
+
+/* =====================================================
+   RECENT UPDATES
+   ===================================================== */
+
+.status-badge{
+
+  display:inline-block;
+
+  padding:
+    3px 7px;
+
+  border-radius:12px;
+
+  font-size:7px;
+
+  font-weight:700;
+
+  background:#edf4f8;
+
+  color:#315c73;
+
+}
+
+
+/* =====================================================
+   EMPTY / ERROR
+   ===================================================== */
+
+.empty{
+
+  text-align:center;
+
+  padding:25px 10px;
+
+  color:var(--muted);
+
+  font-size:10px;
+
+}
+
+.error{
+
+  background:#fff3f2;
+
+  color:#b42318;
+
+  border:
+    1px solid
+    #ffd0cc;
+
+  border-radius:8px;
+
+  padding:10px;
+
+  font-size:10px;
+
+}
+
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+
+.footer{
+
+  text-align:center;
+
+  color:#8a98a3;
+
+  font-size:8px;
+
+  margin-top:17px;
+
+}
+
+
+/* =====================================================
+   TABLET
+   ===================================================== */
+
+@media(max-width:900px){
+
+  .kpis{
+
+    grid-template-columns:
+      repeat(3,1fr);
+
+  }
+
+}
+
+
+/* =====================================================
+   MOBILE
+   ===================================================== */
+
+@media(max-width:600px){
+
+  header{
+
+    padding:
+      15px
+      12px
+      15px;
+
+  }
+
+  .brand{
+
+    flex-direction:column;
+
+    gap:12px;
+
+  }
+
+  .brand-left{
+
+    width:100%;
+
+  }
+
+  .logo{
+
+    width:43px;
+    height:43px;
+    min-width:43px;
+
+  }
+
+  h1{
+
+    font-size:18px;
+
+  }
+
+  .subtitle{
+
+    font-size:9px;
+
+  }
+
+  .header-actions{
+
+    width:100%;
+
+    display:grid;
+
+    grid-template-columns:
+      1fr 1fr;
+
+    gap:6px;
+
+  }
+
+  .user-badge{
+
+    grid-column:
+      1 / -1;
+
+    width:100%;
+
+    text-align:center;
+
+  }
+
+  .top-btn{
+
+    min-height:36px;
+
+    text-align:center;
+
+  }
+
+  .online{
+
+    width:100%;
+
+    justify-content:center;
+
+    font-size:8px;
+
+  }
+
+  main{
+
+    padding:
+      17px
+      10px
+      30px;
+
+  }
+
+  .page-title h2{
+
+    font-size:17px;
+
+  }
+
+  .page-title p{
+
+    font-size:9px;
+
+  }
+
+  .kpis{
+
+    grid-template-columns:
+      repeat(2,1fr);
+
+    gap:8px;
+
+  }
+
+  .kpi{
+
+    min-height:68px;
+
+    padding:11px;
+
+  }
+
+  .kpi-label{
+
+    font-size:7px;
+
+  }
+
+  .kpi-value{
+
+    font-size:19px;
+
+  }
+
+  .two-col{
+
+    grid-template-columns:1fr;
+
+    gap:10px;
+
+  }
+
+  .panel{
+
+    padding:11px;
+
+    border-radius:11px;
+
+  }
+
+  .panel-title h3{
+
+    font-size:12px;
+
+  }
+
+  .panel-title p{
+
+    font-size:8px;
+
+  }
+
+  .graph-wrap{
+
+    height:220px;
+
+  }
+
+  .graph-legend{
+
+    gap:12px;
+
+    font-size:8px;
+
+  }
+
+  table{
+
+    min-width:560px;
+
+  }
+
+  .table-wrap{
+
+    overflow-x:auto;
+
+    -webkit-overflow-scrolling:touch;
+
+  }
+
+  .footer{
+
+    font-size:7px;
+
+  }
+
+}
+
+
+/* =====================================================
+   VERY SMALL MOBILE
+   ===================================================== */
+
+@media(max-width:380px){
+
+  .kpis{
+
+    grid-template-columns:
+      1fr 1fr;
+
+  }
+
+  .kpi-value{
+
+    font-size:17px;
+
+  }
+
+  .graph-wrap{
+
+    height:200px;
+
+  }
+
+}
+
 </style>
+
 </head>
+
 
 <body>
 
 <script>
+
 if(!requireRole("Admin")){
-throw new Error("Admin login required");
+
+  throw new Error("Admin access required");
+
 }
+
 </script>
 
+
+<!-- =====================================================
+     HEADER
+     ===================================================== -->
+
 <header>
+
 <div class="wrap">
 
 <div class="brand">
 
-<div class="left">
-<div class="logo">CEW</div>
-<div>
-<h1>Engineering Work Dashboard</h1>
-<p class="sub">Design & Development Control System · Management Overview</p>
-</div>
+
+  <div class="brand-left">
+
+    <div class="logo">
+      CEW
+    </div>
+
+    <div class="title-area">
+
+      <h1>
+        Engineering Work Dashboard
+      </h1>
+
+      <p class="subtitle">
+        Design & Development Control System · Management Overview
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <div class="header-actions">
+
+    <span
+      id="userBadge"
+      class="top-btn user-badge">
+    </span>
+
+    <button
+      class="top-btn"
+      onclick="logout()">
+      Logout
+    </button>
+
+    <a
+      class="top-btn"
+      href="index.html">
+      ← Home
+    </a>
+
+  </div>
+
+
 </div>
 
-<a class="home" href="index.html">← Home</a>
+
+<div class="online">
+
+  <span class="dot"></span>
+
+  <span>
+    Design & Development · Live Work Monitoring
+  </span>
 
 </div>
 
-<div class="status">
-<span class="dot"></span>
-Design & Development · Live Work Monitoring
 </div>
 
-</div>
 </header>
 
+
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
+
 <main>
+
 <div class="wrap">
 
-<div class="intro">
-<h2>Design & Development Management Dashboard</h2>
-<p>Monitor department workload, part progress, task completion and recent updates.</p>
-</div>
 
-<div class="kpis">
+<div class="page-title">
 
-<div class="kpi">
-<div class="label">Registered Parts</div>
-<div class="value" id="kParts">—</div>
-</div>
+  <h2>
+    Design & Development Management Dashboard
+  </h2>
 
-<div class="kpi">
-<div class="label">Assigned Tasks</div>
-<div class="value" id="kTasks">—</div>
-</div>
-
-<div class="kpi">
-<div class="label">Completed</div>
-<div class="value" id="kDone">—</div>
-</div>
-
-<div class="kpi">
-<div class="label">In Progress</div>
-<div class="value" id="kProgress">—</div>
-</div>
-
-<div class="kpi">
-<div class="label">Average Progress</div>
-<div class="value" id="kAvg">—</div>
-</div>
-
-</div>
-
-<div class="grid">
-
-<div>
-
-<div class="panel">
-
-<button class="refresh" onclick="loadDashboard()">↻ Refresh</button>
-
-<h3>Department Progress</h3>
-<div class="note">Average progress by department</div>
-
-<div id="departments">
-<div class="empty">Loading...</div>
-</div>
-
-</div>
-
-<div class="panel">
-
-<h3>Part / Order Progress</h3>
-<div class="note">Current engineering progress by registered part</div>
-
-<div id="parts">
-<div class="empty">Loading...</div>
-</div>
-
-</div>
+  <p>
+    Monitor department workload, part progress,
+    task completion and recent updates.
+  </p>
 
 </div>
 
 
-<div>
+<div class="toolbar">
 
-<div class="panel">
-
-<h3>Recent Daily Updates</h3>
-
-<div id="recent">
-<div class="empty">Loading...</div>
-</div>
+  <button
+    class="refresh"
+    onclick="loadDashboard()">
+    ↻ Refresh
+  </button>
 
 </div>
 
-</div>
+
+<!-- =====================================================
+     KPI
+     ===================================================== -->
+
+<div
+  id="kpis"
+  class="kpis">
+
+  <div class="kpi">
+
+    <div class="kpi-label">
+      Registered Parts
+    </div>
+
+    <div
+      id="totalParts"
+      class="kpi-value">
+      —
+    </div>
+
+  </div>
+
+
+  <div class="kpi">
+
+    <div class="kpi-label">
+      Assigned Tasks
+    </div>
+
+    <div
+      id="totalAssignments"
+      class="kpi-value">
+      —
+    </div>
+
+  </div>
+
+
+  <div class="kpi">
+
+    <div class="kpi-label">
+      Completed
+    </div>
+
+    <div
+      id="completed"
+      class="kpi-value">
+      —
+    </div>
+
+  </div>
+
+
+  <div class="kpi">
+
+    <div class="kpi-label">
+      In Progress
+    </div>
+
+    <div
+      id="inProgress"
+      class="kpi-value">
+      —
+    </div>
+
+  </div>
+
+
+  <div class="kpi">
+
+    <div class="kpi-label">
+      Average Progress
+    </div>
+
+    <div
+      id="avgProgress"
+      class="kpi-value">
+      —
+    </div>
+
+  </div>
 
 </div>
+
+
+<!-- =====================================================
+     DEPARTMENT + PART
+     ===================================================== -->
+
+<div class="two-col">
+
+
+<!-- DEPARTMENT -->
+
+<section class="panel">
+
+  <div class="panel-title">
+
+    <h3>
+      Department Progress
+    </h3>
+
+    <p>
+      Average progress by department
+    </p>
+
+  </div>
+
+  <div id="departments">
+
+    <div class="empty">
+      Loading...
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- PART -->
+
+<section class="panel">
+
+  <div class="panel-title">
+
+    <h3>
+      Part / Order Progress
+    </h3>
+
+    <p>
+      Current engineering progress by registered part
+    </p>
+
+  </div>
+
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Part
+          </th>
+
+          <th>
+            Order
+          </th>
+
+          <th>
+            Tasks
+          </th>
+
+          <th>
+            Progress
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="partsBody">
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</section>
+
+</div>
+
+
+<!-- =====================================================
+     TWO LINE GRAPH
+     ===================================================== -->
+
+<section class="panel graph-panel">
+
+  <div class="panel-title">
+
+    <h3>
+      Engineering Progress Trend
+    </h3>
+
+    <p>
+      Daily progress and completion trend from recent updates
+    </p>
+
+  </div>
+
+
+  <div class="graph-wrap">
+
+    <svg
+      id="progressGraph"
+      viewBox="0 0 1000 300"
+      preserveAspectRatio="none">
+
+    </svg>
+
+  </div>
+
+
+  <div class="graph-legend">
+
+    <div class="legend-item">
+
+      <span class="legend-line"></span>
+
+      Daily Progress
+
+    </div>
+
+
+    <div class="legend-item">
+
+      <span class="legend-line second"></span>
+
+      Completion %
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- =====================================================
+     RECENT UPDATES
+     ===================================================== -->
+
+<section class="panel">
+
+  <div class="panel-title">
+
+    <h3>
+      Recent Daily Updates
+    </h3>
+
+    <p>
+      Latest department activity recorded in the system
+    </p>
+
+  </div>
+
+
+  <div class="table-wrap">
+
+    <table>
+
+      <thead>
+
+        <tr>
+
+          <th>
+            Date
+          </th>
+
+          <th>
+            Department
+          </th>
+
+          <th>
+            Status
+          </th>
+
+          <th>
+            Progress
+          </th>
+
+          <th>
+            Updated By
+          </th>
+
+        </tr>
+
+      </thead>
+
+      <tbody id="updatesBody">
+
+      </tbody>
+
+    </table>
+
+  </div>
+
+</section>
+
+
+<div
+  id="errorBox"
+  style="margin-top:10px">
+</div>
+
 
 <div class="footer">
-Chenab Engineering · Design & Development Control System
-</div>
+
+  Chenab Engineering · Design & Development Control System
 
 </div>
+
+
+</div>
+
 </main>
+
 
 <script>
 
+/* =====================================================
+   HELPERS
+   ===================================================== */
+
+const $ = id =>
+  document.getElementById(id);
+
+
 function esc(v){
-return String(v??"").replace(/[&<>"']/g,c=>({
-"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-}[c]));
+
+  return String(v ?? "")
+    .replace(/[&<>"']/g,c => ({
+      "&":"&amp;",
+      "<":"&lt;",
+      ">":"&gt;",
+      '"':"&quot;",
+      "'":"&#039;"
+    }[c]));
+
 }
+
+
+function dateOnly(v){
+
+  if(!v)
+    return "";
+
+  return String(v)
+    .split(" ")[0];
+
+}
+
+
+function clamp(n){
+
+  return Math.max(
+    0,
+    Math.min(
+      100,
+      Number(n) || 0
+    )
+  );
+
+}
+
+
+/* =====================================================
+   USER
+   ===================================================== */
+
+function showUser(){
+
+  const u =
+    currentUser();
+
+  if(!u)
+    return;
+
+  $("userBadge").textContent =
+    (u.role || "Admin") +
+    " · " +
+    (u.department || "ALL");
+
+}
+
+
+/* =====================================================
+   KPI
+   ===================================================== */
+
+function renderSummary(summary){
+
+  const s =
+    summary || {};
+
+  $("totalParts").textContent =
+    Number(s.totalParts || 0);
+
+  $("totalAssignments").textContent =
+    Number(s.totalAssignments || 0);
+
+  $("completed").textContent =
+    Number(s.completed || 0);
+
+  $("inProgress").textContent =
+    Number(s.inProgress || 0);
+
+  $("avgProgress").textContent =
+    clamp(s.avgProgress) + "%";
+
+}
+
+
+/* =====================================================
+   DEPARTMENT PROGRESS
+   ===================================================== */
+
+function renderDepartments(departments){
+
+  const box =
+    $("departments");
+
+
+  if(
+    !Array.isArray(departments) ||
+    !departments.length
+  ){
+
+    box.innerHTML =
+      '<div class="empty">' +
+      'No department data available.' +
+      '</div>';
+
+    return;
+
+  }
+
+
+  box.innerHTML =
+    departments.map(d => {
+
+      const progress =
+        clamp(d.progress);
+
+
+      return `
+
+        <div class="department-row">
+
+          <div class="department-head">
+
+            <span>
+              ${esc(d.department)}
+            </span>
+
+            <span>
+              ${progress}%
+            </span>
+
+          </div>
+
+
+          <div class="progress-track">
+
+            <div
+              class="progress-fill"
+              style="width:${progress}%">
+            </div>
+
+          </div>
+
+
+          <div class="department-meta">
+
+            ${Number(d.tasks || 0)}
+            tasks ·
+            ${Number(d.completed || 0)}
+            completed
+
+          </div>
+
+        </div>
+
+      `;
+
+    }).join("");
+
+}
+
+
+/* =====================================================
+   PART TABLE
+   ===================================================== */
+
+function renderParts(parts){
+
+  const body =
+    $("partsBody");
+
+
+  if(
+    !Array.isArray(parts) ||
+    !parts.length
+  ){
+
+    body.innerHTML =
+      `<tr>
+        <td
+          colspan="4"
+          class="empty">
+          No part progress available.
+        </td>
+      </tr>`;
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+    parts.map(p => {
+
+      const progress =
+        clamp(p.progress);
+
+
+      return `
+
+        <tr>
+
+          <td>
+            <strong>
+              ${esc(
+                p.PartNo ||
+                p.PartID ||
+                "—"
+              )}
+            </strong>
+          </td>
+
+          <td>
+            ${esc(p.OrderNo || "—")}
+          </td>
+
+          <td>
+            ${Number(p.tasks || 0)}
+          </td>
+
+          <td>
+
+            <div
+              style="
+                display:flex;
+                align-items:center;
+                gap:7px;">
+
+              <div class="mini-progress">
+
+                <i
+                  style="width:${progress}%">
+                </i>
+
+              </div>
+
+              <span>
+                ${progress}%
+              </span>
+
+            </div>
+
+          </td>
+
+        </tr>
+
+      `;
+
+    }).join("");
+
+}
+
+
+/* =====================================================
+   RECENT UPDATES
+   ===================================================== */
+
+function renderUpdates(updates){
+
+  const body =
+    $("updatesBody");
+
+
+  if(
+    !Array.isArray(updates) ||
+    !updates.length
+  ){
+
+    body.innerHTML =
+      `<tr>
+        <td
+          colspan="5"
+          class="empty">
+          No recent updates available.
+        </td>
+      </tr>`;
+
+    return;
+
+  }
+
+
+  body.innerHTML =
+    updates.map(u => {
+
+      return `
+
+        <tr>
+
+          <td>
+            ${esc(
+              dateOnly(
+                u.UpdateDate ||
+                u.CreatedAt
+              )
+            )}
+          </td>
+
+          <td>
+            ${esc(
+              u.Department ||
+              "—"
+            )}
+          </td>
+
+          <td>
+
+            <span class="status-badge">
+              ${esc(
+                u.Status ||
+                "—"
+              )}
+            </span>
+
+          </td>
+
+          <td>
+            ${clamp(u.Progress)}%
+          </td>
+
+          <td>
+            ${esc(
+              u.UpdatedBy ||
+              "—"
+            )}
+          </td>
+
+        </tr>
+
+      `;
+
+    }).join("");
+
+}
+
+
+/* =====================================================
+   GRAPH DATA
+   ===================================================== */
+
+function buildGraphData(updates){
+
+  if(
+    !Array.isArray(updates) ||
+    !updates.length
+  ){
+
+    return [];
+
+  }
+
+
+  /*
+    Group updates by date.
+    For each date:
+    - daily progress = average update progress
+    - completion = percentage of updates marked completed
+  */
+
+  const map = {};
+
+
+  updates.forEach(u => {
+
+    const date =
+      dateOnly(
+        u.UpdateDate ||
+        u.CreatedAt
+      );
+
+
+    if(!date)
+      return;
+
+
+    if(!map[date]){
+
+      map[date] = {
+
+        total:0,
+
+        progress:0,
+
+        completed:0
+
+      };
+
+    }
+
+
+    const progress =
+      clamp(u.Progress);
+
+
+    map[date].total++;
+
+    map[date].progress +=
+      progress;
+
+
+    const status =
+      String(
+        u.Status || ""
+      ).toLowerCase();
+
+
+    if(
+      status === "completed" ||
+      status === "complete" ||
+      progress >= 100
+    ){
+
+      map[date].completed++;
+
+    }
+
+  });
+
+
+  return Object.keys(map)
+    .sort()
+    .map(date => {
+
+      const x =
+        map[date];
+
+
+      return {
+
+        date:date,
+
+        progress:
+          x.total
+            ? Math.round(
+                x.progress /
+                x.total
+              )
+            : 0,
+
+        completion:
+          x.total
+            ? Math.round(
+                (
+                  x.completed /
+                  x.total
+                ) * 100
+              )
+            : 0
+
+      };
+
+    });
+
+}
+
+
+/* =====================================================
+   DRAW GRAPH
+   ===================================================== */
+
+function drawGraph(updates){
+
+  const svg =
+    $("progressGraph");
+
+
+  const data =
+    buildGraphData(updates);
+
+
+  const W = 1000;
+
+  const H = 300;
+
+  const padLeft = 55;
+
+  const padRight = 25;
+
+  const padTop = 25;
+
+  const padBottom = 45;
+
+
+  const innerW =
+    W -
+    padLeft -
+    padRight;
+
+
+  const innerH =
+    H -
+    padTop -
+    padBottom;
+
+
+  svg.innerHTML = "";
+
+
+  /*
+    If only one data point exists,
+    show a simple point.
+  */
+
+  if(!data.length){
+
+    svg.innerHTML = `
+
+      <text
+        x="500"
+        y="150"
+        text-anchor="middle"
+        fill="#7b8992"
+        font-size="14">
+
+        No update data available
+
+      </text>
+
+    `;
+
+    return;
+
+  }
+
+
+  /* =========================
+     GRID
+     ========================= */
+
+  for(let i=0;i<=4;i++){
+
+    const value =
+      i * 25;
+
+
+    const y =
+      padTop +
+      innerH -
+      (value / 100) *
+      innerH;
+
+
+    svg.innerHTML += `
+
+      <line
+        x1="${padLeft}"
+        y1="${y}"
+        x2="${W-padRight}"
+        y2="${y}"
+        stroke="#e3eaee"
+        stroke-width="1"/>
+
+
+      <text
+        x="${padLeft-10}"
+        y="${y+4}"
+        text-anchor="end"
+        fill="#778791"
+        font-size="11">
+
+        ${value}%
+
+      </text>
+
+    `;
+
+  }
+
+
+  /* =========================
+     X LABELS
+     ========================= */
+
+  const count =
+    data.length;
+
+
+  data.forEach((d,i) => {
+
+    const x =
+      count === 1
+        ? padLeft + innerW/2
+        : padLeft +
+          (
+            i /
+            (count - 1)
+          ) *
+          innerW;
+
+
+    svg.innerHTML += `
+
+      <text
+        x="${x}"
+        y="${H-15}"
+        text-anchor="middle"
+        fill="#778791"
+        font-size="10">
+
+        ${esc(
+          d.date.slice(5)
+        )}
+
+      </text>
+
+    `;
+
+  });
+
+
+  /* =========================
+     POINT FUNCTION
+     ========================= */
+
+  function pointY(value){
+
+    return (
+      padTop +
+      innerH -
+      (
+        clamp(value) /
+        100
+      ) *
+      innerH
+    );
+
+  }
+
+
+  function pointX(index){
+
+    if(count === 1){
+
+      return padLeft +
+        innerW / 2;
+
+    }
+
+    return padLeft +
+      (
+        index /
+        (count - 1)
+      ) *
+      innerW;
+
+  }
+
+
+  /* =========================
+     BUILD PATH
+     ========================= */
+
+  function buildPath(key){
+
+    return data
+      .map((d,i) => {
+
+        const x =
+          pointX(i);
+
+        const y =
+          pointY(d[key]);
+
+
+        return (
+          i === 0
+            ? `M ${x} ${y}`
+            : `L ${x} ${y}`
+        );
+
+      })
+      .join(" ");
+
+  }
+
+
+  /* =========================
+     AREA
+     ========================= */
+
+  const firstX =
+    pointX(0);
+
+  const lastX =
+    pointX(count-1);
+
+  const baseY =
+    padTop + innerH;
+
+
+  const areaPath =
+    buildPath("progress") +
+    ` L ${lastX} ${baseY}` +
+    ` L ${firstX} ${baseY} Z`;
+
+
+  svg.innerHTML += `
+
+    <path
+      d="${areaPath}"
+      fill="#1d7eaf"
+      opacity=".06"/>
+
+  `;
+
+
+  /* =========================
+     LINE 1
+     ========================= */
+
+  svg.innerHTML += `
+
+    <path
+      d="${buildPath("progress")}"
+      fill="none"
+      stroke="#1d7eaf"
+      stroke-width="4"
+      stroke-linecap="round"
+      stroke-linejoin="round"/>
+
+  `;
+
+
+  /* =========================
+     LINE 2
+     ========================= */
+
+  svg.innerHTML += `
+
+    <path
+      d="${buildPath("completion")}"
+      fill="none"
+      stroke="#0b1f33"
+      stroke-width="3"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-dasharray="8 5"/>
+
+  `;
+
+
+  /* =========================
+     POINTS
+     ========================= */
+
+  data.forEach((d,i) => {
+
+    const x =
+      pointX(i);
+
+
+    const y1 =
+      pointY(d.progress);
+
+
+    const y2 =
+      pointY(d.completion);
+
+
+    svg.innerHTML += `
+
+      <circle
+        cx="${x}"
+        cy="${y1}"
+        r="4"
+        fill="#1d7eaf"/>
+
+      <circle
+        cx="${x}"
+        cy="${y2}"
+        r="3.5"
+        fill="#0b1f33"/>
+
+    `;
+
+  });
+
+}
+
+
+/* =====================================================
+   LOAD DASHBOARD
+   ===================================================== */
 
 async function loadDashboard(){
 
-try{
-
-const r=await api("dashboard");
-
-const s=r.summary||{};
-
-document.getElementById("kParts").textContent=
-s.totalParts??0;
-
-document.getElementById("kTasks").textContent=
-s.totalAssignments??0;
-
-document.getElementById("kDone").textContent=
-s.completed??0;
-
-document.getElementById("kProgress").textContent=
-s.inProgress??0;
-
-document.getElementById("kAvg").textContent=
-(s.avgProgress??0)+"%";
+  if(!requireRole("Admin"))
+    return;
 
 
-const departments=
-Array.isArray(r.departments)?r.departments:[];
-
-if(!departments.length){
-
-document.getElementById("departments").innerHTML=
-'<div class="empty">No department data.</div>';
-
-}else{
-
-document.getElementById("departments").innerHTML=
-departments.map(d=>`
-
-<div class="row">
-
-<div class="rowtop">
-<span>${esc(d.department)}</span>
-<span>${d.progress||0}%</span>
-</div>
-
-<div class="bar">
-<div class="fill" style="width:${Math.max(0,Math.min(100,d.progress||0))}%"></div>
-</div>
-
-<div class="note">
-${d.tasks||0} tasks · ${d.completed||0} completed
-</div>
-
-</div>
-
-`).join("");
-
-}
+  showUser();
 
 
-const parts=
-Array.isArray(r.partProgress)?
-r.partProgress:
-(Array.isArray(r.parts)?r.parts:[]);
+  $("errorBox").innerHTML = "";
 
-if(!parts.length){
 
-document.getElementById("parts").innerHTML=
-'<div class="empty">No part data.</div>';
+  try{
 
-}else{
+    const r =
+      await api("dashboard");
 
-document.getElementById("parts").innerHTML=`
 
-<table>
+    if(!r || r.ok === false){
 
-<thead>
-<tr>
-<th>Part</th>
-<th>Order</th>
-<th>Tasks</th>
-<th>Progress</th>
-</tr>
-</thead>
+      throw new Error(
+        r?.error ||
+        "Dashboard data could not be loaded."
+      );
 
-<tbody>
+    }
 
-${parts.map(p=>`
 
-<tr>
-<td>${esc(p.PartNo||p.PartID)}</td>
-<td>${esc(p.OrderNo||"—")}</td>
-<td>${p.tasks||0}</td>
-<td>${p.progress||0}%</td>
-</tr>
+    renderSummary(
+      r.summary || {}
+    );
 
-`).join("")}
 
-</tbody>
+    renderDepartments(
+      r.departments || []
+    );
 
-</table>`;
+
+    renderParts(
+      r.partProgress ||
+      r.parts ||
+      []
+    );
+
+
+    const updates =
+      r.recentUpdates ||
+      [];
+
+
+    renderUpdates(
+      updates
+    );
+
+
+    drawGraph(
+      updates
+    );
+
+
+  }catch(e){
+
+    console.error(e);
+
+
+    $("errorBox").innerHTML = `
+
+      <div class="error">
+
+        Dashboard error:
+        ${esc(
+          e.message ||
+          "Unable to load dashboard."
+        )}
+
+      </div>
+
+    `;
+
+  }
 
 }
 
 
-const updates=
-Array.isArray(r.recentUpdates)?
-r.recentUpdates:[];
+/* =====================================================
+   START
+   ===================================================== */
 
-if(!updates.length){
-
-document.getElementById("recent").innerHTML=
-'<div class="empty">No daily updates yet.</div>';
-
-}else{
-
-document.getElementById("recent").innerHTML=`
-
-<table>
-
-<thead>
-<tr>
-<th>Date</th>
-<th>Department</th>
-<th>Status</th>
-<th>Progress</th>
-</tr>
-</thead>
-
-<tbody>
-
-${updates.map(u=>`
-
-<tr>
-<td>${esc(String(u.UpdateDate||u.CreatedAt||"").split(" ")[0])}</td>
-<td>${esc(u.Department||"—")}</td>
-<td>${esc(u.Status||"—")}</td>
-<td>${u.Progress||0}%</td>
-</tr>
-
-`).join("")}
-
-</tbody>
-
-</table>`;
-
-}
-
-}catch(e){
-
-document.getElementById("departments").innerHTML=
-'<div class="empty">'+esc(e.message)+'</div>';
-
-document.getElementById("parts").innerHTML=
-'<div class="empty">Unable to load dashboard.</div>';
-
-document.getElementById("recent").innerHTML=
-'<div class="empty">Unable to load updates.</div>';
-
-}
-
-}
+showUser();
 
 loadDashboard();
 
 </script>
 
 </body>
+
 </html>
