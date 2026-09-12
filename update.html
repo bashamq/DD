@@ -1,31 +1,121 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0f172a"><title>Department Daily Update</title><script src="config.js?v=20260911"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Department Daily Update — Chenab Engineering</title>
+<script src="config.js?v=20260912"></script>
 <style>
-*{box-sizing:border-box}body{margin:0;background:#f4f7fb;color:#172033;font-family:Arial,sans-serif}.wrap{max-width:1100px;margin:auto;padding:14px}.top{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:15px}.top h1{margin:0;font-size:24px}.hint,.sub{color:#667085;font-size:13px}.home,.btn{border:1px solid #d0d5dd;background:#fff;color:#344054;border-radius:10px;padding:10px 14px;font-weight:700;text-decoration:none;cursor:pointer}.primary{background:#155eef;color:#fff;border:0}.card{background:#fff;border:1px solid #e4e7ec;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:0 4px 16px #1018280d}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.dept,.task{border:1px solid #dbe3ef;background:#fff;border-radius:14px;padding:15px;cursor:pointer}.dept{text-align:left}.dept:hover,.task:hover{border-color:#98a2b3}.title{font-weight:800;font-size:15px;line-height:1.45}.bar{height:8px;background:#eaecf0;border-radius:99px;overflow:hidden;margin:12px 0 6px}.bar span{display:block;height:100%;background:#155eef}.badge{display:inline-block;font-size:11px;background:#f2f4f7;padding:5px 8px;border-radius:99px}.task{margin-bottom:10px}.taskhead{display:flex;justify-content:space-between;gap:8px}.msg{padding:11px;border-radius:10px;margin-bottom:12px}.ok{background:#ecfdf3;color:#027a48}.err{background:#fef3f2;color:#b42318}.hidden{display:none}form{display:grid;grid-template-columns:1fr 1fr;gap:13px}label{font-weight:700;font-size:13px}input,select,textarea{width:100%;margin-top:6px;padding:11px;border:1px solid #d0d5dd;border-radius:10px;font:inherit}textarea{min-height:100px}.full{grid-column:1/-1}.actions{display:flex;gap:8px;flex-wrap:wrap}@media(max-width:700px){.grid{grid-template-columns:1fr}.top h1{font-size:20px}form{grid-template-columns:1fr}.full{grid-column:auto}}
-</style></head><body><div class="wrap">
-<div class="top"><div><h1>Department Daily Update</h1><div class="hint">Department → Assigned Tasks → Update Task → Save</div></div><a class="home" href="index.html">Home</a></div>
-<div id="msg"></div>
-<section id="deptView" class="card"><div style="display:flex;justify-content:space-between;align-items:center;gap:8px"><div><b>Assigned Departments</b><div class="sub">صرف وہ departments دکھیں گے جنہیں work assign ہوا ہے۔</div></div><button class="btn" onclick="loadDepartments()">Refresh</button></div><div id="deptGrid" class="grid" style="margin-top:14px"><div class="hint">Loading...</div></div></section>
-<section id="taskView" class="card hidden"><div style="display:flex;justify-content:space-between;align-items:center"><div><b id="deptTitle"></b><div id="taskCount" class="sub"></div></div><button class="btn" onclick="showDepartments()">← Departments</button></div><div id="tasks" style="margin-top:14px"></div></section>
-<section id="editView" class="card hidden"><div style="display:flex;justify-content:space-between;align-items:center"><div><b>Update Assigned Task</b><div id="editSub" class="sub"></div></div><button class="btn" onclick="showTasks()">← Tasks</button></div>
-<form id="form" style="margin-top:15px"><input id="aid" type="hidden"><input id="dept" type="hidden"><div class="full"><label>Task</label><div id="taskText" style="margin-top:6px;font-weight:700;line-height:1.5"></div></div>
-<div><label>Status *</label><select id="status"><option>Pending</option><option>In Progress</option><option>Completed</option><option>On Hold</option></select></div>
-<div><label>Progress % *</label><input id="progress" type="number" min="0" max="100" required></div>
-<div><label>Update Date *</label><input id="date" type="date" required></div><div><label>Updated By</label><input id="by"></div>
-<div class="full"><label>Remarks</label><textarea id="remarks" placeholder="آج کیا کام ہوا؟"></textarea></div>
-<div class="full"><label>Evidence / File Link</label><input id="evidence" type="url" placeholder="Optional Google Drive / report link"></div>
-<div class="full actions"><button id="save" class="btn primary" type="submit">Save Daily Update</button><button type="button" class="btn" onclick="showTasks()">Cancel</button></div></form></section>
-</div>
+:root{--navy:#0b1f33;--navy2:#123a5a;--blue:#1d7eaf;--bg:#f3f6f9;--white:#fff;--text:#172536;--muted:#6c7b88;--line:#dce5eb;--soft:#f6f9fb;--green:#198754;--orange:#c77700;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:27px 18px 23px;box-shadow:0 6px 22px #102b401c}.wrap{max-width:1120px;margin:auto}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:15px}.left{display:flex;align-items:center;gap:14px}.logo{width:52px;height:52px;border:2px solid #ffffffb8;border-radius:13px;display:grid;place-items:center;font-weight:800;font-size:15px}.brand h1{font-size:25px;margin:0 0 4px}.sub{font-size:13px;color:#d6e4ed;margin:0}
+.home{color:#fff;text-decoration:none;border:1px solid #ffffff35;background:#ffffff10;padding:9px 13px;border-radius:9px;font-size:12px;font-weight:700}.home:hover{background:#ffffff20}
+.status{display:inline-flex;align-items:center;gap:7px;margin-top:16px;padding:7px 11px;border:1px solid #ffffff2e;border-radius:20px;background:#ffffff0d;font-size:11px}.dot{width:8px;height:8px;border-radius:50%;background:#43d17b;box-shadow:0 0 0 4px #43d17b1c}
+main{padding:27px 18px 45px}.intro{margin-bottom:17px}.intro h2{font-size:18px;margin:0 0 5px}.intro p{font-size:13px;color:var(--muted);margin:0}
+.toolbar{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:14px}.count{font-size:12px;color:var(--muted)}button{border:0;border-radius:9px;padding:10px 14px;background:linear-gradient(135deg,var(--navy2),var(--blue));color:#fff;font-weight:750;font-size:12px;cursor:pointer}button:hover{filter:brightness(1.06)}
+.card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.dept{background:#fff;border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:0 8px 24px #142b3f0b;cursor:pointer;transition:.2s}.dept:hover{transform:translateY(-3px);border-color:#bdd5e3;box-shadow:0 12px 28px #142b3f14}
+.dept-head{display:flex;justify-content:space-between;gap:10px}.dept h3{margin:0;font-size:16px}.badge{background:#eaf4f9;color:#12628a;padding:5px 8px;border-radius:20px;font-size:10px;font-weight:800;white-space:nowrap}.tasks{font-size:12px;color:var(--muted);margin:9px 0 14px}.bar{height:7px;background:#e8eef2;border-radius:10px;overflow:hidden}.fill{height:100%;background:linear-gradient(90deg,var(--navy2),var(--blue));border-radius:10px}.meta{display:flex;justify-content:space-between;margin-top:8px;font-size:10px;color:var(--muted)}
+.panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 8px 24px #142b3f0b}.hidden{display:none}.back{background:#eef5f9;color:var(--navy2);border:1px solid #d7e3ea;box-shadow:none;margin-bottom:15px}
+.task{border:1px solid var(--line);background:#fbfcfd;border-radius:11px;padding:14px;margin-bottom:9px;cursor:pointer}.task:hover{background:#f4f9fc;border-color:#c7dbe6}.task strong{font-size:13px}.task small{display:block;color:var(--muted);margin-top:5px;font-size:11px}.task-top{display:flex;justify-content:space-between;gap:10px}.status-pill{font-size:10px;padding:5px 8px;border-radius:15px;background:#eef2f5;color:#51616e;white-space:nowrap}
+.form-title{margin:0 0 5px;font-size:17px}.form-note{color:var(--muted);font-size:12px;margin:0 0 17px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field label{display:block;font-size:11px;font-weight:750;color:#344a5c}.field input,.field select,.field textarea{width:100%;margin-top:6px;padding:10px 11px;border:1px solid #cfd9e0;border-radius:9px;background:#fff;font:inherit;font-size:12px;outline:none}.field textarea{min-height:90px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1d7eaf18}.full{grid-column:1/-1}.actions{display:flex;gap:9px;margin-top:15px}.secondary{background:#eef5f9;color:var(--navy2);box-shadow:none;border:1px solid #d7e3ea}.msg{padding:10px 12px;border-radius:9px;font-size:11px;margin-top:12px}.ok{background:#ecfdf3;color:#027a48;border:1px solid #abefc6}.err{background:#fef3f2;color:#b42318;border:1px solid #fecdca}.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:12px}.footer{text-align:center;color:#8a98a3;font-size:10px;margin-top:18px}
+@media(max-width:850px){.card-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.brand h1{font-size:21px}.home{white-space:nowrap}.card-grid,.fields{grid-template-columns:1fr}.full{grid-column:auto}.toolbar{align-items:flex-start}}
+</style>
+</head>
+<body>
+<header><div class="wrap">
+  <div class="brand"><div class="left"><div class="logo">CEW</div><div><h1>Department Daily Update</h1><p class="sub">Design & Development Control System · Department Work Progress</p></div></div><a class="home" href="index.html">← Home</a></div>
+  <div class="status"><span class="dot"></span>Daily Engineering Work Control · System Online</div>
+</div></header>
+
+<main><div class="wrap">
+  <div id="departmentView">
+    <div class="intro"><h2>Assigned Departments</h2><p>Only departments with assigned work are shown. Select a department to view and update its tasks.</p></div>
+    <div class="toolbar"><div class="count" id="count">Loading assigned work...</div><button onclick="loadAssignments()">↻ Refresh</button></div>
+    <div id="departments" class="card-grid"><div class="panel empty">Loading assigned departments...</div></div>
+  </div>
+
+  <div id="tasksView" class="hidden">
+    <button class="back" onclick="showDepartments()">← Back to Departments</button>
+    <div class="intro"><h2 id="selectedDepartment">Department Tasks</h2><p>Click a task to enter today's progress, status, remarks and evidence.</p></div>
+    <div id="tasks" class="panel"></div>
+  </div>
+
+  <div id="formView" class="hidden">
+    <button class="back" onclick="showTasks()">← Back to Tasks</button>
+    <div class="panel">
+      <h2 class="form-title">Update Assigned Task</h2>
+      <p class="form-note" id="taskName"></p>
+      <form id="updateForm">
+        <div class="fields">
+          <div class="field"><label>Status *</label><select id="status" required><option>Pending</option><option>In Progress</option><option>Completed</option><option>On Hold</option></select></div>
+          <div class="field"><label>Progress % *</label><input id="progress" type="number" min="0" max="100" required></div>
+          <div class="field"><label>Update Date *</label><input id="updateDate" type="date" required></div>
+          <div class="field"><label>Updated By</label><input id="updatedBy" placeholder="Name / employee"></div>
+          <div class="field full"><label>Remarks</label><textarea id="remarks" placeholder="Enter today's progress, issue, action or next step..."></textarea></div>
+          <div class="field full"><label>Evidence / File Link</label><input id="evidence" placeholder="Optional Google Drive / report link"></div>
+        </div>
+        <div class="actions"><button type="submit">Save Daily Update</button><button type="button" class="secondary" onclick="showTasks()">Cancel</button></div>
+        <div id="msg"></div>
+      </form>
+    </div>
+  </div>
+  <div class="footer">Chenab Engineering · Design & Development Control System · Controlled Daily Work Record</div>
+</div></main>
+
 <script>
-let assignments=[],currentDept="";
+let assignments=[], selectedDepartment="", selectedAssignment=null;
 const $=id=>document.getElementById(id);
-function today(){let d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")}
-function msg(t,c="err"){$("msg").innerHTML='<div class="msg '+c+'">'+esc(t)+'</div>'}
-function clearMsg(){$("msg").innerHTML=""}
-function view(id){["deptView","taskView","editView"].forEach(x=>$(x).classList.toggle("hidden",x!==id))}
-async function loadDepartments(){clearMsg();view("deptView");$("deptGrid").innerHTML='<div class="hint">Loading departments...</div>';try{let r=await api("listAssignments");assignments=r.assignments||[];let m={};assignments.forEach(a=>{let d=String(a.Department||"").trim();if(d)(m[d]??=[]).push(a)});let ds=Object.keys(m).sort();if(!ds.length){$("deptGrid").innerHTML='<div class="hint">No assigned work found.</div>';return}$("deptGrid").innerHTML=ds.map(d=>{let x=m[d],p=Math.round(x.reduce((s,a)=>s+Number(a.Progress||0),0)/x.length),done=x.filter(a=>Number(a.Progress||0)>=100||String(a.Status||"").toLowerCase()=="completed").length;return `<button class="dept" onclick='openDept(${JSON.stringify(d)})'><div class="title">${esc(d)}</div><div class="sub">${x.length} task(s) · ${done} completed</div><div class="bar"><span style="width:${Math.min(100,Math.max(0,p))}%"></span></div><div class="sub">Progress ${p}%</div></button>`}).join("")}catch(e){$("deptGrid").innerHTML="";msg(e.message)}}
-function openDept(d){currentDept=d;let x=assignments.filter(a=>String(a.Department||"").trim()==d);$("deptTitle").textContent=d;$("taskCount").textContent=x.length+" assigned task(s)";$("tasks").innerHTML=x.map(a=>{let p=Number(a.Progress||0);return `<div class="task" onclick='openTask(${JSON.stringify(a).replace(/</g,"\\u003c")})'><div class="taskhead"><div><div class="title">${esc(a.Task)}</div><div class="sub">Part: ${esc(a.PartNo)} · Order: ${esc(a.OrderNo)}${a.DueDate?" · Due: "+esc(a.DueDate):""}</div></div><span class="badge">${esc(a.Status||"Pending")}</span></div><div class="bar"><span style="width:${Math.min(100,Math.max(0,p))}%"></span></div><div class="sub">Progress ${p}% · Tap to update</div></div>`}).join("");view("taskView")}
-function openTask(a){$("aid").value=a.AssignmentID||"";$("dept").value=a.Department||"";$("taskText").textContent=a.Task||"";$("editSub").textContent=(a.PartNo||"")+" · "+(a.OrderNo||"");$("status").value=a.Status||"Pending";$("progress").value=Number(a.Progress||0);$("date").value=today();$("by").value="";$("remarks").value=a.Remarks||"";$("evidence").value="";view("editView");scrollTo(0,0)}
-function showDepartments(){view("deptView")} function showTasks(){openDept(currentDept)}
-$("form").onsubmit=async e=>{e.preventDefault();clearMsg();$("save").disabled=true;$("save").textContent="Saving...";try{let r=await api("updateWork",{AssignmentID:$("aid").value,Department:$("dept").value,UpdateDate:$("date").value,Status:$("status").value,Progress:$("progress").value,Remarks:$("remarks").value,EvidenceLink:$("evidence").value,UpdatedBy:$("by").value});msg(r.message||"Daily update saved.","ok");let f=await api("listAssignments");assignments=f.assignments||[];setTimeout(()=>{clearMsg();openDept(currentDept)},400)}catch(e){msg(e.message)}finally{$("save").disabled=false;$("save").textContent="Save Daily Update"}};
-$("date").value=today();loadDepartments();
-</script></body></html>
+function today(){return new Date().toISOString().slice(0,10)}
+$("updateDate").value=today();
+
+async function loadAssignments(){
+  $("count").textContent="Loading assigned work...";
+  $("departments").innerHTML='<div class="panel empty">Loading assigned departments...</div>';
+  try{
+    const r=await api("listAssignments");
+    assignments=Array.isArray(r.assignments)?r.assignments:[];
+    renderDepartments();
+  }catch(e){
+    $("departments").innerHTML='<div class="panel empty">Unable to load assigned work.<br>'+esc(e.message||"API connection failed")+'</div>';
+    $("count").textContent="Connection error";
+  }
+}
+function renderDepartments(){
+  const groups={};
+  assignments.forEach(a=>{const d=(a.Department||"Unassigned").trim()||"Unassigned";(groups[d]??=[]).push(a)});
+  const names=Object.keys(groups);
+  $("count").textContent=names.length+" department(s) · "+assignments.length+" assigned task(s)";
+  if(!names.length){$("departments").innerHTML='<div class="panel empty">No assigned work found.</div>';return}
+  $("departments").innerHTML=names.map(d=>{
+    const arr=groups[d], done=arr.filter(x=>String(x.Status||"").toLowerCase()==="completed").length;
+    const avg=arr.length?Math.round(arr.reduce((s,x)=>s+Number(x.Progress||0),0)/arr.length):0;
+    return `<div class="dept" onclick="openDepartment(${JSON.stringify(d)})"><div class="dept-head"><h3>${esc(d)}</h3><span class="badge">${arr.length} Task${arr.length==1?"":"s"}</span></div><div class="tasks">${done} completed · ${avg}% average progress</div><div class="bar"><div class="fill" style="width:${Math.max(0,Math.min(100,avg))}%"></div></div><div class="meta"><span>Assigned work</span><b>${avg}%</b></div></div>`;
+  }).join("");
+}
+function openDepartment(d){
+  selectedDepartment=d;$("departmentView").classList.add("hidden");$("tasksView").classList.remove("hidden");$("formView").classList.add("hidden");
+  $("selectedDepartment").textContent=d+" — Assigned Tasks";
+  const arr=assignments.filter(a=>(a.Department||"Unassigned").trim()===d);
+  $("tasks").innerHTML=arr.length?arr.map((a,i)=>`<div class="task" onclick="openTask(${assignments.indexOf(a)})"><div class="task-top"><strong>${esc(a.Task||"Untitled Task")}</strong><span class="status-pill">${esc(a.Status||"Pending")}</span></div><small>${esc(a.PartNo||a.OrderNo||"")} · Progress ${Number(a.Progress||0)}% · Due ${esc(a.DueDate||"—")}</small></div>`).join(""):'<div class="empty">No tasks assigned.</div>';
+}
+function openTask(i){
+  selectedAssignment=assignments[i];$("tasksView").classList.add("hidden");$("formView").classList.remove("hidden");
+  $("taskName").textContent=(selectedAssignment.Task||"Task")+" · "+(selectedAssignment.Department||"")+" · "+(selectedAssignment.PartNo||selectedAssignment.OrderNo||"");
+  $("status").value=selectedAssignment.Status||"Pending";$("progress").value=Number(selectedAssignment.Progress||0);
+  $("updateDate").value=today();$("updatedBy").value="";$("remarks").value=selectedAssignment.Remarks||"";$("evidence").value="";
+}
+function showDepartments(){$("departmentView").classList.remove("hidden");$("tasksView").classList.add("hidden");$("formView").classList.add("hidden");}
+function showTasks(){if(selectedDepartment)openDepartment(selectedDepartment);else showDepartments()}
+$("updateForm").onsubmit=async e=>{
+ e.preventDefault(); if(!selectedAssignment)return;
+ $("msg").className="msg";$("msg").textContent="Saving...";
+ try{
+  const r=await api("updateWork",{AssignmentID:selectedAssignment.AssignmentID,Status:$("status").value,Progress:$("progress").value,UpdateDate:$("updateDate").value,UpdatedBy:$("updatedBy").value,Remarks:$("remarks").value,EvidenceLink:$("evidence").value});
+  $("msg").className="msg ok";$("msg").textContent=r.message||"Daily update saved successfully.";
+  await loadAssignments(); setTimeout(()=>openDepartment(selectedDepartment),500);
+ }catch(err){$("msg").className="msg err";$("msg").textContent=err.message||"Unable to save update."}
+};
+loadAssignments();
+</script>
+</body></html>
