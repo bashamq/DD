@@ -1,135 +1,427 @@
 <!doctype html>
 <html lang="en">
 <head>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Chenab Engineering — Part / Order Registration</title>
-<script src="config.js"></script>
+
+<title>Chenab Engineering — Part Registration</title>
+
+<script src="config.js?v=20260912"></script>
+<script src="auth.js?v=20260912"></script>
+
 <style>
+
 :root{
-  --navy:#0b1f33;--navy2:#123a5a;--blue:#1d7eaf;--blue2:#2d91bf;
-  --bg:#f3f6f9;--white:#fff;--text:#172536;--muted:#6c7b88;--line:#dce5eb;
-  --green:#198754;--red:#b42318
+--navy:#0b1f33;
+--navy2:#123a5a;
+--blue:#1d7eaf;
+--bg:#f3f6f9;
+--text:#172536;
+--muted:#6c7b88;
+--line:#dce5eb;
 }
+
 *{box-sizing:border-box}
-body{margin:0;font-family:Segoe UI,Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
-header{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 18px 24px;box-shadow:0 6px 22px #102b401c}
-.wrap{max-width:1120px;margin:auto}
-.brand{display:flex;justify-content:space-between;align-items:center;gap:15px}
-.left{display:flex;align-items:center;gap:14px}
-.logo{width:53px;height:53px;border:2px solid #ffffffb8;border-radius:13px;display:grid;place-items:center;font-weight:800;font-size:15px}
-h1{font-size:25px;margin:0 0 4px}.sub{font-size:13px;color:#d6e4ed;margin:0}
-.home{color:#fff;text-decoration:none;border:1px solid #ffffff35;background:#ffffff10;padding:9px 13px;border-radius:9px;font-size:12px;font-weight:700}
-.home:hover{background:#ffffff20}
-.status{display:inline-flex;align-items:center;gap:7px;margin-top:16px;padding:7px 11px;border:1px solid #ffffff2e;border-radius:20px;background:#ffffff0d;font-size:11px}
-.dot{width:8px;height:8px;border-radius:50%;background:#43d17b;box-shadow:0 0 0 4px #43d17b1c}
-main{padding:28px 18px 45px}
-.intro{margin-bottom:17px}.intro h2{font-size:18px;margin:0 0 5px}.intro p{font-size:13px;color:var(--muted);margin:0}
-.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:23px;box-shadow:0 8px 26px #142b3f0b}
-.section-head{display:flex;align-items:center;gap:10px;margin-bottom:17px}
-.section-number{width:30px;height:30px;border-radius:9px;background:#eaf4f9;color:#12628a;display:grid;place-items:center;font-size:11px;font-weight:800}
-.section-head h3{font-size:14px;margin:0}.section-head p{font-size:10px;color:var(--muted);margin:2px 0 0}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:15px}
-.field label{display:block;font-weight:750;font-size:11px;color:#344a5c}
-.required{color:#b42318}
-input,select{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid #cfd9e0;border-radius:9px;margin-top:6px;background:#fff;color:var(--text);font:inherit;font-size:13px;outline:none}
-input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1d7eaf18}
-.full{grid-column:1/-1}
-.actions{margin-top:19px;padding-top:17px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;gap:12px}
-.helper{font-size:10px;color:var(--muted);line-height:1.5}
-button{border:0;border-radius:9px;padding:12px 20px;background:linear-gradient(135deg,var(--navy2),var(--blue));color:#fff;font-weight:800;font-size:12px;cursor:pointer;box-shadow:0 5px 14px #123a5a18}
-button:hover{filter:brightness(1.06);transform:translateY(-1px)}
-.msg{margin-top:15px;padding:12px 13px;border-radius:9px;font-size:12px;display:none}
-.ok{background:#ecfdf3;color:#027a48;border:1px solid #abefc6}
-.err{background:#fef3f2;color:#b42318;border:1px solid #fecdca}
-.info{margin-top:15px;background:#f5f8fa;border:1px solid var(--line);border-radius:11px;padding:13px;font-size:11px;color:var(--muted);line-height:1.55}
-.footer{text-align:center;color:#8a98a3;font-size:10px;margin-top:18px}
+
+body{
+margin:0;
+font-family:Segoe UI,Arial,sans-serif;
+background:var(--bg);
+color:var(--text)
+}
+
+header{
+background:linear-gradient(135deg,var(--navy),var(--navy2));
+color:#fff;
+padding:28px 18px 24px
+}
+
+.wrap{
+max-width:1120px;
+margin:auto
+}
+
+.brand{
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:15px
+}
+
+.left{
+display:flex;
+align-items:center;
+gap:14px
+}
+
+.logo{
+width:53px;
+height:53px;
+border:2px solid #ffffffb8;
+border-radius:13px;
+display:grid;
+place-items:center;
+font-weight:800
+}
+
+h1{
+font-size:25px;
+margin:0 0 4px
+}
+
+.sub{
+font-size:13px;
+color:#d6e4ed;
+margin:0
+}
+
+.home{
+color:#fff;
+text-decoration:none;
+border:1px solid #ffffff35;
+background:#ffffff10;
+padding:9px 13px;
+border-radius:9px;
+font-size:12px;
+font-weight:700
+}
+
+.status{
+display:inline-flex;
+align-items:center;
+gap:7px;
+margin-top:16px;
+padding:7px 11px;
+border:1px solid #ffffff2e;
+border-radius:20px;
+font-size:11px
+}
+
+.dot{
+width:8px;
+height:8px;
+border-radius:50%;
+background:#43d17b
+}
+
+main{
+padding:28px 18px 45px
+}
+
+.intro{
+margin-bottom:17px
+}
+
+.intro h2{
+font-size:18px;
+margin:0 0 5px
+}
+
+.intro p{
+font-size:13px;
+color:var(--muted);
+margin:0
+}
+
+.card{
+background:#fff;
+border:1px solid var(--line);
+border-radius:16px;
+padding:23px;
+box-shadow:0 8px 26px #142b3f0b
+}
+
+.grid{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:15px
+}
+
+.full{
+grid-column:1/-1
+}
+
+label{
+display:block;
+font-size:11px;
+font-weight:750;
+color:#344a5c
+}
+
+input{
+width:100%;
+padding:11px 12px;
+margin-top:6px;
+border:1px solid #cfd9e0;
+border-radius:9px;
+font:inherit
+}
+
+input:focus{
+outline:none;
+border-color:var(--blue)
+}
+
+.actions{
+margin-top:20px;
+padding-top:17px;
+border-top:1px solid var(--line);
+display:flex;
+justify-content:flex-end
+}
+
+button{
+border:0;
+border-radius:9px;
+padding:12px 22px;
+background:linear-gradient(135deg,var(--navy2),var(--blue));
+color:#fff;
+font-weight:800;
+cursor:pointer
+}
+
+.msg{
+display:none;
+margin-top:15px;
+padding:12px;
+border-radius:9px;
+font-size:12px
+}
+
+.ok{
+display:block;
+background:#ecfdf3;
+color:#027a48
+}
+
+.err{
+display:block;
+background:#fef3f2;
+color:#b42318
+}
+
+.footer{
+text-align:center;
+color:#8a98a3;
+font-size:10px;
+margin-top:18px
+}
+
 @media(max-width:650px){
-  .brand{align-items:flex-start}.brand h1{font-size:21px}.home{white-space:nowrap}
-  .grid{grid-template-columns:1fr}.full{grid-column:auto}.actions{display:block}
-  .actions button{width:100%;margin-top:10px}
+.grid{grid-template-columns:1fr}
+.full{grid-column:auto}
+.brand{align-items:flex-start}
+.actions button{width:100%}
 }
+
 </style>
-<script src="auth.js"></script></head>
-<body><script>
-if (typeof requireRole !== "function") {
-  document.body.innerHTML =
-    '<div style="font-family:Arial;padding:40px;text-align:center">' +
-    '<h2>Authentication file not loaded</h2>' +
-    '<p>Please make sure <b>auth.js</b> is uploaded in the same GitHub folder as register.html.</p>' +
-    '</div>';
-} else {
-  requireRole("Admin");
-}
-</script>
-<header><div class="wrap">
-  <div class="brand">
-    <div class="left"><div class="logo">CEW</div><div>
-      <h1>Part / Order Registration</h1>
-      <p class="sub">Design & Development Control System · Engineering Master Record</p>
-    </div></div>
-    <a class="home" href="index.html">← Home</a>
-  </div>
-  <div class="status"><span class="dot"></span>Engineering Master Data · System Online</div>
-</div></header>
+</head>
 
-<main><div class="wrap">
-  <div class="intro">
-    <h2>Register New Engineering Part</h2>
-    <p>Create the controlled master record that will be used later for Work Assignment, Daily Updates and Dashboard monitoring.</p>
-  </div>
-
-  <div class="card">
-    <div class="section-head">
-      <div class="section-number">01</div>
-      <div><h3>Part & Order Information</h3><p>Basic identification and customer information</p></div>
-    </div>
-
-    <form id="f"><div class="grid">
-      <div class="field"><label>Order No <span class="required">*</span></label><input name="OrderNo" required placeholder="Enter order number"></div>
-      <div class="field"><label>Customer</label><input name="Customer" placeholder="Customer name"></div>
-      <div class="field"><label>PO / RFQ</label><input name="PO_RFQ" placeholder="PO or RFQ reference"></div>
-      <div class="field"><label>Part No <span class="required">*</span></label><input name="PartNo" required placeholder="Part number"></div>
-      <div class="field"><label>Part Name <span class="required">*</span></label><input name="PartName" required placeholder="Part name"></div>
-      <div class="field"><label>Drawing No <span class="required">*</span></label><input name="DrawingNo" required placeholder="Drawing number"></div>
-      <div class="field"><label>Drawing Revision <span class="required">*</span></label><input name="DrawingRev" required placeholder="Revision e.g. 00 / A"></div>
-      <div class="field"><label>Material Grade / Specification <span class="required">*</span></label><input name="MaterialGrade" required placeholder="Material / specification"></div>
-      <div class="field"><label>Quantity <span class="required">*</span></label><input name="Quantity" type="number" min="1" required placeholder="Quantity"></div>
-      <div class="field"><label>Application</label><input name="Application" placeholder="Application / end use"></div>
-      <div class="field"><label>Batch / Heat No.</label><input name="BatchHeatNo" placeholder="Batch or heat number"></div>
-      <div class="field"><label>Priority</label><select name="Priority"><option>Normal</option><option>High</option><option>Urgent</option></select></div>
-      <div class="field"><label>Target Date</label><input name="TargetDate" type="date"></div>
-      <div class="field"><label>Created By</label><input name="CreatedBy" placeholder="Name / employee"></div>
-      <div class="full actions">
-        <div class="helper"><strong>* Required fields</strong><br>Verify drawing, revision and material details before registration.</div>
-        <button type="submit">Register Part →</button>
-      </div>
-    </div></form>
-
-    <div id="msg" class="msg"></div>
-    <div class="info"><strong>Next step:</strong> After registration, the part becomes available in <b>Work Assignment</b> for controlled Design & Development task allocation.</div>
-  </div>
-  <div class="footer">Chenab Engineering · Design & Development Control System · Controlled Engineering Master Record</div>
-</div></main>
+<body>
 
 <script>
-f.onsubmit=async e=>{
-  e.preventDefault();
-  msg.className="msg";
-  msg.style.display="none";
-  try{
-    const p=Object.fromEntries(new FormData(f));
-    const r=await api("registerPart",p);
-    msg.className="msg ok";
-    msg.textContent="Registered successfully. Part ID: "+r.partId;
-    msg.style.display="block";
-    f.reset();
-  }catch(x){
-    msg.className="msg err";
-    msg.textContent=x.message||"Unable to register part.";
-    msg.style.display="block";
-  }
-};
+if(!requireRole("Admin")){
+throw new Error("Admin login required");
+}
 </script>
+
+<header>
+
+<div class="wrap">
+
+<div class="brand">
+
+<div class="left">
+
+<div class="logo">CEW</div>
+
+<div>
+<h1>Part / Order Registration</h1>
+<p class="sub">
+Design & Development Control System · Engineering Master Record
+</p>
+</div>
+
+</div>
+
+<a class="home" href="index.html">← Home</a>
+
+</div>
+
+<div class="status">
+<span class="dot"></span>
+Engineering Master Data · System Online
+</div>
+
+</div>
+
+</header>
+
+<main>
+
+<div class="wrap">
+
+<div class="intro">
+
+<h2>Register New Engineering Part</h2>
+
+<p>
+Create the controlled master record used for Work Assignment,
+Daily Updates and Dashboard monitoring.
+</p>
+
+</div>
+
+<div class="card">
+
+<form id="registerForm">
+
+<div class="grid">
+
+<div>
+<label>Order No *</label>
+<input name="OrderNo" required>
+</div>
+
+<div>
+<label>Customer</label>
+<input name="Customer">
+</div>
+
+<div>
+<label>PO / RFQ</label>
+<input name="PO_RFQ">
+</div>
+
+<div>
+<label>Part No *</label>
+<input name="PartNo" required>
+</div>
+
+<div>
+<label>Part Name *</label>
+<input name="PartName" required>
+</div>
+
+<div>
+<label>Drawing No *</label>
+<input name="DrawingNo" required>
+</div>
+
+<div>
+<label>Drawing Revision *</label>
+<input name="DrawingRev" required>
+</div>
+
+<div>
+<label>Material Grade / Specification *</label>
+<input name="MaterialGrade" required>
+</div>
+
+<div>
+<label>Quantity *</label>
+<input name="Quantity" type="number" min="1" required>
+</div>
+
+<div>
+<label>Application</label>
+<input name="Application">
+</div>
+
+<div>
+<label>Batch / Heat No.</label>
+<input name="BatchHeatNo">
+</div>
+
+<div>
+<label>Priority</label>
+<input name="Priority" value="Normal">
+</div>
+
+<div>
+<label>Target Date</label>
+<input name="TargetDate" type="date">
+</div>
+
+<div>
+<label>Created By</label>
+<input name="CreatedBy">
+</div>
+
+</div>
+
+<div class="actions">
+<button type="submit">Register Part</button>
+</div>
+
+<div id="msg" class="msg"></div>
+
+</form>
+
+</div>
+
+<div class="footer">
+Chenab Engineering · Design & Development Control System
+</div>
+
+</div>
+
+</main>
+
+<script>
+
+const form=document.getElementById("registerForm");
+const msg=document.getElementById("msg");
+
+form.onsubmit=async e=>{
+
+e.preventDefault();
+
+msg.className="msg";
+msg.textContent="Saving...";
+
+try{
+
+const data=Object.fromEntries(
+new FormData(form).entries()
+);
+
+if(!data.CreatedBy){
+
+const u=currentUser();
+
+if(u){
+data.CreatedBy=u.username||"Admin";
+}
+
+}
+
+const r=await api(
+"registerPart",
+data
+);
+
+msg.className="msg ok";
+
+msg.textContent=
+(r.message||"Part registered successfully.")+
+(r.partId?" Part ID: "+r.partId:"");
+
+form.reset();
+
+}catch(err){
+
+msg.className="msg err";
+
+msg.textContent=
+err.message||"Unable to register part.";
+
+}
+
+};
+
+</script>
+
 </body>
 </html>
