@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Department Daily Update — Chenab Engineering</title>
-<script src="config.js?v=20260912"></script>
+<script src="config.js?v=20260912-auth"></script><script src="auth.js?v=20260912-auth"></script>
 <style>
 :root{--navy:#0b1f33;--navy2:#123a5a;--blue:#1d7eaf;--bg:#f3f6f9;--white:#fff;--text:#172536;--muted:#6c7b88;--line:#dce5eb;--soft:#f6f9fb;--green:#198754;--orange:#c77700;--red:#b42318}
 *{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
@@ -39,7 +39,7 @@ main{padding:27px 18px 45px}.intro{margin-bottom:17px}.intro h2{font-size:18px;m
 </head>
 <body>
 <header><div class="wrap">
-  <div class="brand"><div class="left"><div class="logo">CEW</div><div><h1>Department Daily Update</h1><p class="sub">Design & Development Control System · Department Work Progress</p></div></div><a class="home" href="index.html">← Home</a></div>
+  <div class="brand"><div class="left"><div class="logo">CEW</div><div><h1>Department Daily Update</h1><p class="sub">Design & Development Control System · Department Work Progress</p></div></div><div style="display:flex;align-items:center;gap:8px"><span id="userBadge" class="home"></span><button type="button" class="home" onclick="logout()" style="cursor:pointer">Logout</button><a class="home" href="index.html">← Home</a></div></div>
   <div class="status"><span class="dot"></span>Daily Engineering Work Control · System Online</div>
 </div></header>
 
@@ -98,13 +98,41 @@ function fmtDate(v){
 }
 $("updateDate").value=today();
 
+
+function showUser(){
+  const u = currentUser();
+  if(!u) return;
+  const badge = document.getElementById("userBadge");
+  if(badge){
+    badge.style.display = "inline-flex";
+    badge.style.alignItems = "center";
+    badge.style.border = "1px solid #ffffff35";
+    badge.style.background = "#ffffff10";
+    badge.style.padding = "8px 10px";
+    badge.style.borderRadius = "9px";
+    badge.style.fontSize = "11px";
+    badge.textContent = (u.role || "User") + " · " + (u.department || "");
+  }
+}
+
 async function loadAssignments(){
+  if(!requireLogin()) return;
+  showUser();
   $("count").textContent="Loading assigned work...";
   $("departments").innerHTML='<div class="panel empty">Loading assigned departments...</div>';
   try{
     const r=await api("listAssignments");
     assignments=Array.isArray(r.assignments)?r.assignments:[];
     renderDepartments();
+
+    const u=currentUser();
+    if(u && String(u.role||"").toLowerCase()!=="admin" && u.department){
+      const exists=assignments.some(a=>
+        String(a.Department||"").trim().toLowerCase()===
+        String(u.department||"").trim().toLowerCase()
+      );
+      if(exists) openDepartment(u.department);
+    }
   }catch(e){
     $("departments").innerHTML='<div class="panel empty">Unable to load assigned work.<br>'+esc(e.message||"API connection failed")+'</div>';
     $("count").textContent="Connection error";
