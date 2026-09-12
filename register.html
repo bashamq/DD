@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Chenab Engineering — Part / Order Registration</title>
-<script src="config_AUTH_V11.js"></script>
+<script src="config.js"></script>
 <style>
 :root{
   --navy:#0b1f33;--navy2:#123a5a;--blue:#1d7eaf;--blue2:#2d91bf;
@@ -50,8 +50,18 @@ button:hover{filter:brightness(1.06);transform:translateY(-1px)}
   .actions button{width:100%;margin-top:10px}
 }
 </style>
-<script src="auth.js?v=20260912-auth"></script></head>
-<body><script>if(!requireRole("Admin")){}</script>
+<script src="auth.js"></script></head>
+<body><script>
+if (typeof requireRole !== "function") {
+  document.body.innerHTML =
+    '<div style="font-family:Arial;padding:40px;text-align:center">' +
+    '<h2>Authentication file not loaded</h2>' +
+    '<p>Please make sure <b>auth.js</b> is uploaded in the same GitHub folder as register.html.</p>' +
+    '</div>';
+} else {
+  requireRole("Admin");
+}
+</script>
 <header><div class="wrap">
   <div class="brand">
     <div class="left"><div class="logo">CEW</div><div>
