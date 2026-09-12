@@ -19,7 +19,22 @@ main{padding:27px 18px 45px}.intro{margin-bottom:17px}.intro h2{font-size:18px;m
 .panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:0 8px 24px #142b3f0b}.hidden{display:none}.back{background:#eef5f9;color:var(--navy2);border:1px solid #d7e3ea;box-shadow:none;margin-bottom:15px}
 .task{width:100%;text-align:left;font:inherit;border:1px solid var(--line);background:#fbfcfd;border-radius:11px;padding:14px;margin-bottom:9px;cursor:pointer}.task:hover{background:#f4f9fc;border-color:#c7dbe6}.task strong{font-size:13px}.task small{display:block;color:var(--muted);margin-top:5px;font-size:11px}.task-top{display:flex;justify-content:space-between;gap:10px}.status-pill{font-size:10px;padding:5px 8px;border-radius:15px;background:#eef2f5;color:#51616e;white-space:nowrap}
 .form-title{margin:0 0 5px;font-size:17px}.form-note{color:var(--muted);font-size:12px;margin:0 0 17px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field label{display:block;font-size:11px;font-weight:750;color:#344a5c}.field input,.field select,.field textarea{width:100%;margin-top:6px;padding:10px 11px;border:1px solid #cfd9e0;border-radius:9px;background:#fff;font:inherit;font-size:12px;outline:none}.field textarea{min-height:90px;resize:vertical}.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue);box-shadow:0 0 0 3px #1d7eaf18}.full{grid-column:1/-1}.actions{display:flex;gap:9px;margin-top:15px}.secondary{background:#eef5f9;color:var(--navy2);box-shadow:none;border:1px solid #d7e3ea}.msg{padding:10px 12px;border-radius:9px;font-size:11px;margin-top:12px}.ok{background:#ecfdf3;color:#027a48;border:1px solid #abefc6}.err{background:#fef3f2;color:#b42318;border:1px solid #fecdca}.empty{text-align:center;padding:35px 15px;color:var(--muted);font-size:12px}.footer{text-align:center;color:#8a98a3;font-size:10px;margin-top:18px}
-@media(max-width:850px){.card-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.brand h1{font-size:21px}.home{white-space:nowrap}.card-grid,.fields{grid-template-columns:1fr}.full{grid-column:auto}.toolbar{align-items:flex-start}}
+
+.department-hero{display:flex;justify-content:space-between;align-items:center;gap:18px;background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;border-radius:16px;padding:22px 21px;margin-bottom:14px;box-shadow:0 9px 28px #102b4017}
+.eyebrow{font-size:10px;letter-spacing:1px;font-weight:800;color:#a9d2e6;margin-bottom:7px}
+.department-hero h2{font-size:21px;margin:0 0 5px}.department-hero p{font-size:12px;color:#d6e4ed;margin:0}
+.hero-stat{min-width:76px;height:76px;border:1px solid #ffffff2e;background:#ffffff0d;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.hero-stat span{font-size:25px;font-weight:800}.hero-stat small{font-size:10px;color:#d6e4ed}
+.task-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px}
+.summary-box{background:#fff;border:1px solid var(--line);border-radius:12px;padding:13px 15px;box-shadow:0 6px 18px #142b3f08}
+.summary-box span{display:block;font-size:10px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.4px}.summary-box b{display:block;font-size:18px;margin-top:4px;color:var(--navy)}
+.task-panel{background:#fff;border:1px solid var(--line);border-radius:16px;padding:13px;box-shadow:0 8px 24px #142b3f0b}
+.task.taskBtn{display:block;padding:15px;margin:0 0 8px;background:#fbfcfd;border:1px solid var(--line);border-radius:11px;cursor:pointer;transition:.18s}
+.task.taskBtn:last-child{margin-bottom:0}.task.taskBtn:hover{background:#f3f8fb;border-color:#bcd4e1;transform:translateY(-1px)}
+.task-main{display:flex;align-items:flex-start;justify-content:space-between;gap:14px}.task-name{font-size:13px;font-weight:750;line-height:1.4}.task-open{font-size:10px;color:var(--blue);font-weight:800;white-space:nowrap}
+.task-info{display:flex;gap:13px;flex-wrap:wrap;margin-top:9px;color:var(--muted);font-size:10.5px}
+.task-progress{height:5px;background:#e8eef2;border-radius:8px;overflow:hidden;margin-top:11px}.task-progress i{display:block;height:100%;background:linear-gradient(90deg,var(--navy2),var(--blue));border-radius:8px}
+@media(max-width:850px){.card-grid{grid-template-columns:repeat(2,1fr)}}@media(max-width:600px){.brand h1{font-size:21px}.home{white-space:nowrap}.card-grid,.fields{grid-template-columns:1fr}.full{grid-column:auto}.toolbar{align-items:flex-start}.department-hero{padding:18px}.hero-stat{min-width:65px;height:65px}.hero-stat span{font-size:21px}.task-summary{grid-template-columns:1fr 1fr 1fr;gap:7px}.summary-box{padding:11px 9px}.summary-box b{font-size:16px}.task-info{gap:8px}.task-main{gap:8px}}
 </style>
 </head>
 <body>
@@ -37,8 +52,16 @@ main{padding:27px 18px 45px}.intro{margin-bottom:17px}.intro h2{font-size:18px;m
 
   <div id="tasksView" class="hidden">
     <button class="back" onclick="showDepartments()">← Back to Departments</button>
-    <div class="intro"><h2 id="selectedDepartment">Department Tasks</h2><p>Click a task to enter today's progress, status, remarks and evidence.</p></div>
-    <div id="tasks" class="panel"></div>
+    <div class="department-hero">
+      <div>
+        <div class="eyebrow">DESIGN & DEVELOPMENT · DEPARTMENT WORK</div>
+        <h2 id="selectedDepartment">Department Tasks</h2>
+        <p>Assigned engineering activities and current execution status.</p>
+      </div>
+      <div class="hero-stat"><span id="deptTaskCount">0</span><small>Tasks</small></div>
+    </div>
+    <div class="task-summary" id="taskSummary"></div>
+    <div id="tasks" class="task-panel"></div>
   </div>
 
   <div id="formView" class="hidden">
@@ -98,9 +121,21 @@ function renderDepartments(){
 }
 function openDepartment(d){
   selectedDepartment=d;$("departmentView").classList.add("hidden");$("tasksView").classList.remove("hidden");$("formView").classList.add("hidden");
-  $("selectedDepartment").textContent=d+" — Assigned Tasks";
+  $("selectedDepartment").textContent=d;
   const arr=assignments.filter(a=>(a.Department||"Unassigned").trim()===d);
-  $("tasks").innerHTML=arr.length?arr.map((a,i)=>`<button type="button" class="task taskBtn" data-task-index="${i}"><div class="task-top"><strong>${esc(a.Task||"Untitled Task")}</strong><span class="status-pill">${esc(a.Status||"Pending")}</span></div><small>${esc(a.PartNo||a.OrderNo||"")} · Progress ${Number(a.Progress||0)}% · Due ${esc(a.DueDate||"—")}</small></button>`).join(""):'<div class="empty">No tasks assigned.</div>';
+  const completed=arr.filter(a=>String(a.Status||"").toLowerCase()==="completed").length;
+  const inProgress=arr.filter(a=>String(a.Status||"").toLowerCase()==="in progress").length;
+  const avg=arr.length?Math.round(arr.reduce((s,a)=>s+Number(a.Progress||0),0)/arr.length):0;
+  $("deptTaskCount").textContent=arr.length;
+  $("taskSummary").innerHTML=`<div class="summary-box"><span>Average Progress</span><b>${avg}%</b></div><div class="summary-box"><span>In Progress</span><b>${inProgress}</b></div><div class="summary-box"><span>Completed</span><b>${completed}</b></div>`;
+  $("tasks").innerHTML=arr.length?arr.map((a,i)=>{
+    const pr=Math.max(0,Math.min(100,Number(a.Progress||0)));
+    return `<button type="button" class="task taskBtn" data-task-index="${i}">
+      <div class="task-main"><div class="task-name">${esc(a.Task||"Untitled Task")}</div><div class="task-open">UPDATE →</div></div>
+      <div class="task-info"><span>Part: ${esc(a.PartNo||"—")}</span><span>Order: ${esc(a.OrderNo||"—")}</span><span>Due: ${esc(a.DueDate||"—")}</span><span class="status-pill">${esc(a.Status||"Pending")}</span></div>
+      <div class="task-progress"><i style="width:${pr}%"></i></div>
+    </button>`;
+  }).join(""):'<div class="empty">No tasks assigned to this department.</div>';
   document.querySelectorAll(".taskBtn").forEach((btn,i)=>btn.addEventListener("click",()=>openTask(assignments.indexOf(arr[i]))));
 }
 function openTask(i){
