@@ -1,55 +1,223 @@
-// Chenab Engineering - Shared API Configuration
-const API_URL = "https://script.google.com/macros/s/AKfycbwHMX9vrCtwnfM-Ino3s64YS1ywNDIfadPZG3M5ElPs66P9PF5RarF53b8sW-LIa2PV/exec";
+// ============================================================
+// CHENAB ENGINEERING
+// SHARED API + LOGIN SESSION CONFIGURATION
+// ============================================================
+
+const API_URL =
+"https://script.google.com/macros/s/AKfycbwHMX9vrCtwnfM-Ino3s64YS1ywNDIfadPZG3M5ElPs66P9PF5RarF53b8sW-LIa2PV/exec";
+
 
 function api(action, params = {}) {
+
   return new Promise((resolve, reject) => {
-    const callback = "chenab_" + Date.now() + "_" + Math.random().toString(36).slice(2, 9);
-    const script = document.createElement("script");
-    let done = false;
-    let timer;
 
-    const finish = (fn, value) => {
-      if (done) return;
-      done = true;
-      clearTimeout(timer);
-      try { delete window[callback]; } catch (_) {}
-      if (script.parentNode) script.parentNode.removeChild(script);
-      fn(value);
-    };
+    const callback =
+      "chenab_cb_" +
+      Date.now() +
+      "_" +
+      Math.floor(Math.random() * 100000);
 
-    window[callback] = data => {
-      if (data && data.ok === false) {
-        finish(reject, new Error(data.error || "Server error"));
-      } else {
-        finish(resolve, data || {});
+    const script =
+      document.createElement("script");
+
+    let finished = false;
+    let timeout;
+
+
+    function cleanup() {
+
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
       }
+
+      try {
+        delete window[callback];
+      } catch (_) {}
+
+      clearTimeout(timeout);
+    }
+
+
+    function fail(message) {
+
+      if (finished) return;
+
+      finished = true;
+
+      cleanup();
+
+      reject(new Error(message));
+    }
+
+
+    window[callback] = function(data) {
+
+      if (finished) return;
+
+      finished = true;
+
+      cleanup();
+
+
+      if (data && data.ok === false) {
+
+        const error =
+          String(data.error || "Server error");
+
+
+        // Session expired
+        if (
+          error === "AUTH_REQUIRED" ||
+          error === "SESSION_EXPIRED"
+        ) {
+
+          try {
+            if (typeof clearSession === "function") {
+              clearSession();
+            }
+          } catch (_) {}
+
+          const current =
+            location.pathname.split("/").pop();
+
+          if (current !== "login.html") {
+
+            location.href =
+              "login.html?next=" +
+              encodeURIComponent(
+                current + location.search
+              );
+
+          }
+
+          return;
+        }
+
+
+        reject(
+          new Error(error)
+        );
+
+        return;
+      }
+
+
+      resolve(data || {});
+
     };
 
-    script.onerror = () => finish(
-      reject,
-      new Error("Google Sheet API connection failed. Please check the Apps Script deployment.")
-    );
 
-    const q = new URLSearchParams({
-      action: String(action || ""),
-      callback,
-      _ts: Date.now().toString(),
+    script.onerror = function() {
+
+      fail(
+        "Google Sheet API connection failed. " +
+        "Please check Apps Script Web App deployment."
+      );
+
+    };
+
+
+    // ========================================================
+    // BUILD PARAMETERS
+    // ========================================================
+
+    const finalParams = {
       ...params
-    });
+    };
 
-    script.src = API_URL + "?" + q.toString();
+
+    // ========================================================
+    // ADD LOGIN SESSION TOKEN
+    // ========================================================
+
+    try {
+
+      if (
+        typeof getSession === "function"
+      ) {
+
+        const session =
+          getSession();
+
+        if (
+          session &&
+          session.token
+        ) {
+
+          finalParams.token =
+            session.token;
+
+        }
+
+      }
+
+    } catch (_) {}
+
+
+    // ========================================================
+    // SEND REQUEST
+    // ========================================================
+
+    const query =
+      new URLSearchParams({
+
+        action:
+          String(action || ""),
+
+        callback:
+          callback,
+
+        _ts:
+          String(Date.now()),
+
+        ...finalParams
+
+      });
+
+
+    script.src =
+      API_URL +
+      "?" +
+      query.toString();
+
     script.async = true;
+
     document.head.appendChild(script);
 
-    timer = setTimeout(() => finish(
-      reject,
-      new Error("Google Sheet API timed out. Please check your internet connection or Apps Script deployment.")
-    ), 12000);
+
+    timeout =
+      setTimeout(() => {
+
+        fail(
+          "Google Sheet API timed out. " +
+          "Please check Apps Script deployment."
+        );
+
+      }, 20000);
+
   });
+
 }
 
+
+// ============================================================
+// HTML ESCAPE
+// ============================================================
+
 function esc(v) {
-  return String(v ?? "").replace(/[&<>"']/g, c => ({
-    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"
-  }[c]));
+
+  return String(v ?? "")
+    .replace(
+      /[&<>"']/g,
+      c => ({
+
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+
+      }[c])
+    );
+
 }
