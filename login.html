@@ -64,11 +64,10 @@ $("loginForm").onsubmit = async e => {
   $("msg").textContent = "";
   $("loginBtn").disabled = true;
   try{
-    const hash = await sha256Hex($("password").value);
     const selected = $("department").value;
     const r = await api("authLogin", {
       Username: $("username").value.trim(),
-      PasswordHash: hash,
+      Password: $("password").value,
       Department: selected
     });
 
