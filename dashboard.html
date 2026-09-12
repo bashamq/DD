@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Engineering Work Dashboard — Chenab Engineering</title>
-<script src="config.js?v=20260912"></script>
+<script src="config_AUTH_V11.js"></script>
 <style>
 :root{
  --navy:#0b1f33;--navy2:#123a5a;--blue:#1d7eaf;--blue2:#2d91bf;
@@ -46,8 +46,8 @@ main{padding:28px 18px 45px}
 @media(max-width:1000px){.kpis{grid-template-columns:repeat(3,1fr)}.grid{grid-template-columns:1fr}}
 @media(max-width:620px){.brand{align-items:flex-start}.brand h1{font-size:21px}.home{white-space:nowrap}.kpis{grid-template-columns:repeat(2,1fr)}.kpi .value{font-size:21px}.panel{padding:15px}}
 </style>
-</head>
-<body>
+<script src="auth.js?v=20260912-auth"></script></head>
+<body><script>if(!requireRole("Admin")){}</script>
 <header><div class="wrap">
   <div class="brand">
     <div class="left"><div class="logo">CEW</div><div><h1>Engineering Work Dashboard</h1><p class="sub">Design & Development Control System · Management Overview</p></div></div>
