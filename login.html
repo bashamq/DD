@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CEW | Secure Login</title>
+<script src="config.js?v=20260912-auth"></script>
+<script src="auth.js?v=20260912-auth"></script>
+<style>
+:root{--navy:#0b1f33;--navy2:#123a5a;--blue:#1976a8;--bg:#eef3f7;--text:#172536;--muted:#657789;--line:#d7e1e8;--white:#fff;--red:#b42318}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;font-family:Segoe UI,Arial,sans-serif;background:linear-gradient(145deg,#edf3f7,#dfe8ef);color:var(--text);display:grid;place-items:center;padding:22px}
+.login{width:min(460px,100%);background:#fff;border:1px solid #d5e0e8;border-radius:22px;box-shadow:0 18px 50px #0b1f3320;overflow:hidden}
+.head{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:30px}
+.logo{width:58px;height:58px;border:2px solid #ffffffb8;border-radius:14px;display:grid;place-items:center;font-weight:900;margin-bottom:18px}
+h1{margin:0;font-size:25px}.sub{margin:7px 0 0;color:#d7e5ee;font-size:13px}
+.body{padding:28px}.row{margin-bottom:16px}label{display:block;font-size:12px;font-weight:800;margin-bottom:7px;color:#263c4d}
+input,select{width:100%;padding:13px 12px;border:1px solid #ccd9e1;border-radius:10px;background:#fff;color:#172536;font-size:14px;outline:none}
+input:focus,select:focus{border-color:#1976a8;box-shadow:0 0 0 3px #1976a815}
+button{width:100%;padding:13px;border:0;border-radius:10px;background:linear-gradient(135deg,#12618a,#1976a8);color:#fff;font-weight:800;cursor:pointer}
+button:disabled{opacity:.65;cursor:wait}.msg{display:none;margin-top:15px;padding:12px;border-radius:10px;font-size:13px}.err{display:block;background:#fff1f0;color:var(--red);border:1px solid #ffd1cc}
+.note{margin-top:16px;color:var(--muted);font-size:11px;line-height:1.6;text-align:center}
+</style>
+</head>
+<body>
+<div class="login">
+  <div class="head">
+    <div class="logo">CEW</div>
+    <h1>Secure System Login</h1>
+    <div class="sub">Design & Development Control System</div>
+  </div>
+  <div class="body">
+    <form id="loginForm">
+      <div class="row"><label>Username</label><input id="username" autocomplete="username" required></div>
+      <div class="row"><label>Password</label><input id="password" type="password" autocomplete="current-password" required></div>
+      <div class="row">
+        <label>Department</label>
+        <select id="department" required><option value="">Loading departments...</option></select>
+      </div>
+      <button id="loginBtn">Sign In</button>
+      <div id="msg" class="msg"></div>
+    </form>
+    <div class="note">Access is controlled by your assigned department and system role.</div>
+  </div>
+</div>
+<script>
+const $ = id => document.getElementById(id);
+
+async function loadDepartments(){
+  try{
+    const r = await api("authDepartments");
+    const list = Array.isArray(r.departments) ? r.departments : [];
+    $("department").innerHTML =
+      '<option value="">Select department</option>' +
+      '<option value="ADMIN">Admin / All Departments</option>' +
+      list.map(d => `<option value="${esc(d)}">${esc(d)}</option>`).join("");
+  }catch(e){
+    $("department").innerHTML = '<option value="">Unable to load departments</option>';
+  }
+}
+
+$("loginForm").onsubmit = async e => {
+  e.preventDefault();
+  $("msg").className = "msg";
+  $("msg").textContent = "";
+  $("loginBtn").disabled = true;
+  try{
+    const hash = await sha256Hex($("password").value);
+    const selected = $("department").value;
+    const r = await api("authLogin", {
+      Username: $("username").value.trim(),
+      PasswordHash: hash,
+      Department: selected
+    });
+
+    setSession(r);
+    const next = new URLSearchParams(location.search).get("next");
+    location.href = next ? decodeURIComponent(next) : "index.html";
+  }catch(err){
+    $("msg").className = "msg err";
+    $("msg").textContent =
+      err.message === "ADMIN_REQUIRED" ? "This account does not have administrator access." :
+      err.message || "Login failed.";
+  }finally{
+    $("loginBtn").disabled = false;
+  }
+};
+
+loadDepartments();
+</script>
+</body>
+</html>
