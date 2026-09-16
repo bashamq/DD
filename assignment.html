@@ -1,51 +1,195 @@
-<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Work Assignment | Chenab Engineering</title><script src="config_AUTH_V11.js?v=20260916"></script><script src="auth.js?v=20260916"></script><style>*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#eef3f8;color:#172033}.header{background:linear-gradient(135deg,#0b1f3a,#183b63);color:#fff;padding:22px 18px}.header-inner,.container{max-width:1150px;margin:auto}.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}.system-status{font-size:12px;opacity:.9}.nav-actions{display:flex;gap:8px;flex-wrap:wrap}.nav-btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.10);color:#fff;border-radius:9px;padding:9px 13px;font-size:13px;font-weight:800;cursor:pointer}.nav-btn:hover{background:rgba(255,255,255,.18)}.user-line{font-size:13px;margin-top:6px;opacity:.95}.logout-btn{background:#b42318;border-color:#b42318}.logout-btn:hover{background:#8f1c14}.header h1{margin:0;font-size:27px}.header p{margin:7px 0 0;opacity:.82}.container{padding:0 15px;margin-top:24px}.card{background:#fff;border:1px solid #dce5ef;border-radius:16px;padding:20px;margin-bottom:18px;box-shadow:0 8px 25px rgba(15,35,60,.08)}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.full{grid-column:1/-1}.field label{display:block;font-weight:700;margin-bottom:7px;font-size:14px}select,input,textarea{width:100%;border:1px solid #c8d4e1;border-radius:10px;padding:11px 12px;font-size:14px;background:#fff;color:#172033}textarea{min-height:90px;resize:vertical}.section-title{margin:0 0 15px;font-size:18px}.process-info{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.badge{padding:6px 10px;border-radius:999px;background:#edf4fb;color:#245b8d;font-size:12px;font-weight:700}.task-box{margin-top:15px;border:1px solid #dbe5ef;border-radius:12px;padding:14px;background:#f8fbfd}.task-box h3{margin:0 0 10px;font-size:14px}.task-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.task-item{display:flex;gap:8px;align-items:flex-start;background:#fff;border:1px solid #e0e7ee;border-radius:9px;padding:9px;font-size:13px}.task-item input{width:auto;margin-top:2px}button{border:0;border-radius:10px;padding:12px 18px;cursor:pointer;font-weight:800;font-size:14px}.btn{background:#12385f;color:#fff}.btn-secondary{background:#e9eff5;color:#19324d}.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}.status{padding:12px;border-radius:10px;margin-top:15px;font-weight:700}.ok{background:#e9f7ef;color:#17643a}.error{background:#fff0f0;color:#9b2222}.retry-mini{padding:6px 9px;font-size:12px;background:#12385f;color:#fff;border-radius:7px;margin-right:6px}.small{color:#64748b;font-size:12px;line-height:1.5}@media(max-width:720px){.grid,.task-list{grid-template-columns:1fr}.header h1{font-size:22px}.card{padding:16px}}</style></head><body><header class="header"><div class="header-inner"><div class="topbar"><div class="system-status">System Online · Controlled Engineering Workflow</div><div class="nav-actions"><a class="nav-btn" href="index.html">⌂ Home</a><button class="nav-btn" type="button" onclick="goBack()">← Back</button><button class="nav-btn logout-btn" type="button" onclick="logout()">Logout</button></div></div><h1>Work Assignment</h1><p>Design & Development Control System — Controlled Process Flow</p><div id="userLine" class="user-line">Logged in as: <strong>Loading...</strong></div></div></header><main class="container"><section class="card"><h2 class="section-title">Assign Process Work</h2><div class="grid"><div class="field full"><label>Registered Part</label><select id="part"><option>Loading parts...</option></select><div id="partInfo" class="process-info"></div><div id="partLoadNote" class="small" style="margin-top:7px">Connecting to Parts database...</div></div><div class="field"><label>Process Section</label><select id="process"></select><div id="processInfo" class="process-info"></div></div><div class="field"><label>Department</label><select id="department"></select></div><div class="field"><label>Assigned To</label><select id="assignedTo"><option>Select Department first</option></select><div class="small">Users sheet se Active users selected Department ke mutabiq show honge.</div></div><div class="field"><label>Start Date</label><input type="date" id="startDate"></div><div class="field"><label>Due Date</label><input type="date" id="dueDate"></div><div class="field full"><label>Initial Remarks</label><textarea id="remarks" placeholder="Assignment instructions / special requirements"></textarea></div></div><div class="task-box"><h3>Tasks for Selected Process</h3><div id="taskList" class="task-list"></div></div><div class="actions"><button class="btn" id="saveBtn" onclick="saveAssignment()">Save Assignment</button><button class="btn-secondary" onclick="clearForm()">Clear</button></div><div id="status" class="status" style="display:none"></div></section><section class="card"><h2 class="section-title">Process Flow</h2><p class="small">Customer RFQ → Design & Development → Machine Tool → Simulation → Pattern / Core → Mould → Metallurgy → Casting / Pouring → Shakeout / Fettling → Heat Treatment → Casting Inspection / NDT → Machining → Final Inspection → Documentation → QA Release → Packing & Dispatch</p></section></main><script>
-'use strict';
-function goBack(){try{if(document.referrer && new URL(document.referrer).host===location.host && history.length>1){history.back();}else{location.href='index.html';}}catch(e){location.href='index.html';}}
-if(typeof requireRole==='function' && !requireRole('Admin')){}
-(function(){try{var u=typeof currentUser==='function'?currentUser():null; if(u){document.getElementById('userLine').innerHTML='Logged in as: <strong>'+String(u.username||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];})+'</strong> &nbsp; | &nbsp; Department: <strong>'+String(u.department||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];})+'</strong> &nbsp; | &nbsp; Role: <strong>'+String(u.role||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];})+'</strong>';}}catch(e){}})();
-const PROCESS_FLOW=[
-['Customer RFQ','Design / Engineering',['Review customer RFQ / PO requirements','Review customer drawing and revision','Review material grade and quantity','Review application / service requirements','Check technical feasibility and clarify requirements','Record RFQ requirements as controlled information']],
-['Design & Development','Design / Engineering',['Review design requirements','Perform DFM review','Review drawing dimensions and tolerances','Confirm material / grade requirements','Prepare or revise design data','Complete design review and approval']],
-['Machine Tool','Design / Engineering',['Select manufacturing machine / process route','Define required machine capability','Define tooling / fixture requirements','Confirm machining allowance and datum strategy','Review machine accessibility and process feasibility']],
-['Simulation','Design / Engineering',['Prepare casting simulation input','Review filling behaviour','Review solidification behaviour','Identify potential shrinkage / defect locations','Review simulation result','Record required design or process changes']],
-['Pattern / Core','Design / Engineering',['Review pattern / core requirements','Prepare pattern / core design','Review core prints and allowances','Verify pattern / core dimensions','Release pattern / core for moulding']],
-['Mould','Foundry',['Prepare moulding materials','Prepare mould','Verify mould condition','Verify gating / riser arrangement','Prepare cores and assemble mould','Complete mould readiness check']],
-['Metallurgy','Metallurgy / Foundry',['Verify charge material','Verify heat / batch identification','Prepare melting charge','Check chemical composition','Record melt temperature','Approve chemistry before pouring']],
-['Casting / Pouring','Foundry',['Verify mould identification','Verify heat / batch traceability','Confirm pouring readiness','Record pouring temperature','Complete pouring operation','Record casting / heat information']],
-['Shakeout / Fettling','Foundry',['Perform shakeout','Remove sand / core material','Remove gates and risers','Perform fettling / grinding','Visually inspect casting condition','Maintain heat / batch / part traceability']],
-['Heat Treatment','Heat Treatment / QC',['Verify heat treatment requirement','Verify batch / heat identification','Load batch and record cycle','Record temperature and holding time','Perform hardness / required verification','Release heat-treated batch for inspection']],
-['Casting Inspection / NDT','QC / QA',['Perform visual inspection','Perform dimensional casting inspection','Perform required NDT','Record NDT results','Review defects / indications','Identify NCR where required','Release acceptable casting for machining']],
-['Machining','Production / CNC + QC',['Verify drawing revision before setup','Verify machine / fixture / tooling','Set machining parameters','Perform first-off inspection','Perform machining operation','Perform in-process inspection','Record machining status and traceability']],
-['Final Inspection','QA / QC',['Perform final dimensional inspection','Verify drawing revision and requirements','Verify critical dimensions / tolerances','Review surface / visual condition','Review sample inspection report','Review required testing results','Identify NCR / root cause / CAPA where applicable','Confirm final conformity']],
-['Documentation','QA',['Compile inspection records','Compile material / chemistry records','Compile heat treatment records','Compile NDT records','Compile machining / process records','Maintain NCR / root cause / CAPA records','Verify heat / batch / part traceability','Complete controlled document record']],
-['QA Release','QA',['Review complete process evidence','Verify all required approvals','Verify final inspection status','Verify NCR disposition where applicable','Confirm traceability','Authorize final QA release']],
-['Packing & Dispatch','Stores + QA',['Verify released part / batch','Verify quantity','Verify packing requirement','Prepare packing / identification','Verify dispatch documentation','Complete dispatch record']]
-].map(x=>({name:x[0],department:x[1],tasks:x[2]}));
-let allParts=[],allUsers=[];const $=id=>document.getElementById(id);function msg(t,c){const e=$('status');e.textContent=t;e.className='status '+c;e.style.display='block'}function esc(v){return String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
-function populate(){const s=$('process');s.innerHTML='';PROCESS_FLOW.forEach((p,i)=>{const o=document.createElement('option');o.value=p.name;o.textContent=(i+1)+'. '+p.name;s.appendChild(o)});const d=$('department');d.innerHTML='<option value="">Select Department</option>';[...new Set(PROCESS_FLOW.map(p=>p.department))].forEach(x=>{const o=document.createElement('option');o.value=x;o.textContent=x;d.appendChild(o)});renderProcess()}
-function renderProcess(){const p=PROCESS_FLOW.find(x=>x.name===$('process').value);if(!p)return;$('processInfo').innerHTML='<span class="badge">Primary Department: '+esc(p.department)+'</span><span class="badge">Controlled Process Stage</span>';$('taskList').innerHTML=p.tasks.map((t,i)=>'<label class="task-item"><input type="checkbox" class="task-check" value="'+esc(t)+'"><span>'+(i+1)+'. '+esc(t)+'</span></label>').join('');$('department').value=p.department;renderUsers()}
-function renderUsers(){const dep=$('department').value,s=$('assignedTo');s.innerHTML='<option value="">Select User</option>';if(!dep){s.innerHTML='<option value="">Select Department first</option>';return}const u=allUsers.filter(x=>String(x.Department||'').trim().toLowerCase()===dep.trim().toLowerCase());if(!u.length){s.innerHTML='<option value="">No active user found</option>';return}u.forEach(x=>{const o=document.createElement('option');o.value=x.Username;o.textContent=x.Username+(x.Role?' — '+x.Role:'');s.appendChild(o)})}
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Chenab Engineering – Work Assignment</title>
+
+
+<style>
+:root{
+  --navy:#0b1f33;--navy2:#123a5a;--blue:#1b78a9;--blue2:#2d91bf;
+  --bg:#f3f6f9;--card:#fff;--text:#172536;--muted:#6d7c89;
+  --line:#dce5eb;--soft:#f5f8fa;--ok:#198754;--danger:#b42318;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Segoe UI,Inter,Arial,sans-serif;background:var(--bg);color:var(--text)}
+.topbar{background:linear-gradient(135deg,var(--navy),var(--navy2));color:#fff;padding:28px 20px 24px;box-shadow:0 5px 20px #102b401c}
+.wrap{max-width:1120px;margin:auto}
+.brand{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.brand-left{display:flex;align-items:center;gap:14px}
+.logo{width:52px;height:52px;border:2px solid #ffffffb8;border-radius:13px;display:grid;place-items:center;font-size:16px;font-weight:800;letter-spacing:-1px}
+h1{font-size:25px;margin:0 0 4px;letter-spacing:.1px}
+.subtitle{font-size:13px;color:#d6e4ed;margin:0}
+.home{color:#fff;text-decoration:none;border:1px solid #ffffff38;background:#ffffff10;padding:9px 13px;border-radius:9px;font-size:12px;font-weight:700}
+.home:hover{background:#ffffff1d}
+.status{display:inline-flex;align-items:center;gap:7px;margin-top:17px;padding:7px 11px;border:1px solid #ffffff2e;border-radius:20px;background:#ffffff0d;font-size:11px}
+.dot{width:8px;height:8px;border-radius:50%;background:#43d17b;box-shadow:0 0 0 4px #43d17b1c}
+main{padding:28px 18px 45px}
+.page-intro{margin-bottom:18px}.page-intro h2{font-size:17px;margin:0 0 5px}.page-intro p{margin:0;color:var(--muted);font-size:13px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:23px;box-shadow:0 8px 26px #142b3f0b}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field label{display:block;font-weight:750;font-size:12px;color:#33485a}
+input,select{width:100%;box-sizing:border-box;padding:11px 12px;border:1px solid #cfd9e0;border-radius:9px;margin-top:7px;background:#fff;color:var(--text);font:inherit;font-size:13px;outline:none}
+input:focus,select:focus{border-color:var(--blue2);box-shadow:0 0 0 3px #2d91bf18}
+.full{grid-column:1/-1}
+.task-head{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:8px}
+.task-title{font-weight:750;font-size:12px}.hint{color:var(--muted);font-size:11px}
+.taskbar{display:flex;align-items:center;gap:8px;margin:9px 0}
+button{border:0;border-radius:9px;padding:11px 17px;background:linear-gradient(135deg,var(--navy2),var(--blue));color:#fff;font-weight:750;font-size:12px;cursor:pointer;box-shadow:0 5px 12px #123a5a18}
+button:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.secondary{background:#eef5f9;color:var(--navy2);box-shadow:none;border:1px solid #d7e3ea;padding:8px 12px}
+.secondary:hover{background:#e5f0f6}
+.task-list{border:1px solid #d4e0e7;border-radius:11px;max-height:335px;overflow:auto;padding:7px;background:#f8fafb}
+.task-item{display:flex;gap:9px;align-items:flex-start;padding:10px;border-bottom:1px solid #e8eef2;font-weight:400;background:#fff;border-radius:7px;margin-bottom:3px}
+.task-item:last-child{border-bottom:0}.task-item:hover{background:#f3f8fb}
+.task-item input{width:auto;margin:2px 0;accent-color:var(--blue)}
+.task-item span{font-size:12.5px;line-height:1.42}
+.assign{width:100%;padding:12px 18px;margin-top:2px;font-size:13px}
+.msg{padding:12px 13px;border-radius:9px;margin-top:15px;font-size:12px}.ok{background:#ecfdf3;color:#027a48;border:1px solid #abefc6}.err{background:#fef3f2;color:#b42318;border:1px solid #fecdca}
+.library{margin-top:18px;padding-top:17px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:15px;align-items:center}.library strong{font-size:13px}.library .hint{line-height:1.5}
+.footer-note{text-align:center;color:#8a98a3;font-size:10px;margin-top:18px}
+@media(max-width:720px){.brand{align-items:flex-start}.brand h1{font-size:21px}.grid{grid-template-columns:1fr}.full{grid-column:auto}.home{white-space:nowrap}.task-head{display:block}.library{display:block}}
+</style>
+<script src="config.js?v=20260911"></script>
+</head>
+<body><header class="topbar">
+  <div class="wrap">
+    <div class="brand">
+      <div class="brand-left">
+        <div class="logo">CEW</div>
+        <div>
+          <h1>Work Assignment</h1>
+          <p class="subtitle">Design & Development Control System · Controlled Engineering Workflow</p>
+        </div>
+      </div>
+      <a class="home" href="index.html">← Home</a>
+    </div>
+    <div class="status"><span class="dot"></span>Engineering Work Planning · System Online</div>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+  <div class="page-intro">
+    <h2>Assign Design & Development Activities</h2>
+    <p>Select a registered part, choose the required checklist activities, and assign responsibility with planned dates.</p>
+  </div>
+  <div class="card">
+<form id="f"><div class="grid">
+<div class="field"><label>Part *</label><select id="part" name="PartID" required><option value="">Loading...</option></select></div>
+<div class="field"><label>Process Section *</label><select name="ProcessSection" id="section" required></select></div>
+<div class="full">
+<div class="task-head"><div><div class="task-title">Task(s) *</div><div class="hint">Select one, multiple, or all checklist activities.</div></div></div>
+<div class="taskbar">
+<button type="button" id="selectAll" class="secondary">Select All</button>
+<button type="button" id="clearAll" class="secondary">Clear All</button>
+<span id="count" class="hint">0 selected</span>
+</div>
+<div id="taskList" class="task-list"></div>
+</div>
+<div class="field"><label>Department *</label><select name="Department" required><option>Design / Engineering</option><option>Pattern Shop / Foundry</option><option>Foundry</option><option>Metallurgy / Foundry</option><option>Heat Treatment / QC</option><option>QC / QA</option><option>Production / CNC</option><option>QA</option><option>QC / Approved Lab</option><option>Stores + QA</option></select></div>
+<div class="field"><label>Assigned To</label><input name="AssignedTo"></div>
+<div class="field"><label>Start Date *</label><input name="StartDate" type="date" required></div>
+<div class="field"><label>Due Date *</label><input name="DueDate" type="date" required></div>
+<div class="full"><button class="assign">Assign Selected Work</button></div>
+</div></form><div id="msg"></div>
+<div class="library"><div><strong>Checklist Task Library</strong><div class="hint">Controlled activities are based on the master checklist, from Design/DFM through QA release/dispatch.</div></div><div class="hint">13 process sections</div></div>
+<div class="footer-note">Chenab Engineering · Design & Development Control System</div>
+</div></div>
+<script>
+const library={
+"1. DESIGN & DEVELOPMENT / DFM":[
+"Customer RFQ, drawing, 3D CAD, material specification, quantity and application received.",
+"Customer requirements and latest drawing revision verified.","Material grade/specification confirmed against customer requirement.",
+"DFM review completed: draft, wall thickness, sharp corners, machining accessibility and datum strategy.",
+"Machining allowance defined and approved according to material/process requirement.",
+"Shrinkage allowance defined for selected alloy and pattern process.","Gating, riser/feeder and venting concept reviewed.",
+"Core requirements and core print locations verified.","Tolerance stack-up / critical dimensions identified.",
+"UM (unmachined) and M (machined) dimensions identified where applicable.",
+"Casting simulation / filling / solidification / hot-spot review completed where required.",
+"Pattern and core-box design reviewed and approved.","Design risks and special characteristics identified.",
+"Customer approval obtained for controlled design changes where required.",
+"Design output released under document/revision control."
+],
+"2. TOOLING / PATTERN & CORE":["Pattern/core-box drawing matches approved product drawing.","Pattern material and construction verified.","Pattern shrinkage and machining allowances verified.","Pattern dimensions checked and recorded.","Core-box dimensions checked and recorded.","Parting line, draft and core prints verified.","Pattern/core identification and revision marking applied.","Tooling trial completed where required.","Tooling inspection record approved before production."],
+"3. FOUNDRY / MOULD & CORE MAKING":["Raw material/scrap identity and condition checked.","Sand type and recipe verified.","Sand moisture checked.","AFS / grain fineness checked where applicable.","Permeability checked.","Compactability checked.","Core sand properties checked.","Core strength checked.","Core venting and baking/curing verified.","Mould hardness/compaction checked.","Pattern condition and mould dimensions verified.","Core setting and orientation verified.","Gating/riser/feeder system verified against approved design.","Mould identification / batch traceability maintained."],
+"4. MELTING & METALLURGY":["Charge calculation prepared and approved.","Charge materials identified by grade/heat/batch.","Furnace condition and readiness verified.","Melting temperature monitored.","Chemical composition checked by calibrated spectrometer.","Required chemistry acceptance range verified.","Carbon equivalent calculated where applicable.","Inoculation / nodularization / grain refinement carried out as per approved procedure.","Degassing performed where applicable.","Treatment addition quantity and time recorded.","Test sample/ladle sample identified with heat number.","Metallurgical records retained."],
+"5. POURING / SHAKEOUT / FETTLING":["Pouring temperature recorded.","Pouring time and sequence controlled.","Heat/ladle/mould traceability maintained.","Pouring condition visually monitored.","Shakeout time controlled to reduce distortion/cracking risk.","Sand removed completely.","Gates and risers removed.","Fins/flash removed.","Grinding/fettling completed without damaging functional surfaces.","Castings segregated and identified by heat/batch."],
+"6. HEAT TREATMENT":["Heat-treatment requirement verified against drawing/specification.","Correct furnace cycle/program selected.","Loading arrangement verified.","Temperature recorded.","Soak/holding time recorded.","Heating/cooling cycle recorded.","Quench medium and condition verified where applicable.","Furnace chart/record reviewed.","Heat-treatment batch traceability maintained.","Post-HT hardness test performed where required.","Microstructure/mechanical verification performed where required."],
+"7. CASTING INSPECTION / NDT":["Visual inspection for cracks, cold shuts, misruns, blowholes, inclusions, shrinkage and surface defects.","Critical UM dimensions checked.","Datum/functional casting features verified.","Hardness checked where specified.","NDT method selected according to drawing/customer specification.","MPI performed where required.","UT performed where required.","RT performed where required.","Dye penetrant performed where required.","NDT acceptance criteria verified.","Nonconforming castings identified and segregated."],
+"8. MACHINING":["Casting received with part/heat/batch identification.","Pre-machining visual inspection completed.","Approved drawing and revision available at machine.","Correct CNC program verified.","Correct fixture and tooling verified.","Datum selected and marked.","Machine setup verified.","First-piece machining completed.","First-piece approval obtained before batch production.","All M dimensions programmed/controlled.","Tool wear monitored.","Tool breakage/chipping monitored.","In-process inspection performed at defined frequency.","Deburring completed.","Washing and drying completed.","Rust preventive applied where required."],
+"9. FINAL INSPECTION / SAMPLE INSPECTION REPORT":["Inspection environment controlled where required: Temperature 24±2°C and Humidity 50±5% RH, if specified.","Latest controlled drawing used.","Drawing Controlled Dimension (D.C.O) transcribed correctly in Inch and MM.","UM / M classification verified.","Nominal dimension recorded.","Tolerance recorded.","Calibrated measuring instrument selected.","Instrument identification and calibration status verified.","Actual observation recorded.","Deviation calculated as: Observation − Nominal.","PASS / FAIL status recorded.","Remarks recorded for deviations.","UM failure routed to casting/root-cause investigation.","M failure routed to machining/root-cause investigation.","Inspection report signed by responsible inspector."],
+"10. FINAL TESTING":["Visual final inspection completed.","All critical dimensions accepted.","Tensile test completed where required.","Impact test completed where required.","Hardness test completed where required.","Microstructure test completed where required.","NDT reports attached where required.","Surface finish checked where specified.","Coating/paint thickness checked where applicable.","Customer-specific tests completed."],
+"11. NCR / ROOT CAUSE / CAPA":["Nonconforming product identified and physically segregated.","NCR number assigned.","Problem statement and affected quantity recorded.","Immediate containment completed.","Root cause identified using appropriate method (5 Why / Fishbone / process review).","Responsibility assigned: Casting / Metallurgy / Machining / Inspection / Other.","Correction completed.","Corrective action implemented.","Re-inspection/retest completed.","Effectiveness verified.","NCR/CAPA formally closed."],
+"12. DOCUMENTATION / TRACEABILITY":["Customer RFQ / PO retained.","Approved drawing and revision retained.","DFM review retained.","Pattern/core-box records retained.","Charge calculation retained.","Spectrometer/chemistry report retained.","Pouring record retained.","Heat-treatment record retained.","Casting inspection record retained.","NDT report retained.","Machining setup/in-process record retained.","Final inspection report retained.","Mechanical test certificates retained.","MTC attached where required.","COC prepared.","All records traceable to heat/batch/part."],
+"13. FINAL QA RELEASE / PACKING / DISPATCH":["All inspection/test results reviewed.","All NCRs affecting the shipment closed or formally dispositioned.","Customer documentation package complete.","COC approved.","MTC approved/attached.","Inspection report approved/attached.","Packing method matches customer requirement.","Quantity verified.","Part identification/labels verified.","Packaging protects casting/machined surfaces.","Rust prevention completed where required.","Dispatch authorization given by QA/authorized person.","Dispatch record and traceability retained."]
+};
+
+const section=document.getElementById("section"), taskList=document.getElementById("taskList");
+const count=document.getElementById("count"), selectAll=document.getElementById("selectAll"), clearAll=document.getElementById("clearAll");
+Object.keys(library).forEach(s=>section.add(new Option(s,s)));
+function renderTasks(){
+ taskList.innerHTML="";
+ library[section.value].forEach(t=>{
+   const row=document.createElement("label");
+   row.className="task-item";
+   row.innerHTML=`<input type="checkbox" name="Tasks"><span>${esc(t)}</span>`;
+   row.querySelector("input").value=t;
+   taskList.appendChild(row);
+ });
+ updateCount();
+}
+function updateCount(){count.textContent=taskList.querySelectorAll('input[name="Tasks"]:checked').length+" selected";}
+section.onchange=renderTasks;
+taskList.onchange=updateCount;
+selectAll.onclick=()=>{taskList.querySelectorAll('input[name="Tasks"]').forEach(x=>x.checked=true);updateCount();};
+clearAll.onclick=()=>{taskList.querySelectorAll('input[name="Tasks"]').forEach(x=>x.checked=false);updateCount();};
+renderTasks();
+
 async function loadParts(){
-  const sel=$('part');
-  sel.innerHTML='<option value="">Loading registered parts...</option>';
+  const partSelect = document.getElementById("part");
+  partSelect.innerHTML = '<option value="">Loading parts...</option>';
   try{
-    const r=await Promise.race([
-      api('listPartsLite'),
-      new Promise((_,reject)=>setTimeout(()=>reject(new Error('Parts loading timed out. Please click Retry.')),10000))
-    ]);
-    if(!r||r.ok===false)throw new Error((r&&r.error)||'Parts API failed');
-    allParts=r.parts||[];
-    sel.innerHTML='<option value="">Select registered part</option>';
-    allParts.forEach(p=>{const o=document.createElement('option');o.value=p.PartID;o.textContent=(p.PartNo||p.PartID)+' | Order: '+(p.OrderNo||'')+' | '+(p.Customer||'');sel.appendChild(o)});
-    if(!allParts.length)sel.innerHTML='<option value="">No registered part found</option>';
-    const note=document.getElementById('partLoadNote');if(note)note.textContent=allParts.length+' registered part(s) loaded.';
-  }catch(e){
-    sel.innerHTML='<option value="">Unable to load parts</option>';
-    const note=document.getElementById('partLoadNote');if(note)note.innerHTML='<button type="button" class="retry-mini" onclick="loadParts()">↻ Retry Parts</button> '+esc(e.message||'Parts load failed');
-    msg(e.message||'Parts load failed','error');
+    const r = await api("listParts");
+    const parts = Array.isArray(r.parts) ? r.parts : [];
+    if(!parts.length){
+      partSelect.innerHTML = '<option value="">No registered parts found</option>';
+      return;
+    }
+
+    partSelect.innerHTML = '<option value="">Select Part</option>';
+    parts.slice().reverse().forEach(p=>{
+      const label = [
+        p.PartID || "",
+        p.OrderNo ? "Order: " + p.OrderNo : "",
+        p.PartNo ? "Part: " + p.PartNo : "",
+        p.PartName ? p.PartName : ""
+      ].filter(Boolean).join(" — ");
+
+      const opt = new Option(label, p.PartID || "");
+      partSelect.add(opt);
+    });
+  }catch(err){
+    console.error("listParts failed:", err);
+    partSelect.innerHTML = '<option value="">Unable to load Parts — Refresh</option>';
+    const msg = document.getElementById("msg");
+    msg.className = "msg err";
+    msg.textContent = err && err.message
+      ? err.message
+      : "Unable to load Parts. Please refresh and try again.";
   }
 }
-async function loadUsers(){try{const r=await api('listUsers');allUsers=r.users||[];renderUsers()}catch(e){allUsers=[];renderUsers();msg('Users load failed: '+(e.message||''),'error')}}
-$('part').addEventListener('change',()=>{const p=allParts.find(x=>String(x.PartID)===$('part').value);$('partInfo').innerHTML=p?'<span class="badge">Part: '+esc(p.PartNo||'')+'</span><span class="badge">Order: '+esc(p.OrderNo||'')+'</span><span class="badge">Customer: '+esc(p.Customer||'')+'</span><span class="badge">Material: '+esc(p.MaterialGrade||'')+'</span>':''});$('process').addEventListener('change',renderProcess);$('department').addEventListener('change',renderUsers);
-async function saveAssignment(){const tasks=[...document.querySelectorAll('.task-check:checked')].map(x=>x.value),p={PartID:$('part').value,ProcessSection:$('process').value,Department:$('department').value,AssignedTo:$('assignedTo').value,StartDate:$('startDate').value,DueDate:$('dueDate').value,Status:'Pending',Progress:0,Remarks:$('remarks').value.trim(),Tasks:tasks.join('||')};if(!p.PartID)return msg('Please select a registered Part.','error');if(!p.Department||!p.AssignedTo)return msg('Please select Department and Assigned To.','error');if(!tasks.length)return msg('Please select at least one task.','error');if(!p.StartDate||!p.DueDate)return msg('Please select Start Date and Due Date.','error');if(p.DueDate<p.StartDate)return msg('Due Date cannot be before Start Date.','error');const b=$('saveBtn');b.disabled=true;b.textContent='Saving...';try{const r=await api('assignWorkMultiple',p);msg(r.message||'Assignment saved successfully','ok');document.querySelectorAll('.task-check').forEach(x=>x.checked=false);$('remarks').value=''}catch(e){msg(e.message||'Assignment save failed.','error')}finally{b.disabled=false;b.textContent='Save Assignment'}}function clearForm(){$('part').value='';$('startDate').value='';$('dueDate').value='';$('remarks').value='';document.querySelectorAll('.task-check').forEach(x=>x.checked=false);$('partInfo').innerHTML='';renderProcess();$('status').style.display='none'}populate();loadParts();loadUsers();
+
+loadParts();
+
+f.onsubmit=async e=>{
+ e.preventDefault(); msg.className="msg"; msg.textContent="Saving...";
+ try{
+   const fd=new FormData(f), tasks=fd.getAll("Tasks");
+   if(!tasks.length) throw new Error("Please select at least one task.");
+   const common={PartID:fd.get("PartID"),ProcessSection:fd.get("ProcessSection"),Department:fd.get("Department"),AssignedTo:fd.get("AssignedTo"),StartDate:fd.get("StartDate"),DueDate:fd.get("DueDate")};
+   const r=await api("assignWorkMultiple",{...common,Tasks:tasks.join("||")});
+   msg.className="msg ok";
+   msg.textContent=(r.count || tasks.length)+" task(s) assigned successfully.";
+   f.reset(); renderTasks();
+ }catch(x){msg.className="msg err";msg.textContent=x.message;}
+};
 </script></body></html>
