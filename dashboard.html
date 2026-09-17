@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Engineering Work Dashboard — Chenab Engineering</title>
-<script src="config_AUTH_V11.js?v=20260917"></script>
+<script src="config.js?v=20260917"></script>
 <style>
 :root{
  --navy:#0b1f33;--navy2:#123a5a;--blue:#1d7eaf;--blue2:#2d91bf;
@@ -120,13 +120,78 @@ let dashboardRaw = null;
 let allPartRows = [];
 let allAssignments = [];
 
+async function dashboardApi(action, params = {}) {
+  return new Promise((resolve, reject) => {
+    const session = (typeof getSession === "function") ? getSession() : null;
+    if (!session || !session.token) {
+      reject(new Error("LOGIN_REQUIRED"));
+      return;
+    }
+
+    const callback = "dash_cb_" + Date.now() + "_" + Math.floor(Math.random() * 100000);
+    const script = document.createElement("script");
+    let finished = false;
+    let timer = null;
+
+    const query = new URLSearchParams({
+      action: String(action || ""),
+      callback: callback,
+      _ts: String(Date.now()),
+      token: String(session.token)
+    });
+
+    Object.keys(params || {}).forEach(key => {
+      const value = params[key];
+      if (value !== undefined && value !== null) query.set(key, String(value));
+    });
+
+    function cleanup() {
+      if (timer) clearTimeout(timer);
+      if (script.parentNode) script.parentNode.removeChild(script);
+      try { delete window[callback]; } catch (_) {}
+    }
+
+    function fail(message) {
+      if (finished) return;
+      finished = true;
+      cleanup();
+      reject(new Error(message));
+    }
+
+    window[callback] = function(data) {
+      if (finished) return;
+      finished = true;
+      cleanup();
+      if (!data) {
+        reject(new Error("Google Apps Script returned an empty response."));
+        return;
+      }
+      if (data.ok === false) {
+        const msg = String(data.error || "Server error");
+        if (msg === "AUTH_REQUIRED" || msg === "SESSION_EXPIRED") {
+          if (typeof clearSession === "function") clearSession();
+          location.href = "login.html?next=" + encodeURIComponent(location.pathname + location.search);
+        }
+        reject(new Error(msg));
+        return;
+      }
+      resolve(data);
+    };
+
+    script.onerror = () => fail("Google Sheet API connection failed. Check Apps Script Web App deployment.");
+    script.src = API_URL + "?" + query.toString();
+    document.head.appendChild(script);
+    timer = setTimeout(() => fail("Google Sheet API timed out. Please check the Apps Script deployment."), 25000);
+  });
+}
+
 function normalizePartId(v){
   return String(v ?? "").trim();
 }
 
 async function loadDashboard(){
   try{
-    const r = await api("dashboard");
+    const r = await dashboardApi("dashboard");
     dashboardRaw = r || {};
     allPartRows = Array.isArray(r.partProgress)
       ? r.partProgress
@@ -138,7 +203,7 @@ async function loadDashboard(){
     // selected-part KPIs and department progress accurately without another
     // Apps Script change.
     try{
-      const ar = await api("listAssignments");
+      const ar = await dashboardApi("listAssignments");
       allAssignments = Array.isArray(ar.assignments) ? ar.assignments : [];
     }catch(_){
       allAssignments = [];
