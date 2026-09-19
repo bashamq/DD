@@ -467,6 +467,15 @@ Object.keys(library).forEach(s => {
 });
 
 
+function esc(value){
+  return String(value ?? "")
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 /* =====================================================
    RENDER TASKS
    ===================================================== */
@@ -577,7 +586,13 @@ clearAll.onclick =
   };
 
 
-renderTasks();
+try {
+  renderTasks();
+} catch (err) {
+  console.error("Initial task rendering failed:", err);
+  document.getElementById("taskList").innerHTML =
+    '<div class="msg err">Unable to load task library. Please refresh the page.</div>';
+}
 
 
 /* =====================================================
